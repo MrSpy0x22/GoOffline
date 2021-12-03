@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Lista wyjątków">
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Szybkie reguły">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="switch_preference_1"
+            android:summary="Pozwól na uruchamianie aplikacji dodanych jako wyjątki w trakcie używania trybu sen."
+            android:title="Wyjątki aktywne w trybie snu" />
+    </PreferenceCategory>
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="switch_preference_1"
+        android:summary="Aplikacja do wykonywania połączeń oraz kontakty są zawsze dozwolone."
+        android:title="Funkcje telefonu to wyjątki" />
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="switch_preference_2"
+        android:summary="Aplikacja aparat jest zawsze dozwolona."
+        android:title="Aparat to wyjątek" />
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="switch_preference_3"
+        android:summary="Blokuje możliwość instalowania aplikacji przez znane aplikacje typu skklep."
+        android:title="Zablokuj sklep z aplikacjami" />
+</PreferenceScreen>

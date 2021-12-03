@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name" translatable="false">GoOffline</string>
+
+    <string name="just_search1">Szukaj</string>
+    <string name="just_search2">Szukaj…</string>
+    <string name="just_loading">Ładowanie…</string>
+
+    <string name="fragment_whitelist">Dozwolone aplikacje</string>
+
+    <string name="services_channel_id" translatable="false">gooffline_channel_service</string>
+    <string name="services_channel_name">Usługi</string>
+    <string name="monitor_notification_header">Monitorowanie aplikacji</string>
+    <string name="monitor_notification_text">Aplikacja monitoruje używane aplikacje zgodnie z polityką administratora urządzenia.</string>
+</resources>
