@@ -137,6 +137,7 @@ public class MonitorService extends Service {
         if (currentPackage != null) {
             for (String packageToCheck : monitoredPackageList) {
                 if (currentPackage.equals(packageToCheck)) {
+                    Log.d("overlay" , packageToCheck);
                     detected = true;
                     break;
                 }

@@ -8,4 +8,15 @@
     android:orientation="vertical"
     android:background="#2D2F31">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Zgodnie z polityką administratora urządzenia ta aplikacja została zablokowana."/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pokaż szczegóły"
+        />
+
 </LinearLayout>

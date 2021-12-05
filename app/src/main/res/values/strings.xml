@@ -7,8 +7,26 @@
 
     <string name="fragment_whitelist">Dozwolone aplikacje</string>
 
+    <string name="card_header_time">Limit użycia</string>
+    <string name="card_header_rules">Reguły aplikacji</string>
+    <string name="card_header_game">Dodatkowy czas</string>
+    <string name="card_header_sleep">Czas snu</string>
+    <string name="card_header_stats">Historia użycia</string>
+
+    <string name="card_descr_time">Limit czasu określa jak długo można używać aplikacji na tym urządzeniu. Po tym czasie zostają wprowadzone ograniczenia administratora urządzenia.</string>
+    <string name="card_descr_rules">Reguły zostają zastosowane do aplikacji, które nie znajdują się na liście wyjątków.</string>
+    <string name="card_descr_game">Dodatkowy czasz zwiększa limit czasu korzystania z urządzenia. Należy najpier rozwiązać zadanie.</string>
+    <string name="card_descr_sleep">Zdefiniowany czas, podczas któego zostaje zastosowana polityka blokowania aplikacji na urządzeniu niezależnie od wyczerpanego limitu.</string>
+    <string name="card_descr_stats">Historia korzystana z tego urządzenia przedstawiona w przeszłości.</string>
+
+    <string name="card_button_rules">Sprawdź</string>
+    <string name="card_button_game">Graj</string>
+    <string name="card_button_stats">przeglądaj</string>
+
+
     <string name="services_channel_id" translatable="false">gooffline_channel_service</string>
     <string name="services_channel_name">Usługi</string>
     <string name="monitor_notification_header">Monitorowanie aplikacji</string>
     <string name="monitor_notification_text">Aplikacja monitoruje używane aplikacje zgodnie z polityką administratora urządzenia.</string>
+
 </resources>

@@ -3,7 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory android:title="Lista wyjątków">
-
+        <Preference
+            android:key="app_pref_whitelist"
+            android:title="Lista wyjątków"
+            android:summary="0 aplikacji"
+            />
     </PreferenceCategory>
     <PreferenceCategory android:title="Szybkie reguły">
 

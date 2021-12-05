@@ -8,44 +8,13 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-<!--    <TextView-->
-<!--        android:id="@+id/flags"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="0 | 0"-->
-<!--        android:gravity="center"-->
-<!--        android:textSize="24sp"/>-->
-
-<!--    <Button-->
-<!--        android:id="@+id/btn_update"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Update"/>-->
-
-<!--    <Button-->
-<!--        android:id="@+id/btn_overlay"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Overlay"/>-->
-
-<!--    <Button-->
-<!--        android:id="@+id/btn_usage"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Usage"/>-->
-
-<!--    <Button-->
-<!--        android:id="@+id/btn_show"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Show overlay"/>-->
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_main"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         style="@style/Widget.MaterialComponents.Toolbar.Primary"
+        app:menu="@menu/menu_main"
         />
 
     <fragment
