@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name" translatable="false">GoOffline</string>
 
+    <string name="date_format" formatted="false">%02d.%02d.%04d</string>
+
     <string name="just_search1">Szukaj</string>
     <string name="just_search2">Szukaj…</string>
     <string name="just_loading">Ładowanie…</string>
@@ -28,5 +30,7 @@
     <string name="services_channel_name">Usługi</string>
     <string name="monitor_notification_header">Monitorowanie aplikacji</string>
     <string name="monitor_notification_text">Aplikacja monitoruje używane aplikacje zgodnie z polityką administratora urządzenia.</string>
+
+    <string name="fragment_sleeptime_range_tooltip" formatted="false">%.0f:00</string>
 
 </resources>

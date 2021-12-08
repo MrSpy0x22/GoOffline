@@ -22,9 +22,6 @@
         android:label="@string/app_name"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_homeFragment_to_applicationFragment"
-            app:destination="@id/applicationFragment" />
-        <action
             android:id="@+id/action_home_to_settings"
             app:destination="@id/settingsFragment" />
         <action
@@ -34,9 +31,48 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="pl.gooffline.fragments.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="SettingsFragment" >
+        <action
+            android:id="@+id/action_settings_to_application"
+            app:destination="@id/applicationFragment" />
+        <action
+            android:id="@+id/action_settings_to_sleeptime"
+            app:destination="@id/sleeptimeFragment" />
+        <action
+            android:id="@+id/action_settings_to_permissions"
+            app:destination="@id/permissionsFragment" />
+        <action
+            android:id="@+id/action_settings_to_game"
+            app:destination="@id/gameFragment" />
+        <action
+            android:id="@+id/action_settings_to_security"
+            app:destination="@id/securityFragment" />
+        <action
+            android:id="@+id/action_settings_to_journal"
+            app:destination="@id/journalFragment" />
+    </fragment>
     <fragment
         android:id="@+id/statsFragment"
         android:name="pl.gooffline.fragments.StatsFragment"
         android:label="StatsFragment" />
+    <fragment
+        android:id="@+id/sleeptimeFragment"
+        android:name="pl.gooffline.fragments.SleeptimeFragment"
+        android:label="SleeptimeFragment" />
+    <fragment
+        android:id="@+id/permissionsFragment"
+        android:name="pl.gooffline.fragments.PermissionsFragment"
+        android:label="PermissionsFragment" />
+    <fragment
+        android:id="@+id/gameFragment"
+        android:name="pl.gooffline.fragments.GameFragment"
+        android:label="GameFragment" />
+    <fragment
+        android:id="@+id/securityFragment"
+        android:name="pl.gooffline.fragments.SecurityFragment"
+        android:label="SecurityFragment" />
+    <fragment
+        android:id="@+id/journalFragment"
+        android:name="pl.gooffline.fragments.JournalFragment"
+        android:label="JournalFragment" />
 </navigation>

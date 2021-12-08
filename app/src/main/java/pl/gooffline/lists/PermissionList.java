@@ -11,23 +11,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.gooffline.R;
+import pl.gooffline.utils.PermissionsUtil;
 
-public class SimpleList extends ArrayAdapter<SimpleList.ItemData> {
+public class PermissionList extends ArrayAdapter<PermissionList.ItemData> {
 
     //region Klasa modelu
     public static class ItemData {
-        int resIcon;
         String name;
-        int navigationAction;
+        boolean state;
+        PermissionsUtil.InnerPermissionName innerPermissionName;
 
-        public ItemData(int resIcon, String name , int navigationAction) {
-            this.resIcon = resIcon;
+        public ItemData(String name , PermissionsUtil.InnerPermissionName innerPermissionName , boolean state) {
             this.name = name;
-            this.navigationAction = navigationAction;
+            this.innerPermissionName = innerPermissionName;
+            this.state = state;
         }
 
-        public int getAction() {
-            return navigationAction;
+        public PermissionsUtil.InnerPermissionName getInnerPermissionName() {
+            return innerPermissionName;
+        }
+
+        public boolean getState() {
+            return state;
+        }
+
+        public void setState(boolean state) {
+            this.state = state;
         }
 
         public String getName() {
@@ -39,7 +48,7 @@ public class SimpleList extends ArrayAdapter<SimpleList.ItemData> {
     private final Context context;
     private final List<ItemData> itemDataList;
 
-    public SimpleList(Context context , List<ItemData> data) {
+    public PermissionList(Context context , List<ItemData> data) {
         super(context , 0 , data);
         this.context = context;
         this.itemDataList = data == null ? new ArrayList<>() : data;
@@ -65,15 +74,17 @@ public class SimpleList extends ArrayAdapter<SimpleList.ItemData> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if (convertView == null) {
-            view = View.inflate(context , R.layout.list_setting_item , null);
+            view = View.inflate(context , R.layout.list_permission_item , null);
         }
 
-        ImageView icon = view.findViewById(R.id.setting_list_icon);
-        TextView name = view.findViewById(R.id.setting_list_name);
+        ImageView icon = view.findViewById(R.id.permission_list_icon);
+        TextView name = view.findViewById(R.id.permission_list_name);
 
         ItemData data = itemDataList.get(position);
 
-        icon.setImageResource(data.resIcon);
+        icon.setImageResource(data.state
+                ? R.drawable.ic_custom_checked
+                : R.drawable.ic_custom_unchecked);
         name.setText(data.name);
 
         return view;

@@ -15,7 +15,7 @@ public class PermissionsUtil {
     public enum InnerPermissionName {
         CAN_DRAW_OVERALL ,
         CAN_IGNORE_BATTERY_OPTIMIZATION ,
-        USAGE_STATS
+        CAN_USE_STATS
     }
 
     public static void askForCanDrawOverlay(Context context) {
@@ -38,7 +38,6 @@ public class PermissionsUtil {
     }
 
     public static void askForUsageStats(Context context) {
-        // if (Settings.canDrawOverlays(context))
         Intent intent = new Intent(
                 Settings.ACTION_USAGE_ACCESS_SETTINGS ,
                 Uri.parse("package:" + context.getPackageName())
@@ -68,7 +67,7 @@ public class PermissionsUtil {
         AppOpsManager appOpsManager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
         int appOpResult = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS ,
                 android.os.Process.myUid() , context.getPackageName());
-        result.put(InnerPermissionName.USAGE_STATS , appOpResult == AppOpsManager.MODE_ALLOWED);
+        result.put(InnerPermissionName.CAN_USE_STATS, appOpResult == AppOpsManager.MODE_ALLOWED);
 
         return result;
     }

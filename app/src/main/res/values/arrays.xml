@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="default_sleep_time_range">
+        <item>7</item>
+        <item>21</item>
+    </array>
+    <array name="game_attempts">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </array>
+</resources>
