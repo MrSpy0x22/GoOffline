@@ -3,6 +3,7 @@ package pl.gooffline;
 import android.app.UiModeManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -14,16 +15,26 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.material.progressindicator.LinearProgressIndicator;
+
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.subjects.PublishSubject;
+import io.reactivex.rxjava3.subjects.Subject;
 import pl.gooffline.services.MonitorService;
 
 public class MainActivity extends AppCompatActivity {
     private NavController navController;
+    private static Boolean workingStatusIndicator;
+    private static Subject<Boolean> workingStatusSubject;
+
+    private LinearProgressIndicator workingProgresView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
+
+        workingProgresView = findViewById(R.id.working_progress_view);
 
         navController = Navigation.findNavController(this , R.id.fragment_main_nav);
         Toolbar mainToolbar = findViewById(R.id.toolbar_main);
@@ -32,7 +43,15 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(mainToolbar , navController);
 
         startForegroundService(new Intent(getBaseContext() , MonitorService.class));
+
+        // Ustawianie flagi pracy w tle
+        Log.d("threadM" , Thread.currentThread().getName());
+        workingStatusIndicator = false;
+        workingStatusSubject = PublishSubject.create();
+        workingStatusSubject.subscribe(this::handleWorkingStatusIndicatorObservable , e -> e.printStackTrace());
     }
+
+
 
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
@@ -57,5 +76,25 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public static void setWorkingStatusIndicator(boolean status) {
+        workingStatusIndicator = status;
+        workingStatusSubject.onNext(status);
+    }
+
+    private void handleWorkingStatusIndicatorObservable(boolean status) {
+        Log.d("thread" , Thread.currentThread().getName());
+
+        if (workingProgresView != null) {
+            workingProgresView.setVisibility(View.GONE);
+            workingProgresView.setIndeterminate(status);
+            workingProgresView.setVisibility(View.VISIBLE);
+
+            Log.d("handleWorkingStatusIndicatorObservable" ,
+                    "Flaga pracy w tle została " + (status ? "włączona" : "wyłączona" + "."));
+        } else {
+            Log.d("handleWorkingStatusIndicatorObservable" , "Widok jest null-em.");
+        }
     }
 }

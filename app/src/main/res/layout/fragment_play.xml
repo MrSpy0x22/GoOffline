@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/play_layout_scene"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        />
+
+    <LinearLayout
+        android:id="@+id/play_layout_keys"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/play_key_a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A"
+                />
+
+            <TextView
+                android:id="@+id/play_key_b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="B"
+                />
+
+            <TextView
+                android:id="@+id/play_key_c"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="C"
+                />
+
+            <TextView
+                android:id="@+id/play_key_cc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ć"
+                />
+
+            <TextView
+                android:id="@+id/play_key_d"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="D"
+                />
+
+            <TextView
+                android:id="@+id/play_key_e"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="E"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/play_key_ee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ę"
+                />
+
+            <TextView
+                android:id="@+id/play_key_f"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="F"
+                />
+
+            <TextView
+                android:id="@+id/play_key_g"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="G"
+                />
+
+            <TextView
+                android:id="@+id/play_key_h"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="H"
+                />
+
+            <TextView
+                android:id="@+id/play_key_I"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="I"
+                />
+
+            <TextView
+                android:id="@+id/play_key_j"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="J"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/play_key_k"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="K"
+                />
+
+            <TextView
+                android:id="@+id/play_key_l"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="L"
+                />
+
+            <TextView
+                android:id="@+id/play_key_ll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ł"
+                />
+
+            <TextView
+                android:id="@+id/play_key_m"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="M"
+                />
+
+            <TextView
+                android:id="@+id/play_key_n"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="N"
+                />
+
+            <TextView
+                android:id="@+id/play_key_nn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ń"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -6,17 +6,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import pl.gooffline.R;
+import pl.gooffline.lists.JournalList;
 
 public class JournalFragment extends Fragment {
+    private List<JournalList.EventData> eventDataList;
+    private JournalList eventListAdapter;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -40,11 +49,23 @@ public class JournalFragment extends Fragment {
             textCalendarDate.setText(String.format(getString(R.string.date_format) , d , m + 1 , y));
         } , year , month , day);
 
-        textCalendarDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dateDialog.show();
-            }
-        });
+        textCalendarDate.setOnClickListener(view1 -> dateDialog.show());
+
+        // Lista zdarzeń
+        eventDataList = getTestEventList();
+
+        eventListAdapter = new JournalList(requireContext() , eventDataList);
+
+        ListView listView = view.findViewById(R.id.journal_event_list);
+        listView.setAdapter(eventListAdapter);
+    }
+
+    private List<JournalList.EventData> getTestEventList() {
+        List<JournalList.EventData> result = new ArrayList<>();
+        result.add(new JournalList.EventData(LocalDate.now() , LocalTime.now() , "Logowanie jako admin" , "N/A"));
+        result.add(new JournalList.EventData(LocalDate.now() , LocalTime.now() , "Logowanie jako admin" , "N/A"));
+        result.add(new JournalList.EventData(LocalDate.now() , LocalTime.now() , "Blokada aplikacji GMail" , "N/A"));
+
+        return result;
     }
 }

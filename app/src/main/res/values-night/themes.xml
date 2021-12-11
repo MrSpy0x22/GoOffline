@@ -3,8 +3,10 @@
     <style name="Theme.GoOffline" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowLightStatusBar">false</item>
 
         <item name="android:colorBackground">@color/backgroundDark</item>
+        <item name="statusBarBackground">@color/statusBackgroundDark</item>
 
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColor</item>

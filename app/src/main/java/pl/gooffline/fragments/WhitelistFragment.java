@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -21,16 +23,20 @@ import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import pl.gooffline.MainActivity;
 import pl.gooffline.R;
 import pl.gooffline.database.AppDatabase;
 import pl.gooffline.database.dao.WhitelistDao;
+import pl.gooffline.database.entity.Config;
 import pl.gooffline.database.entity.Whitelist;
 import pl.gooffline.lists.AppList;
 
 public class WhitelistFragment extends Fragment {
     private List<AppList.AppData> installedApps;
     private AppList appListAdapter;
+    private ListView appListView;
 
     @Nullable
     @Override
@@ -42,17 +48,7 @@ public class WhitelistFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        try {
-            List<String> packages = AppDatabase.getInstance(getContext()).whitelistDAO().getAll();
-            installedApps = getAppDataList(requireContext() , packages);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        };
-
-        appListAdapter = new AppList(getContext() , installedApps);
-        ListView appListView = view.findViewById(R.id.app_list);
-        appListView.setTextFilterEnabled(true);
-        appListView.setAdapter(appListAdapter);
+        appListView = view.findViewById(R.id.app_list);
 
         EditText searchEditText = view.findViewById(R.id.app_search_edit);
         searchEditText.addTextChangedListener(new TextWatcher() {
@@ -73,6 +69,7 @@ public class WhitelistFragment extends Fragment {
         });
 
         Button buttonUpdate = view.findViewById(R.id.button_update);
+        // TODO: zmienić na MVP
         buttonUpdate.setOnClickListener(e -> {
             WhitelistDao whitelistDao = AppDatabase.getInstance(getContext()).whitelistDAO();
             whitelistDao.deleteAll();
@@ -83,6 +80,46 @@ public class WhitelistFragment extends Fragment {
             }
             Toast.makeText(getContext(), "Zapisano zmiany!", Toast.LENGTH_SHORT).show();
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (installedApps == null) {
+            installedApps = new ArrayList<>();
+        }
+
+        // Usuwanie zawartości listy adaptera
+        if (installedApps.size() > 0) {
+            installedApps.clear();
+            appListAdapter.notifyDataSetChanged();
+        }
+
+        // Włączanie wskaźnika pracy
+        MainActivity.setWorkingStatusIndicator(true);
+
+        Context context = requireContext();
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(() -> {
+            try {
+                // TODO: zmienić na MVP!!!
+                List<String> packages = AppDatabase.getInstance(context)
+                        .whitelistDAO()
+                        .getAll()
+                        .stream()
+                        .map(Whitelist::getPackageName)
+                        .collect(Collectors.toList());
+                installedApps = getAppDataList(context, packages);
+
+                appListAdapter = new AppList(getContext() , installedApps);
+                appListView.setTextFilterEnabled(true);
+                appListView.setAdapter(appListAdapter);
+                MainActivity.setWorkingStatusIndicator(false);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        }, 1500);
     }
 
     /**

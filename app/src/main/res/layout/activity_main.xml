@@ -8,23 +8,32 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_main"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        style="@style/Widget.MaterialComponents.Toolbar.Primary"
-        app:menu="@menu/menu_main"
-        />
+   <com.google.android.material.appbar.MaterialToolbar
+       android:id="@+id/toolbar_main"
+       android:layout_width="match_parent"
+       android:layout_height="?attr/actionBarSize"
+       android:background="?android:attr/colorBackground"
+       app:menu="@menu/menu_main"
+       style="@style/Theme.GoOffline.ToolbarStyle"
+       />
+
+   <FrameLayout
+       android:layout_width="match_parent"
+       android:layout_height="4dp">
+       <com.google.android.material.progressindicator.LinearProgressIndicator
+           android:id="@+id/working_progress_view"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           app:trackColor="#15000000"
+           android:indeterminate="false"/>
+   </FrameLayout>
 
     <fragment
         android:id="@+id/fragment_main_nav"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-
-        app:navGraph="@navigation/navigation_main"
         app:defaultNavHost="true"
-        />
+        app:navGraph="@navigation/navigation_main" />
 
 </LinearLayout>

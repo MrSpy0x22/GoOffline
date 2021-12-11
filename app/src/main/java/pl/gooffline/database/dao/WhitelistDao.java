@@ -15,7 +15,7 @@ import pl.gooffline.database.entity.Whitelist;
 @Dao
 public interface WhitelistDao {
     @Query("SELECT w.package_name FROM whitelist w")
-    List<String> getAll();
+    List<Whitelist> getAll();
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAll(Whitelist... whitelists);
     @Query("DELETE FROM whitelist")

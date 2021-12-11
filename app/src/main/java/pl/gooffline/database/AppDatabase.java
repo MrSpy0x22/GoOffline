@@ -6,10 +6,12 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import pl.gooffline.database.dao.ConfigDao;
 import pl.gooffline.database.dao.WhitelistDao;
+import pl.gooffline.database.entity.Config;
 import pl.gooffline.database.entity.Whitelist;
 
-@Database(entities = { Whitelist.class } , version = 3)
+@Database(entities = {Config.class , Whitelist.class } , version = 3)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String APP_DB_NAME = "app.db";
     private static AppDatabase appDatabase = null;
@@ -25,5 +27,6 @@ public abstract class AppDatabase extends RoomDatabase {
         return appDatabase;
     }
 
+    public abstract ConfigDao configDAO();
     public abstract WhitelistDao whitelistDAO();
 }

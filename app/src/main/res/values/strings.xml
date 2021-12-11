@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name" translatable="false">GoOffline</string>
 
-    <string name="date_format" formatted="false">%02d.%02d.%04d</string>
+    <string name="date_format" formatted="false" translatable="false">%02d.%02d.%04d</string>
+    <string name="time_format" formatted="false" translatable="false">%d:%02d:%02d</string>
 
     <string name="just_search1">Szukaj</string>
     <string name="just_search2">Szukaj…</string>

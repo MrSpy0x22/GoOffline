@@ -14,4 +14,8 @@ public class Whitelist {
     public Whitelist(String packageName) {
         this.packageName = packageName;
     }
+
+    public String getPackageName() {
+        return packageName;
+    }
 }
