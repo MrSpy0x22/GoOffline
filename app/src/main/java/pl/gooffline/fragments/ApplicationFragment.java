@@ -1,44 +1,58 @@
 package pl.gooffline.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
+
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import pl.gooffline.R;
+import pl.gooffline.presenters.AppsPresenter;
 
-public class ApplicationFragment extends PreferenceFragmentCompat {
-    private Context context;
+public class ApplicationFragment extends Fragment implements AppsPresenter.View {
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_apps, container , false);
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        context = view.getContext().getApplicationContext();
+        LinearLayout layoutRowActiveWhileSleeping = view.findViewById(R.id.apps_option_row_active_while_sleeping);
+        layoutRowActiveWhileSleeping.setOnClickListener(e -> onRowOptionSelected(layoutRowActiveWhileSleeping.getId()));
+
+        SwitchMaterial activeWhileSleepingSwitch = view.findViewById(R.id.apps_option_row_active_while_sleeping_switch);
+
+        LinearLayout layoutRowGoToWhitelist = view.findViewById(R.id.apps_option_row_whitelist);
+        layoutRowGoToWhitelist.setOnClickListener(e -> onRowOptionSelected(layoutRowGoToWhitelist.getId()));
     }
+
     @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        setPreferencesFromResource(R.xml.preference_apps , rootKey);
+    public void onRowOptionSelected(int layoutRowId) {
+        // Lista dozwolonych aplikacji
+        if (layoutRowId == R.id.apps_option_row_active_while_sleeping) {
 
-        NavHostFragment fragment = (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_main_nav);
+            boolean state
+        } else if (layoutRowId == R.id.apps_option_row_whitelist) {
+            NavHostFragment fragment = (NavHostFragment) requireActivity()
+                    .getSupportFragmentManager()
+                    .findFragmentById(R.id.fragment_main_nav);
 
-        if (fragment == null) {
-            Toast.makeText(requireContext(), "Wystąpił krytyczny błąd!", Toast.LENGTH_SHORT).show();
-        } else {
-            NavController navController = fragment.getNavController();
-
-            Preference preferenceOpenWhiteList = getPreferenceManager().findPreference("app_pref_whitelist");
-            preferenceOpenWhiteList.setOnPreferenceClickListener(p -> {
+            if (fragment != null) {
+                NavController navController = fragment.getNavController();
                 navController.navigate(R.id.action_application_to_whitelist);
-                return true;
-            });
+            }
         }
     }
 }

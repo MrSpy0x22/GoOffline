@@ -9,6 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.yabu.livechart.model.DataPoint;
+import com.yabu.livechart.model.Dataset;
+import com.yabu.livechart.view.LiveChart;
+
+import java.util.Arrays;
 import java.util.Calendar;
 
 import devs.mulham.horizontalcalendar.HorizontalCalendar;
@@ -26,15 +31,8 @@ public class StatsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        HorizontalCalendarView horizontalCalendarView = view.findViewById(R.id.calendar_line);
-        Calendar startDate = Calendar.getInstance();
-        startDate.add(Calendar.MONTH , -1);
-        Calendar endDate = Calendar.getInstance();
-        endDate.add(Calendar.MONTH , 1);
-
-        HorizontalCalendar horizontalCalendar = new HorizontalCalendar.Builder(view , R.id.calendar_line)
-                .range(startDate , endDate)
-                .datesNumberOnScreen(5)
-                .build();
+//        LiveChart chart = view.findViewById(R.id.live_chart);
+//        Dataset dataset = new Dataset(Arrays.asList(new DataPoint(0f , 2f) , new DataPoint(1f , 3f) , new DataPoint(2f , 6f)));
+//        chart.setDataset(dataset).drawYBounds().drawBaseline().drawFill(true).drawDataset();
     }
 }

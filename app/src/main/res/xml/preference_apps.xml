@@ -5,17 +5,15 @@
     <PreferenceCategory android:title="Lista wyjątków">
         <Preference
             android:key="app_pref_whitelist"
-            android:title="Lista wyjątków"
             android:summary="0 aplikacji"
-            />
-    </PreferenceCategory>
-    <PreferenceCategory android:title="Szybkie reguły">
-
+            android:title="Lista wyjątków" />
         <SwitchPreference
             android:defaultValue="true"
             android:key="switch_preference_1"
-            android:summary="Pozwól na uruchamianie aplikacji dodanych jako wyjątki w trakcie używania trybu sen."
             android:title="Wyjątki aktywne w trybie snu" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Szybkie reguły">
+
     </PreferenceCategory>
     <SwitchPreference
         android:defaultValue="true"

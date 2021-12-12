@@ -26,6 +26,7 @@ public class ConfigUtil {
         KK_ACTIVE("service_enabled") ,
 
         // Aplikacje
+        KK_WHITELIST_WHILE_SLEEPING("allow_whitelist_while_sleeping") ,
         KK_BLOCK_SETTINGS("app_block_settings") ,
         KK_BLOCK_APP_SETTINGS("app_block_app_settings") ,
         KK_BLOCK_SHOPS("app_block_shops");
@@ -41,6 +42,7 @@ public class ConfigUtil {
 
         public char getKeyValueType(String keyName) {
             if (keyName.equals(KK_ACTIVE.keyName)) { return TYPE_FLAG_INT; }
+            else if (keyName.equals(KK_WHITELIST_WHILE_SLEEPING.keyName)) { return TYPE_FLAG_BOOL; }
             else if (keyName.equals(KK_BLOCK_SETTINGS.keyName)) { return TYPE_FLAG_BOOL; }
             else if (keyName.equals(KK_BLOCK_APP_SETTINGS.keyName)) { return TYPE_FLAG_BOOL; }
             else if (keyName.equals(KK_BLOCK_SHOPS.keyName)) { return TYPE_FLAG_BOOL; }

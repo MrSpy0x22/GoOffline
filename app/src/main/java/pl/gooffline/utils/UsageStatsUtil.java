@@ -5,10 +5,16 @@ import static android.content.Context.USAGE_STATS_SERVICE;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
+import pl.gooffline.lists.AppList;
 
 public class UsageStatsUtil {
     /**
@@ -31,5 +37,38 @@ public class UsageStatsUtil {
         }
 
         return sortedUsageList;
+    }
+    /**
+     * Odpytuje <c>PackageManager</c> i zwraca listę danych z zainstalowanymi aplikacjami.
+     * @param context Kontekst.
+     * @param selectedPackages Stan checkbox-a dla pakietu (lub <c>null</c>).
+     * @return Listę typu AppList.AppData.
+     * @see pl.gooffline.lists.AppList.AppData
+     */
+    public static List<AppList.AppData> getAppDataList(Context context , List<String> selectedPackages) throws PackageManager.NameNotFoundException {
+        List<AppList.AppData> dataList = new ArrayList<>();
+        Intent intent = new Intent(Intent.ACTION_MAIN , null);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        PackageManager packageManager = context.getPackageManager();
+
+        for (ResolveInfo app : packageManager.queryIntentActivities(intent , PackageManager.GET_META_DATA)) {
+            if (app.activityInfo.packageName.equals(context.getPackageName())) {
+                continue;
+            }
+
+            boolean isSelected = false;
+
+            if (selectedPackages != null) {
+                isSelected = selectedPackages.contains(app.activityInfo.packageName.toLowerCase());
+            }
+
+            dataList.add(new AppList.AppData(
+                    app.loadIcon(packageManager) ,
+                    app.loadLabel(packageManager).toString() ,
+                    app.activityInfo.packageName ,
+                    isSelected));
+        }
+
+        return dataList;
     }
 }

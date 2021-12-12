@@ -97,10 +97,7 @@ public class AppList extends BaseAdapter implements Filterable {
         checkBox.setChecked(data.selected);
 
         final Context c = view.getContext();
-        checkBox.setOnClickListener(e -> {
-            data.selected = !data.selected;
-            Toast.makeText(c ,  "Click!", Toast.LENGTH_SHORT).show();
-        });
+        checkBox.setOnClickListener(e -> data.selected = !data.selected);
 
         return view;
     }
