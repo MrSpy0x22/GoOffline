@@ -19,6 +19,10 @@ public class Config {
         this.configValue = configValue;
     }
 
+    public void setConfigKey(String value) {
+        this.configValue = value;
+    }
+
     public String getConfigKey() {
         return configKey;
     }

@@ -13,21 +13,19 @@ import pl.gooffline.database.dao.ConfigDao;
 import pl.gooffline.database.entity.Config;
 
 public class ConfigUtil {
-    static final char TYPE_FLAG_INT        = 'i';
-    static final char TYPE_FLAG_BOOL       = 'b';
-    static final char TYPE_FLAG_FLOAT      = 'f';
-    static final char TYPE_FLAG_STRING     = 's';
-
     /**
      * Zdefiniowane nazwy kluczy dla ustawień.
      */
-    enum KnownKeys {
+    public enum KnownKeys {
         // Ogólne
         KK_ACTIVE("service_enabled") ,
 
         // Aplikacje
         KK_WHITELIST_WHILE_SLEEPING("allow_whitelist_while_sleeping") ,
         KK_BLOCK_SETTINGS("app_block_settings") ,
+        KK_SLEEPTIME_ENABLE("sleeptime_enabled") ,
+        KK_SLEEPTIME_START("sleeptime_start") ,
+        KK_SLEEPTIME_STOP("sleeptime_stop") ,
         KK_BLOCK_APP_SETTINGS("app_block_app_settings") ,
         KK_BLOCK_SHOPS("app_block_shops");
 
@@ -38,15 +36,6 @@ public class ConfigUtil {
 
         public String keyName() {
             return this.keyName;
-        }
-
-        public char getKeyValueType(String keyName) {
-            if (keyName.equals(KK_ACTIVE.keyName)) { return TYPE_FLAG_INT; }
-            else if (keyName.equals(KK_WHITELIST_WHILE_SLEEPING.keyName)) { return TYPE_FLAG_BOOL; }
-            else if (keyName.equals(KK_BLOCK_SETTINGS.keyName)) { return TYPE_FLAG_BOOL; }
-            else if (keyName.equals(KK_BLOCK_APP_SETTINGS.keyName)) { return TYPE_FLAG_BOOL; }
-            else if (keyName.equals(KK_BLOCK_SHOPS.keyName)) { return TYPE_FLAG_BOOL; }
-            else { return 0; }
         }
     }
 
