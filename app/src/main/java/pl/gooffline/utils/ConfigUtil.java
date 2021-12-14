@@ -26,7 +26,10 @@ public class ConfigUtil {
         KK_SLEEPTIME_ENABLE("sleeptime_enabled") ,
         KK_SLEEPTIME_START("sleeptime_start") ,
         KK_SLEEPTIME_STOP("sleeptime_stop") ,
-        KK_BLOCK_SHOPS("app_block_shops");
+        KK_BLOCK_SHOPS("app_block_shops") ,
+        KK_GAME_ENABLE("game_enable") ,
+        KK_GAME_ATTEMPTS("game_attempts") ,
+        KK_GAME_BONUS_TIME("game_bonus_time");
 
         private final String keyName;
 
@@ -57,6 +60,12 @@ public class ConfigUtil {
                 result = KnownKeys.KK_SLEEPTIME_STOP;
             } else if (keyName.equals(KK_BLOCK_SHOPS.getKeyName())) {
                 result = KnownKeys.KK_BLOCK_SHOPS;
+            } else if (keyName.equals(KK_GAME_ENABLE.getKeyName())) {
+                result = KnownKeys.KK_GAME_ENABLE;
+            } else if (keyName.equals(KK_GAME_ATTEMPTS.getKeyName())) {
+                result = KnownKeys.KK_GAME_ATTEMPTS;
+            } else if (keyName.equals(KK_GAME_BONUS_TIME.getKeyName())) {
+                result = KnownKeys.KK_GAME_BONUS_TIME;
             }
 
             return result;
@@ -77,6 +86,12 @@ public class ConfigUtil {
                 defaultVal = "21";
             } else if (keyName.equals(KK_BLOCK_SHOPS.getKeyName())) {
                 defaultVal = "true";
+            } else if (keyName.equals(KK_GAME_ENABLE.getKeyName())) {
+                defaultVal = "false";
+            } else if (keyName.equals(KK_GAME_ATTEMPTS.getKeyName())) {
+                defaultVal = "2";
+            } else if (keyName.equals(KK_GAME_BONUS_TIME.getKeyName())) {
+                defaultVal = "5";
             }
 
             return defaultVal;

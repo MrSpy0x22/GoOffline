@@ -46,7 +46,6 @@
     <string name="sleeptime_fragment_name">Czas snu</string>
     <string name="sleeptime_switch_name">Włącz czas snu</string>
     <string name="sleeptime_switch_desc">Określ czas, podczas którego dozwolone będzie korzystanie z telefonu. Aktywność po tym czasie powoduje zablokowanie aplikacji niezależnie od limitu czasu, który został wykorzystany.</string>
-
-    <string name="fragment_sleeptime_range_tooltip" formatted="false">%.0f:00</string>
+    <string name="sleeptime_range_tooltip" formatted="false">%.0f:00</string>
 
 </resources>

@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.RangeSlider;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
@@ -59,7 +58,7 @@ public class SleeptimeFragment extends Fragment implements SleeptimePresenter.Vi
 
         // Szukanie widoku slider-a
         rangeSlider = view.findViewById(R.id.slider_sleeptime);
-        rangeSlider.setLabelFormatter(value -> String.format(getString(R.string.fragment_sleeptime_range_tooltip) , value));
+        rangeSlider.setLabelFormatter(value -> String.format(getString(R.string.sleeptime_range_tooltip) , value));
         rangeSlider.addOnSliderTouchListener(new RangeSlider.OnSliderTouchListener() {
             @Override
             public void onStartTrackingTouch(@NonNull RangeSlider slider) {
