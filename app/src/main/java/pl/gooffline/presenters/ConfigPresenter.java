@@ -18,10 +18,21 @@ public abstract class ConfigPresenter implements EntityDataFlow<Config> {
 
     public ConfigPresenter(Context context , List<String> handledKnownKeys) {
         this.configDao = AppDatabase.getInstance(context).configDAO();
+
+        if (handledKnownKeys == null) {
+            throw new IllegalArgumentException("List of known keys is mandatory!");
+        }
+
         this.configList = configDao.getFrom(handledKnownKeys);
 
-        if (this.configList == null) {
+        // Jeżeli wartości nie istnieją jeszcze w bazie danych, to zostaną dodane do listy
+        if (this.configList == null || this.configList.size() == 0) {
             configList = new ArrayList<>();
+
+            for (String key : handledKnownKeys) {
+                ConfigUtil.KnownKeys knownKeys = ConfigUtil.KnownKeys.getKnownKey(key);
+                configList.add(new Config(knownKeys.getKeyName() , knownKeys.getDefaultValue()));
+            }
         }
     }
 
@@ -37,11 +48,7 @@ public abstract class ConfigPresenter implements EntityDataFlow<Config> {
     @Override
     public void pushData() {
         if (this.configList != null) {
-            configDao.updateSelected(
-                    this.configList.stream()
-                            .map(Config::getConfigKey)
-                            .collect(Collectors.toList())
-            );
+            configDao.updateSelected(this.configList);
         }
     }
 
@@ -56,7 +63,7 @@ public abstract class ConfigPresenter implements EntityDataFlow<Config> {
     public String getConfigValue(ConfigUtil.KnownKeys keyName) {
         if (configList != null) {
             for (Config config : configList) {
-                if (config.getConfigKey().equals(keyName.keyName())) {
+                if (config.getConfigKey().equals(keyName.getKeyName())) {
                     return config.getConfigValue();
                 }
             }
@@ -69,7 +76,7 @@ public abstract class ConfigPresenter implements EntityDataFlow<Config> {
 
     public void setConfigValue(ConfigUtil.KnownKeys key , String value) {
         if (key != null & value != null) {
-            Config config = new Config(key.keyName() , value);
+            Config config = new Config(key.getKeyName() , value);
 
             // Aktualizowanie elementu na liście lub dodanie nowego
             if (configList.contains(config)) {

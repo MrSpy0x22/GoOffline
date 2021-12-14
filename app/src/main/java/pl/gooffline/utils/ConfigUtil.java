@@ -26,16 +26,60 @@ public class ConfigUtil {
         KK_SLEEPTIME_ENABLE("sleeptime_enabled") ,
         KK_SLEEPTIME_START("sleeptime_start") ,
         KK_SLEEPTIME_STOP("sleeptime_stop") ,
-        KK_BLOCK_APP_SETTINGS("app_block_app_settings") ,
         KK_BLOCK_SHOPS("app_block_shops");
 
         private final String keyName;
+
         KnownKeys(String keyName) {
             this.keyName = keyName;
         }
 
-        public String keyName() {
+        public String getKeyName() {
             return this.keyName;
+        }
+
+        public KnownKeys getKnownKey() {
+            return getKnownKey(this.keyName);
+        }
+
+        public static KnownKeys getKnownKey(String keyName) {
+            KnownKeys result = null;
+
+            if (keyName.equals(KK_WHITELIST_WHILE_SLEEPING.getKeyName())) {
+                result = KnownKeys.KK_WHITELIST_WHILE_SLEEPING;
+            } else if (keyName.equals(KK_BLOCK_SETTINGS.getKeyName())) {
+                result = KnownKeys.KK_BLOCK_SETTINGS;
+            } else if (keyName.equals(KK_SLEEPTIME_ENABLE.getKeyName())) {
+                result = KnownKeys.KK_SLEEPTIME_ENABLE;
+            } else if (keyName.equals(KK_SLEEPTIME_START.getKeyName())) {
+                result = KnownKeys.KK_SLEEPTIME_START;
+            } else if (keyName.equals(KK_SLEEPTIME_STOP.getKeyName())) {
+                result = KnownKeys.KK_SLEEPTIME_STOP;
+            } else if (keyName.equals(KK_BLOCK_SHOPS.getKeyName())) {
+                result = KnownKeys.KK_BLOCK_SHOPS;
+            }
+
+            return result;
+        }
+
+        public String getDefaultValue() {
+            String defaultVal = "";
+
+            if (keyName.equals(KK_WHITELIST_WHILE_SLEEPING.getKeyName())) {
+                defaultVal = "true";
+            } else if (keyName.equals(KK_BLOCK_SETTINGS.getKeyName())) {
+                defaultVal = "false";
+            } else if (keyName.equals(KK_SLEEPTIME_ENABLE.getKeyName())) {
+                defaultVal = "false";
+            } else if (keyName.equals(KK_SLEEPTIME_START.getKeyName())) {
+                defaultVal = "7";
+            } else if (keyName.equals(KK_SLEEPTIME_STOP.getKeyName())) {
+                defaultVal = "21";
+            } else if (keyName.equals(KK_BLOCK_SHOPS.getKeyName())) {
+                defaultVal = "true";
+            }
+
+            return defaultVal;
         }
     }
 
@@ -120,8 +164,8 @@ public class ConfigUtil {
      */
     public String valueOf(KnownKeys knownKeyName) {
         if (configMap != null) {
-            if (configMap.containsKey(knownKeyName.keyName())) {
-                return configMap.get(knownKeyName.keyName());
+            if (configMap.containsKey(knownKeyName.getKeyName())) {
+                return configMap.get(knownKeyName.getKeyName());
             }
         }
         return null;

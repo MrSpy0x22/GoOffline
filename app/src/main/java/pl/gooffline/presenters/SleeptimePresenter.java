@@ -15,11 +15,14 @@ public class SleeptimePresenter extends ConfigPresenter {
         void onSleeptimeRangeChanged(int start , int stop);
     }
 
+    /**
+     * @param context Kontekst.
+     */
     public SleeptimePresenter(Context context) {
         super(context , Arrays.asList(
-                ConfigUtil.KnownKeys.KK_SLEEPTIME_ENABLE.keyName() ,
-                ConfigUtil.KnownKeys.KK_SLEEPTIME_START.keyName() ,
-                ConfigUtil.KnownKeys.KK_SLEEPTIME_STOP.keyName()
+                ConfigUtil.KnownKeys.KK_SLEEPTIME_ENABLE.getKeyName() ,
+                ConfigUtil.KnownKeys.KK_SLEEPTIME_START.getKeyName() ,
+                ConfigUtil.KnownKeys.KK_SLEEPTIME_STOP.getKeyName()
         ));
     }
 }

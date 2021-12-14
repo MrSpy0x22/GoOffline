@@ -23,7 +23,7 @@ public interface ConfigDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateOne(Config configs);
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    void updateSelected(List<String> keyNames);
+    void updateSelected(List<Config> keyNames);
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateAll(List<Config> configs);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
