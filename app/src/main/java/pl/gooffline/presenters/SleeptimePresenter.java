@@ -11,6 +11,7 @@ public class SleeptimePresenter extends ConfigPresenter {
      * Interfejs widoku.
      */
     public interface View {
+        void onViewReady();
         void onSleeptimeStateChanged(boolean state);
         void onSleeptimeRangeChanged(int start , int stop);
     }

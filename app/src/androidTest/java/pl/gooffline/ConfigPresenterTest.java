@@ -15,25 +15,26 @@ import java.util.List;
 
 import pl.gooffline.database.AppDatabase;
 import pl.gooffline.database.entity.Config;
-import pl.gooffline.presenters.AppsPresenter;
 import pl.gooffline.presenters.SleeptimePresenter;
 import pl.gooffline.utils.ConfigUtil;
 
 @RunWith(AndroidJUnit4.class)
 public class ConfigPresenterTest {
-    private AppsPresenter appsPresenter;
     private SleeptimePresenter sleepPresenter;
     private Context context;
 
+    /**
+     * Pobieranie zawartości konfiguracji dla wybranego prezentera.
+     */
     @Before
     public void prepareTest() {
         context = ApplicationProvider.getApplicationContext();
-        appsPresenter = new AppsPresenter(context);
-        appsPresenter.pushData();
         sleepPresenter = new SleeptimePresenter(context);
-        sleepPresenter.pushData();
     }
 
+    /**
+     * Zamykanie połączenia z bazą danych.
+     */
     @After
     public void finishTest() {
         AppDatabase appDB = AppDatabase.getInstance(context);
@@ -42,8 +43,13 @@ public class ConfigPresenterTest {
         }
     }
 
+    /**
+     * Przechodzenie przez listę ze znanymi kluczami konfiguracji. Sprawdzenie kilku wybranych
+     *  oraz porównanie liczby z oczekiwaniami.
+     */
     @Test
     public void testIfConfigPresenterHasOnlyOwnKnownKeysInList() {
+        final int expected = 3;
         List<Config> configList = sleepPresenter.getList();
 
         int num = 0;
@@ -55,6 +61,6 @@ public class ConfigPresenterTest {
             }
         }
 
-        Assert.assertEquals(3 , num);
+        Assert.assertEquals(expected , num);
     }
 }

@@ -69,9 +69,13 @@ public abstract class ConfigPresenter implements EntityDataFlow<Config> {
             }
         } else {
             Log.d(this.getClass().toString() , "list = null");
+            return null;
         }
 
-        return null;
+        // W przypadku braku klucza na liście zostanie on dodany do listy z domyślną wartością
+        Config config = new Config(keyName.getKeyName() , keyName.getDefaultValue());
+        configList.add(config);
+        return config.getConfigValue();
     }
 
     public void setConfigValue(ConfigUtil.KnownKeys key , String value) {

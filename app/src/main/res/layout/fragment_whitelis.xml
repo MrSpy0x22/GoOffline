@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="10dp"
-            android:hint="@string/just_search2"
+            android:hint="@string/whitelist_search_placeholder"
             android:drawableStart="@drawable/ic_search"
             android:focusable="false"
             />
@@ -56,7 +56,7 @@
             android:id="@+id/button_update"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Zapisz zmiany"
+            android:text="@string/whitelist_save_button_text"
             />
 
     </LinearLayout>

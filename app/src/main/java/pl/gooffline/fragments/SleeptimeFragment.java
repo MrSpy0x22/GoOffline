@@ -20,9 +20,22 @@ import pl.gooffline.R;
 import pl.gooffline.presenters.SleeptimePresenter;
 import pl.gooffline.utils.ConfigUtil;
 
+/**
+ * Obsługa fragmentu zarządzania czasem snu.
+ */
 public class SleeptimeFragment extends Fragment implements SleeptimePresenter.View {
+    /**
+     * Prezenter
+     */
     private SleeptimePresenter presenter;
+    /**
+     * Switch włączenia/wyłączenia funkcji
+     */
     private SwitchMaterial sleeptimeEnableSwitch;
+    /**
+     * Slider do ustalania czasu
+     */
+    private RangeSlider rangeSlider;
 
     @Nullable
     @Override
@@ -34,22 +47,18 @@ public class SleeptimeFragment extends Fragment implements SleeptimePresenter.Vi
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Obiekt prezentera
         presenter = new SleeptimePresenter(requireContext());
 
+        // Layout, który aktywuje switch
         LinearLayout layoutRowEnableSleeptime = view.findViewById(R.id.sleeptime_row_enable);
-        layoutRowEnableSleeptime.setOnClickListener(
-                e -> this.onSleeptimeStateChanged(sleeptimeEnableSwitch.isChecked())
-        );
+        layoutRowEnableSleeptime.setOnClickListener(e -> this.onSleeptimeStateChanged(sleeptimeEnableSwitch.isChecked()));
 
+        // Szukanie widoku switch-a
         sleeptimeEnableSwitch = view.findViewById(R.id.sleeptime_row_enable_switch);
-        sleeptimeEnableSwitch.setChecked(
-                presenter.getConfigValue(ConfigUtil.KnownKeys.KK_SLEEPTIME_ENABLE).equals("true")
-        );
 
-        Float start = Float.parseFloat(presenter.getConfigValue(ConfigUtil.KnownKeys.KK_SLEEPTIME_START));
-        Float stop = Float.parseFloat(presenter.getConfigValue(ConfigUtil.KnownKeys.KK_SLEEPTIME_STOP));
-        RangeSlider rangeSlider = view.findViewById(R.id.slider_sleeptime);
-        rangeSlider.setValues(start , stop);
+        // Szukanie widoku slider-a
+        rangeSlider = view.findViewById(R.id.slider_sleeptime);
         rangeSlider.setLabelFormatter(value -> String.format(getString(R.string.fragment_sleeptime_range_tooltip) , value));
         rangeSlider.addOnSliderTouchListener(new RangeSlider.OnSliderTouchListener() {
             @Override
@@ -65,6 +74,9 @@ public class SleeptimeFragment extends Fragment implements SleeptimePresenter.Vi
                 onSleeptimeRangeChanged(start , stop);
             }
         });
+
+        // Ustawianie stanu widoków
+        this.onViewReady();
     }
 
     @Override
@@ -72,11 +84,23 @@ public class SleeptimeFragment extends Fragment implements SleeptimePresenter.Vi
         boolean newState = !state;
         sleeptimeEnableSwitch.setChecked(newState);
         presenter.setConfigValue(ConfigUtil.KnownKeys.KK_SLEEPTIME_ENABLE , newState ? "true" : "false");
+        rangeSlider.setEnabled(newState);
     }
 
     @Override
     public void onSleeptimeRangeChanged(int start, int stop) {
         presenter.setConfigValue(ConfigUtil.KnownKeys.KK_SLEEPTIME_START , String.valueOf(start));
         presenter.setConfigValue(ConfigUtil.KnownKeys.KK_SLEEPTIME_STOP , String.valueOf(stop));
+    }
+
+    @Override
+    public void onViewReady() {
+        boolean state = presenter.getConfigValue(ConfigUtil.KnownKeys.KK_SLEEPTIME_ENABLE).equals("true");
+        Float start = Float.parseFloat(presenter.getConfigValue(ConfigUtil.KnownKeys.KK_SLEEPTIME_START));
+        Float stop = Float.parseFloat(presenter.getConfigValue(ConfigUtil.KnownKeys.KK_SLEEPTIME_STOP));
+        sleeptimeEnableSwitch.setChecked(state);
+
+        rangeSlider.setEnabled(state);
+        rangeSlider.setValues(start , stop);
     }
 }

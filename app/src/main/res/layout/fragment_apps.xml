@@ -23,7 +23,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Aktywne w trybie snu"
+                android:textSize="18sp"
+                android:text="@string/apps_sleep_switch_name"
                 />
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/apps_option_row_active_while_sleeping_switch"
@@ -46,7 +47,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Lista wyjątkó"
+                android:textSize="18sp"
+                android:text="@string/apps_whitelist_row_name"
                 />
 
             <ImageView
@@ -71,7 +73,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Zablokuj ustawienia systemu"
+            android:textSize="18sp"
+            android:text="@string/apps_settings_switch_name"
             />
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/apps_option_row_disable_options_switch"

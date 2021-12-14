@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/applicationFragment"
         android:name="pl.gooffline.fragments.ApplicationFragment"
-        android:label="ApplicationFragment" >
+        android:label="@string/apps_fragment_name">
         <action
             android:id="@+id/action_application_to_whitelist"
             app:destination="@id/whitelistFragment" />
@@ -15,7 +15,7 @@
     <fragment
         android:id="@+id/whitelistFragment"
         android:name="pl.gooffline.fragments.WhitelistFragment"
-        android:label="WhitelistFragment" />
+        android:label="@string/whitelist_fragment_name" />
     <fragment
         android:id="@+id/homeFragment"
         android:name="pl.gooffline.fragments.HomeFragment"
@@ -58,7 +58,7 @@
     <fragment
         android:id="@+id/sleeptimeFragment"
         android:name="pl.gooffline.fragments.SleeptimeFragment"
-        android:label="SleeptimeFragment" />
+        android:label="@string/sleeptime_fragment_name" />
     <fragment
         android:id="@+id/permissionsFragment"
         android:name="pl.gooffline.fragments.PermissionsFragment"

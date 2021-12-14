@@ -6,27 +6,13 @@
     android:padding="25dp"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:text="Czas snu"
-        android:textStyle="bold"
-        />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:text="Zdefiniowanie czasu snu pozwala zastosować polityke blokowania aplikacji niezależnie od tego, czy wykorzystano limit czasowy korzystania z aplikacji."
-        />
 
     <LinearLayout
         android:id="@+id/sleeptime_row_enable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingVertical="15dp"
+        android:paddingVertical="5dp"
         android:background="?attr/selectableItemBackground"
         android:clickable="true">
 
@@ -35,7 +21,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="18sp"
-            android:text="Włącz czas snu"
+            android:textStyle="bold"
+            android:text="@string/sleeptime_switch_name"
             />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
@@ -46,6 +33,13 @@
             />
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="@string/sleeptime_switch_desc"
+        />
 
     <com.google.android.material.slider.RangeSlider
         android:id="@+id/slider_sleeptime"
