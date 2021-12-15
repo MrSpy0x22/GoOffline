@@ -29,7 +29,9 @@ public class ConfigUtil {
         KK_BLOCK_SHOPS("app_block_shops") ,
         KK_GAME_ENABLE("game_enable") ,
         KK_GAME_ATTEMPTS("game_attempts") ,
-        KK_GAME_BONUS_TIME("game_bonus_time");
+        KK_GAME_BONUS_TIME("game_bonus_time") ,
+        KK_SEC_ADMIN_PASSWD("sec_admin_passwd") ,
+        KK_SEC_ADMIN_CONTACT("sec_admin_contact");
 
         private final String keyName;
 
@@ -66,6 +68,10 @@ public class ConfigUtil {
                 result = KnownKeys.KK_GAME_ATTEMPTS;
             } else if (keyName.equals(KK_GAME_BONUS_TIME.getKeyName())) {
                 result = KnownKeys.KK_GAME_BONUS_TIME;
+            } else if (keyName.equals(KK_SEC_ADMIN_PASSWD.getKeyName())) {
+                result = KnownKeys.KK_SEC_ADMIN_PASSWD;
+            } else if (keyName.equals(KK_SEC_ADMIN_CONTACT.getKeyName())) {
+                result = KnownKeys.KK_SEC_ADMIN_CONTACT;
             }
 
             return result;

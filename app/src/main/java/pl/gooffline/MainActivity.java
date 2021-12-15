@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -21,7 +22,10 @@ import com.google.android.material.progressindicator.LinearProgressIndicator;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
+import pl.gooffline.presenters.ConfigPresenter;
+import pl.gooffline.presenters.SecurityPresenter;
 import pl.gooffline.services.MonitorService;
+import pl.gooffline.utils.ConfigUtil;
 
 public class MainActivity extends AppCompatActivity {
     private NavController navController;
@@ -67,11 +71,19 @@ public class MainActivity extends AppCompatActivity {
                     .setNegativeButton("Anuluj" , (dialog , id) -> {
                         Toast.makeText(this, "Anulowano logowanie!", Toast.LENGTH_SHORT).show();
                     })
-                    .setNeutralButton("Reset" , (dialog , id) -> {
-                        Toast.makeText(this, "Przypominajka!", Toast.LENGTH_SHORT).show();
-                    })
+//                    .setNeutralButton("Reset" , (dialog , id) -> {
+//                        Toast.makeText(this, "Przypominajka!", Toast.LENGTH_SHORT).show();
+//                    })
                     .setPositiveButton("Zaloguj" , (dialog , id) -> {
-                        navController.navigate(R.id.action_home_to_settings);
+                        SecurityPresenter secPresenter = new SecurityPresenter(this);
+                        String passwordHash = secPresenter.getConfigValue(ConfigUtil.KnownKeys.KK_SEC_ADMIN_PASSWD);
+                        EditText passwordIput = dialogPasswordDialogLayout.findViewById(R.id.password_input);
+                        
+                        if (secPresenter.compareCodeAndHash(passwordIput.getText().toString() , passwordHash)) {
+                            navController.navigate(R.id.action_home_to_settings);
+                        } else {
+                            Toast.makeText(this, "Niepoprawne hasło!", Toast.LENGTH_SHORT).show();
+                        }
                     })
                     .create()
                     .show();

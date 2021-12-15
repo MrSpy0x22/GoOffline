@@ -46,6 +46,10 @@ public class PermissionsFragment extends Fragment {
                     PermissionsUtil.askForCanDrawOverlay(requireContext());
                 } else if (data.getInnerPermissionName() == PermissionsUtil.InnerPermissionName.CAN_USE_STATS) {
                     PermissionsUtil.askForUsageStats(requireContext());
+                } else if (data.getInnerPermissionName() == PermissionsUtil.InnerPermissionName.CAN_SEND_SMS) {
+                    PermissionsUtil.askForSendingSMS(requireContext() , requireActivity());
+                } else if (data.getInnerPermissionName() == PermissionsUtil.InnerPermissionName.CAN_READ_PHONE_STATE) { // TODO: usunąć
+                    PermissionsUtil.askForReadPhoneState(requireContext() , requireActivity());
                 }
             }
         });
@@ -82,6 +86,18 @@ public class PermissionsFragment extends Fragment {
         result.add(new PermissionList.ItemData(
                 "Rysowanie nad innymi oknami" ,
                 PermissionsUtil.InnerPermissionName.CAN_USE_STATS ,
+                state != null && state));
+
+        state = permissionStatus.get(PermissionsUtil.InnerPermissionName.CAN_SEND_SMS);
+        result.add(new PermissionList.ItemData(
+                "Wysyłąnie wiadomości SMS" ,
+                PermissionsUtil.InnerPermissionName.CAN_SEND_SMS ,
+                state != null && state));
+
+        state = permissionStatus.get(PermissionsUtil.InnerPermissionName.CAN_READ_PHONE_STATE);
+        result.add(new PermissionList.ItemData(
+                "Odczytywanie numeru telefonu" ,
+                PermissionsUtil.InnerPermissionName.CAN_READ_PHONE_STATE ,
                 state != null && state));
 
         return result;

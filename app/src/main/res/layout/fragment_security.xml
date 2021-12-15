@@ -18,10 +18,11 @@
             />
 
         <EditText
+            android:id="@+id/sec_old_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberPassword"
-            />
+            android:minHeight="48dp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -30,6 +31,7 @@
             />
 
         <EditText
+            android:id="@+id/sec_new_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberPassword"
@@ -42,12 +44,14 @@
             />
 
         <EditText
+            android:id="@+id/sec_new_password_confirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberPassword"
             />
 
         <Button
+            android:id="@+id/sec_save_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -68,12 +72,14 @@
             />
 
         <EditText
+            android:id="@+id/sec_contact"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="phone"
-            />
+            android:minHeight="48dp" />
 
         <Button
+            android:id="@+id/sec_save_contact"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
