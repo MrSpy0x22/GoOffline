@@ -20,7 +20,7 @@ public class WhitelistPresenter implements EntityDataFlow<Whitelist> {
     public interface View {
         void onChangeWorkingStatusFlag(boolean statusFlag);
         void onClickButtonUpdate();
-        void onDataUpdated();
+        void onDataUpdated(List<Whitelist> whitelists);
     }
 
     private final Context context;
@@ -42,7 +42,7 @@ public class WhitelistPresenter implements EntityDataFlow<Whitelist> {
     @Override
     public void pushData() {
         if (this.whitelistApps != null) {
-            whitelistDao.updateAll(this.whitelistApps);
+            whitelistDao.insertAll(this.whitelistApps);
         }
     }
 
@@ -65,6 +65,6 @@ public class WhitelistPresenter implements EntityDataFlow<Whitelist> {
     }
 
     public List<AppList.AppData> getAsAppData() throws PackageManager.NameNotFoundException {
-        return UsageStatsUtil.getAppDataList(context , getPackageNames());
+        return UsageStatsUtil.getAppDataList(context , whitelistDao.getAll());
     }
 }

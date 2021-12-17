@@ -14,8 +14,6 @@ public class SecurityPresenter extends ConfigPresenter {
      * Interfejs widoku.
      */
     public interface View {
-        void onContactUpdated();
-        void onContactSaved();
         void onSecurityCodeUpdated(boolean isConfirmationField);
         void onSecurityCodeSaved();
     }

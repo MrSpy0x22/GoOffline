@@ -4,19 +4,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:paddingHorizontal="25dp"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#2D2F31">
+    android:gravity="center"
+    android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Zgodnie z polityką administratora urządzenia ta aplikacja została zablokowana."/>
+        android:orientation="vertical">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pokaż szczegóły"
-        />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:textSize="38sp"
+            android:gravity="bottom|center"
+            android:layout_weight="1"
+            android:text="Blokada aplikacji" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|center"
+            android:layout_weight="1"
+            android:text="Ta aplikacja została zablokowana zgodnie z polityką administratora urządzenia. Kliknij poniższa ikonę, aby uzyskać szczegóły.." />
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginVertical="20dp"
+            android:src="@drawable/ic_overlay_click_icon"/>
+
+    </LinearLayout>
 </LinearLayout>

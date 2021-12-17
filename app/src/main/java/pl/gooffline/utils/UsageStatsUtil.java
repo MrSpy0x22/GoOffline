@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import pl.gooffline.database.entity.Whitelist;
 import pl.gooffline.lists.AppList;
 
 public class UsageStatsUtil {
@@ -41,11 +42,11 @@ public class UsageStatsUtil {
     /**
      * Odpytuje <c>PackageManager</c> i zwraca listę danych z zainstalowanymi aplikacjami.
      * @param context Kontekst.
-     * @param selectedPackages Stan checkbox-a dla pakietu (lub <c>null</c>).
+     * @param whitelists Lista wyjątków.
      * @return Listę typu AppList.AppData.
      * @see pl.gooffline.lists.AppList.AppData
      */
-    public static List<AppList.AppData> getAppDataList(Context context , List<String> selectedPackages) throws PackageManager.NameNotFoundException {
+    public static List<AppList.AppData> getAppDataList(Context context , List<Whitelist> whitelists) throws PackageManager.NameNotFoundException {
         List<AppList.AppData> dataList = new ArrayList<>();
         Intent intent = new Intent(Intent.ACTION_MAIN , null);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -58,8 +59,10 @@ public class UsageStatsUtil {
 
             boolean isSelected = false;
 
-            if (selectedPackages != null) {
-                isSelected = selectedPackages.contains(app.activityInfo.packageName.toLowerCase());
+            if (whitelists != null) {
+                isSelected = whitelists.stream()
+                        .filter(w -> w.isIgnored())
+                        .anyMatch(w -> w.getPackageName().equals(app.activityInfo.packageName));
             }
 
             dataList.add(new AppList.AppData(

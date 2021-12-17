@@ -30,6 +30,7 @@ import pl.gooffline.R;
 import pl.gooffline.database.entity.Whitelist;
 import pl.gooffline.lists.AppList;
 import pl.gooffline.presenters.WhitelistPresenter;
+import pl.gooffline.services.MonitorService;
 
 public class WhitelistFragment extends Fragment implements WhitelistPresenter.View {
     private List<AppList.AppData> installedApps;
@@ -121,18 +122,25 @@ public class WhitelistFragment extends Fragment implements WhitelistPresenter.Vi
         Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(() -> {
             List<Whitelist> updatedList = installedApps.stream()
-                    .filter(AppList.AppData::isSelected)
-                    .map(a -> new Whitelist(a.getPackageName()))
+                    .map(a -> new Whitelist(a.getPackageName() , a.isSelected()))
                     .collect(Collectors.toList());
 
             presenter.pushData(updatedList);
             this.onChangeWorkingStatusFlag(false);
-            this.onDataUpdated();
+            this.onDataUpdated(updatedList);
         }, 1000);
     }
 
     @Override
-    public void onDataUpdated() {
+    public void onDataUpdated(List<Whitelist> whitelists) {
+        // Aktualizacja danych serwisu
+        MonitorService.updateWatchedPackages(
+                whitelists.stream()
+                        .filter(w -> !w.isIgnored())
+                        .map(Whitelist::getPackageName)
+                        .collect(Collectors.toList())
+        );
+
         NavHostFragment fragment = (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_main_nav);
 
         if (fragment != null) {

@@ -1,7 +1,6 @@
 package pl.gooffline.fragments;
 
 import android.os.Bundle;
-import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -27,9 +26,7 @@ public class SecurityFragment extends Fragment implements SecurityPresenter.View
     private EditText editOldPassword;
     private EditText editNewPassword;
     private EditText editNewPasswordConfirm;
-    private EditText editContact;
     private Button buttonSaveCode;
-    private Button buttonSaveContact;
 
     @Nullable
     @Override
@@ -80,38 +77,17 @@ public class SecurityFragment extends Fragment implements SecurityPresenter.View
             }
         });
 
-        editContact = view.findViewById(R.id.sec_contact);
-
         buttonSaveCode = view.findViewById(R.id.sec_save_code);
         buttonSaveCode.setOnClickListener(e -> this.onSecurityCodeSaved());
-
-        buttonSaveContact = view.findViewById(R.id.sec_save_contact);
-        buttonSaveContact.setOnClickListener(e -> this.onContactSaved());
-    }
-
-    @Override
-    public void onContactUpdated() {
-
-    }
-
-    @Override
-    public void onContactSaved() {
-        String text = editContact.getText().toString();
-
-        if (text.length() > 0) {
-            if (text.matches("\\d{9}")) {
-                sendSmsWithCode(text , "1111");
-            } else {
-                prepareMessageDialog("Popraw dane" , "Numer telefonu jest niepoprawny,").show();
-            }
-        } else {
-            prepareMessageDialog("Popraw dane" , "Pole z kontaktem do administratora nie może być puste.").show();
-        }
     }
 
     @Override
     public void onSecurityCodeUpdated(boolean isConfirmationField) {
+        if (isConfirmationField) {
 
+        } else {
+
+        }
     }
 
     @Override
@@ -150,11 +126,5 @@ public class SecurityFragment extends Fragment implements SecurityPresenter.View
                 .setCancelable(true)
                 .setPositiveButton("OK" , (dialogInterface, i) -> {})
                 .create();
-    }
-
-    private void sendSmsWithCode(String number , String code) {
-        String message = "GoOffline. Zmiana danych kontaktu z administratorem. Podaj ten kod: " + code;
-        SmsManager smsMan = SmsManager.getDefault();
-        smsMan.sendTextMessage(number , null , message , null , null);
     }
 }

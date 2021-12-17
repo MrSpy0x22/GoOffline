@@ -1,21 +1,15 @@
 package pl.gooffline.services;
 
-import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.app.usage.UsageStats;
-import android.app.usage.UsageStatsManager;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.os.PowerManager;
-import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -28,12 +22,6 @@ import androidx.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 import java.util.SortedMap;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.TreeMap;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import pl.gooffline.R;
 import pl.gooffline.utils.UsageStatsUtil;
@@ -42,11 +30,24 @@ public class MonitorService extends Service {
     private boolean isStarted = false;
     private boolean isLocked = false;
 
-    private List<String> monitoredPackageList = Collections.singletonList("com.google.android.apps.maps");;
+    // Czas snu
+    private boolean sleepTimeEnabled;
+    private int sleepTimeStart;
+    private int sleepTimeStop;
+
+    // Monitorowane pakiety
+    private static List<String> monitoredPackageList = Collections.singletonList("com.google.android.apps.maps");
+
     private WindowManager windowManager;
     private WindowManager.LayoutParams layoutParams;
     private View overlay;
     private Handler handler;
+
+    public static void updateWatchedPackages(List<String> packages) {
+        if (packages != null) {
+            monitoredPackageList = packages;
+        }
+    }
 
     @Override
     public void onCreate() {
@@ -92,11 +93,11 @@ public class MonitorService extends Service {
             overlay = null;
         });
 
-        if (!Settings.canDrawOverlays(this)) {
-            Log.d("" , "You cannot draw!");
-        } else {
-            Log.d("" , "Well... you can draw! But do you?");
-        }
+//        if (!Settings.canDrawOverlays(this)) {
+//            Log.d("" , "You cannot draw!");
+//        } else {
+//            Log.d("" , "Well... you can draw! But do you?");
+//        }
 
         startInForegroundWithNotification();
 

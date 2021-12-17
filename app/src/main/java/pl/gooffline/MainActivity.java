@@ -1,6 +1,5 @@
 package pl.gooffline;
 
-import android.app.UiModeManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,15 +18,14 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 
-import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
-import pl.gooffline.presenters.ConfigPresenter;
 import pl.gooffline.presenters.SecurityPresenter;
 import pl.gooffline.services.MonitorService;
 import pl.gooffline.utils.ConfigUtil;
 
 public class MainActivity extends AppCompatActivity {
+    private SecurityPresenter secPresenter;
     private NavController navController;
     private static Boolean workingStatusIndicator;
     private static Subject<Boolean> workingStatusSubject;
@@ -39,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_main);
+
+        secPresenter = new SecurityPresenter(this);
 
         workingProgresView = findViewById(R.id.working_progress_view);
 
@@ -64,29 +64,41 @@ public class MainActivity extends AppCompatActivity {
 
         if (itemId == R.id.mmi_settings) {
             View dialogPasswordDialogLayout = View.inflate(this , R.layout.dialog_admin_password , null);
-            new AlertDialog.Builder(this)
-                    .setView(dialogPasswordDialogLayout)
-                    .setTitle("Hasło administratora")
-                    .setCancelable(false)
-                    .setNegativeButton("Anuluj" , (dialog , id) -> {
-                        Toast.makeText(this, "Anulowano logowanie!", Toast.LENGTH_SHORT).show();
-                    })
+
+            SecurityPresenter secPresenter = new SecurityPresenter(this);
+            String passwordHash = secPresenter.getConfigValue(ConfigUtil.KnownKeys.KK_SEC_ADMIN_PASSWD);
+
+            if (passwordHash.length() == 0) {
+                new AlertDialog.Builder(this)
+                        .setTitle("Brak hasła")
+                        .setMessage("Przejdź do ustawień bezpieczeństwa, aby uniemożliwość dostęp do ustawień osobom nieupoważnionym.")
+                        .setCancelable(false)
+                        .setPositiveButton("OK" , (dialogInterface, i) -> navController.navigate(R.id.action_home_to_settings))
+                        .create()
+                        .show();
+            } else {
+                new AlertDialog.Builder(this)
+                        .setView(dialogPasswordDialogLayout)
+                        .setTitle("Hasło administratora")
+                        .setCancelable(false)
+                        .setNegativeButton("Anuluj" , (dialog , id) -> {
+                            Toast.makeText(this, "Anulowano logowanie!", Toast.LENGTH_SHORT).show();
+                        })
 //                    .setNeutralButton("Reset" , (dialog , id) -> {
 //                        Toast.makeText(this, "Przypominajka!", Toast.LENGTH_SHORT).show();
 //                    })
-                    .setPositiveButton("Zaloguj" , (dialog , id) -> {
-                        SecurityPresenter secPresenter = new SecurityPresenter(this);
-                        String passwordHash = secPresenter.getConfigValue(ConfigUtil.KnownKeys.KK_SEC_ADMIN_PASSWD);
-                        EditText passwordIput = dialogPasswordDialogLayout.findViewById(R.id.password_input);
-                        
-                        if (secPresenter.compareCodeAndHash(passwordIput.getText().toString() , passwordHash)) {
-                            navController.navigate(R.id.action_home_to_settings);
-                        } else {
-                            Toast.makeText(this, "Niepoprawne hasło!", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .create()
-                    .show();
+                        .setPositiveButton("Zaloguj" , (dialog , id) -> {
+                            EditText passwordIput = dialogPasswordDialogLayout.findViewById(R.id.password_input);
+
+                            if (secPresenter.compareCodeAndHash(passwordIput.getText().toString() , passwordHash)) {
+                                navController.navigate(R.id.action_home_to_settings);
+                            } else {
+                                Toast.makeText(this, "Niepoprawne hasło!", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .create()
+                        .show();
+            }
         }
 
         return super.onOptionsItemSelected(item);

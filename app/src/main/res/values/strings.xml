@@ -3,6 +3,9 @@
 
     <string name="date_format" formatted="false" translatable="false">%02d.%02d.%04d</string>
     <string name="time_format" formatted="false" translatable="false">%d:%02d:%02d</string>
+    <string name="allowed_time_format_h" formatted="false" translatable="false">%d godz, %02d min</string>
+    <string name="allowed_time_format_m" formatted="false" translatable="false">%02d min</string>
+    <string name="app_slider_time_value" formatted="false" translatable="false">%d:%d0:00</string>
 
     <string name="just_search1">Szukaj</string>
     <string name="just_loading">Ładowanie…</string>
@@ -36,6 +39,7 @@
     <string name="apps_sleep_switch_name">Wyjątki aktywne w trybie snu</string>
     <string name="apps_whitelist_row_name">Edytuj listę wyjątków</string>
     <string name="apps_settings_switch_name">Zablokuj ustawienia systemu</string>
+    <string name="apps_settings_allowed_time">Limit czasu dla aplikacji</string>
 
     <!-- FRAGMENT: lista wyjątków -->
     <string name="whitelist_fragment_name">Lista wyjątków</string>

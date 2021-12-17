@@ -1,9 +1,6 @@
 package pl.gooffline.database.dao;
 
-import static androidx.room.OnConflictStrategy.IGNORE;
-
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -17,9 +14,9 @@ import pl.gooffline.database.entity.Whitelist;
 public interface WhitelistDao {
     @Query("SELECT * FROM whitelist w")
     List<Whitelist> getAll();
-    @Update(onConflict = OnConflictStrategy.IGNORE)
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateAll(List<Whitelist> whitelists);
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<Whitelist> whitelists);
     @Query("DELETE FROM whitelist")
     void deleteAll();

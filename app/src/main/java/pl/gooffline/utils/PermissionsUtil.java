@@ -10,14 +10,10 @@ import android.net.Uri;
 import android.os.PowerManager;
 import android.provider.Settings;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import java.security.Permission;
 import java.util.HashMap;
 import java.util.Map;
-
-import pl.gooffline.MainActivity;
 
 public class PermissionsUtil {
 

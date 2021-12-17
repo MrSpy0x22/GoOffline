@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Switch;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.material.slider.Slider;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import pl.gooffline.R;
@@ -24,6 +25,8 @@ public class ApplicationFragment extends Fragment implements AppsPresenter.View 
     private SwitchMaterial activeWhileSleepingSwitch;
     private SwitchMaterial disableSystemSettings;
     private AppsPresenter presenter;
+    private Slider timeSlider;
+    private TextView timeSliderValue;
 
     @Nullable
     @Override
@@ -41,9 +44,6 @@ public class ApplicationFragment extends Fragment implements AppsPresenter.View 
         layoutRowActiveWhileSleeping.setOnClickListener(e -> onRowOptionSelected(layoutRowActiveWhileSleeping.getId()));
 
         activeWhileSleepingSwitch = view.findViewById(R.id.apps_option_row_active_while_sleeping_switch);
-        activeWhileSleepingSwitch.setChecked(
-                presenter.getConfigValue(ConfigUtil.KnownKeys.KK_WHITELIST_WHILE_SLEEPING).equals("true")
-        );
 
         LinearLayout layoutRowGoToWhitelist = view.findViewById(R.id.apps_option_row_whitelist);
         layoutRowGoToWhitelist.setOnClickListener(e -> onRowOptionSelected(layoutRowGoToWhitelist.getId()));
@@ -52,9 +52,48 @@ public class ApplicationFragment extends Fragment implements AppsPresenter.View 
         layoutRowDisableSettings.setOnClickListener(e -> onRowOptionSelected(layoutRowDisableSettings.getId()));
 
         disableSystemSettings = view.findViewById(R.id.apps_option_row_disable_options_switch);
+
+        timeSliderValue = view.findViewById(R.id.app_slider_time_value);
+
+        timeSlider = view.findViewById(R.id.apps_time_slider);
+        timeSlider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @Override
+            public void onStartTrackingTouch(@NonNull Slider slider) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                onTimeSliderUpdated();
+            }
+        });
+
+        timeSlider.setLabelFormatter(value -> {
+            int hours = (int) (value / 6f);
+            int minutes = (int) (value % 6f) * 10;
+
+            if (hours > 0) {
+                return String.format(getString(R.string.allowed_time_format_h) , hours , minutes );
+            } else {
+                return String.format(getString(R.string.allowed_time_format_m) , minutes);
+            }
+        });
+
+        this.onViewReady();
+    }
+
+    @Override
+    public void onViewReady() {
+        activeWhileSleepingSwitch.setChecked(
+                presenter.getConfigValue(ConfigUtil.KnownKeys.KK_WHITELIST_WHILE_SLEEPING).equals("true")
+        );
         disableSystemSettings.setChecked(
                 presenter.getConfigValue(ConfigUtil.KnownKeys.KK_BLOCK_SETTINGS).equals("true")
         );
+        timeSlider.setValue(
+                Float.parseFloat(presenter.getConfigValue(ConfigUtil.KnownKeys.KK_ALLOWED_TIME))
+        );
+        updateTimeSliderText();
     }
 
     @Override
@@ -81,5 +120,22 @@ public class ApplicationFragment extends Fragment implements AppsPresenter.View 
             presenter.setConfigValue(ConfigUtil.KnownKeys.KK_BLOCK_SETTINGS, state ? "true" : "false");
             disableSystemSettings.setChecked(state);
         }
+    }
+
+    @Override
+    public void onTimeSliderUpdated() {
+        int allowedTime = (int) timeSlider.getValue();
+        presenter.setConfigValue(ConfigUtil.KnownKeys.KK_ALLOWED_TIME , String.valueOf(allowedTime));
+        updateTimeSliderText();
+    }
+
+    private void updateTimeSliderText() {
+        int value = (int) timeSlider.getValue();
+        int hr = value / 6;
+        int min = value % 6;
+
+        timeSliderValue.setText(
+                String.format(getString(R.string.app_slider_time_value) , hr , min)
+        );
     }
 }

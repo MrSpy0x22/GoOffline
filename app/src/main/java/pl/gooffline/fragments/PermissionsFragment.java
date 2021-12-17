@@ -84,7 +84,7 @@ public class PermissionsFragment extends Fragment {
 
         state = permissionStatus.get(PermissionsUtil.InnerPermissionName.CAN_USE_STATS);
         result.add(new PermissionList.ItemData(
-                "Rysowanie nad innymi oknami" ,
+                "Dostęp do statystyk systemu" ,
                 PermissionsUtil.InnerPermissionName.CAN_USE_STATS ,
                 state != null && state));
 

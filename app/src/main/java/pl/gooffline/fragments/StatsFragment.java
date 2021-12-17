@@ -9,15 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.yabu.livechart.model.DataPoint;
-import com.yabu.livechart.model.Dataset;
-import com.yabu.livechart.view.LiveChart;
-
-import java.util.Arrays;
-import java.util.Calendar;
-
-import devs.mulham.horizontalcalendar.HorizontalCalendar;
-import devs.mulham.horizontalcalendar.HorizontalCalendarView;
 import pl.gooffline.R;
 
 public class StatsFragment extends Fragment {

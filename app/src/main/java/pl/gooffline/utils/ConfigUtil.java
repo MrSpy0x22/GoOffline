@@ -31,7 +31,8 @@ public class ConfigUtil {
         KK_GAME_ATTEMPTS("game_attempts") ,
         KK_GAME_BONUS_TIME("game_bonus_time") ,
         KK_SEC_ADMIN_PASSWD("sec_admin_passwd") ,
-        KK_SEC_ADMIN_CONTACT("sec_admin_contact");
+        KK_SEC_ADMIN_CONTACT("sec_admin_contact") ,
+        KK_ALLOWED_TIME("allowed_time");
 
         private final String keyName;
 
@@ -72,6 +73,8 @@ public class ConfigUtil {
                 result = KnownKeys.KK_SEC_ADMIN_PASSWD;
             } else if (keyName.equals(KK_SEC_ADMIN_CONTACT.getKeyName())) {
                 result = KnownKeys.KK_SEC_ADMIN_CONTACT;
+            } else if (keyName.equals(KK_ALLOWED_TIME.getKeyName())) {
+                result = KnownKeys.KK_ALLOWED_TIME;
             }
 
             return result;
@@ -98,6 +101,8 @@ public class ConfigUtil {
                 defaultVal = "2";
             } else if (keyName.equals(KK_GAME_BONUS_TIME.getKeyName())) {
                 defaultVal = "5";
+            } else if (keyName.equals(KK_ALLOWED_TIME.getKeyName())) {
+                defaultVal = "12";
             }
 
             return defaultVal;
