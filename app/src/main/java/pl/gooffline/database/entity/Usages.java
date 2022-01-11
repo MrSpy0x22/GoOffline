@@ -3,7 +3,7 @@ package pl.gooffline.database.entity;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
+@Entity(tableName = "usages")
 public class Usages {
     @PrimaryKey(autoGenerate = true)
     int id;

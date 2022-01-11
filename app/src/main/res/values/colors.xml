@@ -16,4 +16,8 @@
     <color name="secondaryDarkColor">#2286c3</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#000000</color>
+
+    <color name="recycler_delete_bg">#FF0000</color>
+    <color name="recycler_edit_bg">#4CAF50</color>
+    <color name="recycler_icon_tint">#FFFFFF</color>
 </resources>

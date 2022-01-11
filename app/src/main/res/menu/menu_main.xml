@@ -4,9 +4,6 @@
         android:id="@+id/mmi_notifications"
         android:title="Powiadomienia"/>
     <item
-        android:id="@+id/mmi_permissions"
-        android:title="Uprawnienia"/>
-    <item
         android:id="@+id/mmi_settings"
-        android:title="Ustawienia aplikacji"/>
+        android:title="Ustawienia"/>
 </menu>

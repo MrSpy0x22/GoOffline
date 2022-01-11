@@ -133,13 +133,12 @@ public class WhitelistFragment extends Fragment implements WhitelistPresenter.Vi
 
     @Override
     public void onDataUpdated(List<Whitelist> whitelists) {
-        // Aktualizacja danych serwisu
-        MonitorService.updateWatchedPackages(
-                whitelists.stream()
+        List<String> packagesToWatch = whitelists.stream()
                         .filter(w -> !w.isIgnored())
                         .map(Whitelist::getPackageName)
-                        .collect(Collectors.toList())
-        );
+                        .collect(Collectors.toList());
+        // Aktualizacja danych serwisu
+        MonitorService.updateWatchedPackages(packagesToWatch);
 
         NavHostFragment fragment = (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_main_nav);
 

@@ -6,6 +6,7 @@
     <string name="allowed_time_format_h" formatted="false" translatable="false">%d godz, %02d min</string>
     <string name="allowed_time_format_m" formatted="false" translatable="false">%02d min</string>
     <string name="app_slider_time_value" formatted="false" translatable="false">%d:%d0:00</string>
+    <string name="home_sleeptime_range" formatted="false" translatable="false">%d:00 - %d:00</string>
 
     <string name="just_search1">Szukaj</string>
     <string name="just_loading">Ładowanie…</string>

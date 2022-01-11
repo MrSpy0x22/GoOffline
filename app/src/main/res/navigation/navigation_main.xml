@@ -66,7 +66,11 @@
     <fragment
         android:id="@+id/gameFragment"
         android:name="pl.gooffline.fragments.GameFragment"
-        android:label="GameFragment" />
+        android:label="GameFragment" >
+        <action
+            android:id="@+id/action_game_to_wordbase"
+            app:destination="@id/wordbaseFragment" />
+    </fragment>
     <fragment
         android:id="@+id/securityFragment"
         android:name="pl.gooffline.fragments.SecurityFragment"
@@ -75,4 +79,23 @@
         android:id="@+id/journalFragment"
         android:name="pl.gooffline.fragments.JournalFragment"
         android:label="JournalFragment" />
+    <fragment
+        android:id="@+id/wordbaseFragment"
+        android:name="pl.gooffline.fragments.WordbaseFragment"
+        android:label="WordbaseFragment" >
+        <action
+            android:id="@+id/action_wordbase_to_form"
+            app:destination="@id/wordbaseFormFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/wordbaseFormFragment"
+        android:name="pl.gooffline.fragments.WordbaseFormFragment"
+        android:label="WordbaseFormFragment">
+        <argument
+            android:name="word"
+            app:argType="string" />
+        <argument
+            android:name="category"
+            app:argType="string" />
+    </fragment>
 </navigation>

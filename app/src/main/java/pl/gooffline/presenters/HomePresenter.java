@@ -8,9 +8,12 @@ import java.util.Map;
 
 import pl.gooffline.database.AppDatabase;
 import pl.gooffline.database.dao.ConfigDao;
+import pl.gooffline.database.entity.Config;
 
 public class HomePresenter {
-
+    /**
+     * Interwejs widoku.
+     */
     public interface View {
         void onClickPolicyButton();
         void onClickGameButton();
@@ -19,19 +22,13 @@ public class HomePresenter {
         void onViewUpdated();
     }
 
-    private ConfigDao configDao;
+    private final ConfigDao configDao;
 
     public HomePresenter(Context context) {
         this.configDao = AppDatabase.getInstance(context).configDAO();
     }
 
-    public Map<String , String> pullConfigKeys(List<String> configKeys) {
-        Map<String , String> configMap = new HashMap<>();
-
-        for (String key : configKeys) {
-            configMap.put(key , configDao.getConfigByKey(key).getConfigValue());
-        }
-
-        return configMap;
+    public List<Config> pullConfigFrom(List<String> configKeys) {
+        return configDao.getFrom(configKeys);
     }
 }

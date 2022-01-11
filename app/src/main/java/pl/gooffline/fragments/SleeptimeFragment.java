@@ -17,6 +17,7 @@ import java.util.List;
 
 import pl.gooffline.R;
 import pl.gooffline.presenters.SleeptimePresenter;
+import pl.gooffline.services.MonitorService;
 import pl.gooffline.utils.ConfigUtil;
 
 /**
@@ -78,18 +79,30 @@ public class SleeptimeFragment extends Fragment implements SleeptimePresenter.Vi
         this.onViewReady();
     }
 
+    private void updateMonitor() {
+        List<Float> values = rangeSlider.getValues();
+
+        MonitorService.updateSleepTime(true ,
+                (int) values.get(0).longValue() ,
+                (int) values.get(1).longValue());
+    }
+
     @Override
     public void onSleeptimeStateChanged(boolean state) {
         boolean newState = !state;
         sleeptimeEnableSwitch.setChecked(newState);
         presenter.setConfigValue(ConfigUtil.KnownKeys.KK_SLEEPTIME_ENABLE , newState ? "true" : "false");
         rangeSlider.setEnabled(newState);
+
+        updateMonitor();
     }
 
     @Override
     public void onSleeptimeRangeChanged(int start, int stop) {
         presenter.setConfigValue(ConfigUtil.KnownKeys.KK_SLEEPTIME_START , String.valueOf(start));
         presenter.setConfigValue(ConfigUtil.KnownKeys.KK_SLEEPTIME_STOP , String.valueOf(stop));
+
+        updateMonitor();
     }
 
     @Override

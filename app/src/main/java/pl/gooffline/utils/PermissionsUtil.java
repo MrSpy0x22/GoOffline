@@ -21,8 +21,6 @@ public class PermissionsUtil {
         CAN_DRAW_OVERALL ,
         CAN_IGNORE_BATTERY_OPTIMIZATION ,
         CAN_USE_STATS ,
-        CAN_SEND_SMS ,
-        CAN_READ_PHONE_STATE
     }
 
     public static void askForCanDrawOverlay(Context context) {
@@ -31,6 +29,7 @@ public class PermissionsUtil {
                 Settings.ACTION_MANAGE_OVERLAY_PERMISSION ,
                 Uri.parse("package:" + context.getPackageName())
         );
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         context.startActivity(intent);
     }
@@ -41,28 +40,18 @@ public class PermissionsUtil {
         Intent intent = new Intent(//Settings.ACTION_BATTERY_SAVER_SETTINGS);
                 Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
         intent.setData(Uri.parse("package:" + context.getPackageName()));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 
     public static void askForUsageStats(Context context) {
         Intent intent = new Intent(
-                Settings.ACTION_USAGE_ACCESS_SETTINGS ,
+                Settings.ACTION_DATA_USAGE_SETTINGS,
                 Uri.parse("package:" + context.getPackageName())
         );
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         context.startActivity(intent);
-    }
-
-    public static void askForSendingSMS(Context context , Activity activity) {
-        if (context.checkSelfPermission(Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, new String[] { Manifest.permission.SEND_SMS } , 1);
-        }
-    }
-
-    public static void askForReadPhoneState(Context context , Activity activity) {
-        if (context.checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, new String[] { Manifest.permission.READ_PHONE_STATE } , 1);
-        }
     }
 
     /**
@@ -87,14 +76,6 @@ public class PermissionsUtil {
         int appOpResult = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS ,
                 android.os.Process.myUid() , context.getPackageName());
         result.put(InnerPermissionName.CAN_USE_STATS, appOpResult == AppOpsManager.MODE_ALLOWED);
-
-        // Wysyłanie SMSów z kodem
-        boolean appSMSPermission = context.checkSelfPermission(Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED;
-        result.put(InnerPermissionName.CAN_SEND_SMS, appSMSPermission);
-
-        // Potrzebne do wysyłania SMS (odczytywanie numeru telefonu i danych sieci)
-        boolean appReadPhoneState = context.checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED;
-        result.put(InnerPermissionName.CAN_READ_PHONE_STATE, appReadPhoneState);
 
         return result;
     }

@@ -5,7 +5,9 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
+import pl.gooffline.utils.ConfigUtil;
+
+@Entity(tableName = "config")
 public class Config {
     @PrimaryKey
     @NonNull
@@ -28,6 +30,11 @@ public class Config {
     }
 
     public String getConfigValue() {
+        if (configValue == null) {
+            ConfigUtil.KnownKeys knownKey = ConfigUtil.KnownKeys.getKnownKey(configKey);
+            return knownKey.getDefaultValue();
+        }
+
         return configValue;
     }
 }

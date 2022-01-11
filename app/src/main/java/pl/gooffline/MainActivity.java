@@ -18,8 +18,13 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
+import pl.gooffline.database.AppDatabase;
+import pl.gooffline.database.entity.Whitelist;
 import pl.gooffline.presenters.SecurityPresenter;
 import pl.gooffline.services.MonitorService;
 import pl.gooffline.utils.ConfigUtil;
@@ -48,21 +53,27 @@ public class MainActivity extends AppCompatActivity {
 
         NavigationUI.setupWithNavController(mainToolbar , navController);
 
+        MonitorService.updateWatchedPackages(AppDatabase.getInstance(this).whitelistDAO().getAll().stream()
+                .filter(a -> !a.ignored)
+                .map(Whitelist::getPackageName)
+                .collect(Collectors.toList()));
         startForegroundService(new Intent(getBaseContext() , MonitorService.class));
 
         // Ustawianie flagi pracy w tle
-        Log.d("threadM" , Thread.currentThread().getName());
         workingStatusIndicator = false;
         workingStatusSubject = PublishSubject.create();
         workingStatusSubject.subscribe(this::handleWorkingStatusIndicatorObservable , e -> e.printStackTrace());
     }
 
-
-
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
 
-        if (itemId == R.id.mmi_settings) {
+        if (itemId == R.id.mmi_notifications) {
+            Intent intent = new Intent("android.settings.APP_NOTIFICATION_SETTINGS");
+            intent.putExtra("android.provider.extra.APP_PACKAGE", getPackageName());
+            startActivity(intent);
+        }
+        else if (itemId == R.id.mmi_settings) {
             View dialogPasswordDialogLayout = View.inflate(this , R.layout.dialog_admin_password , null);
 
             SecurityPresenter secPresenter = new SecurityPresenter(this);

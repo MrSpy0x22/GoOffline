@@ -10,15 +10,19 @@ import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.SortedMap;
@@ -31,12 +35,12 @@ public class MonitorService extends Service {
     private boolean isLocked = false;
 
     // Czas snu
-    private boolean sleepTimeEnabled;
-    private int sleepTimeStart;
-    private int sleepTimeStop;
+    private static boolean sleepTimeEnabled;
+    private static int sleepTimeStart;
+    private static int sleepTimeStop;
 
     // Monitorowane pakiety
-    private static List<String> monitoredPackageList = Collections.singletonList("com.google.android.apps.maps");
+    private static List<String> monitoredPackageList;// = Collections.singletonList("com.google.android.apps.maps");
 
     private WindowManager windowManager;
     private WindowManager.LayoutParams layoutParams;
@@ -46,6 +50,30 @@ public class MonitorService extends Service {
     public static void updateWatchedPackages(List<String> packages) {
         if (packages != null) {
             monitoredPackageList = packages;
+        }
+    }
+
+    public static void updateSleepTime(boolean enabled , int start , int stop) {
+        sleepTimeEnabled = enabled;
+        sleepTimeStart = start;
+        sleepTimeStop = stop;
+    }
+
+    private void updateScreenReasonText() {
+        if (overlay != null) {
+            LocalTime time = LocalTime.now();
+            int hour = time.getHour();
+
+            TextView caption = overlay.findViewById(R.id.overlay_caption);
+            TextView text = overlay.findViewById(R.id.overlay_text);
+
+            if (sleepTimeEnabled && (hour < sleepTimeStart || hour > sleepTimeStop )) {
+                caption.setText("Czas snu");
+                text.setText("Czas snu jest aktywny od " + sleepTimeStart + ":00 do " + sleepTimeStop + ":00. W tym czasie nie możesz używać tej aplikacji.");
+            } else {
+                caption.setText("Blokada aplikacji");
+                text.setText("Zgodnie z polityką administratora urządzenia używanie tej aplikacji nie jest już dzisiaj możliwe.");
+            }
         }
     }
 
@@ -87,17 +115,17 @@ public class MonitorService extends Service {
         // add the view to window manger
         //windowManager.addView(overlay, layoutParams);
 
-        overlay.setOnClickListener(v -> {
-            windowManager.removeView(overlay);
-            isLocked = false;
-            overlay = null;
-        });
+//        overlay.setOnClickListener(v -> {
+//            windowManager.removeView(overlay);
+//            isLocked = false;
+//            overlay = null;
+//        });
 
-//        if (!Settings.canDrawOverlays(this)) {
-//            Log.d("" , "You cannot draw!");
-//        } else {
-//            Log.d("" , "Well... you can draw! But do you?");
-//        }
+        if (!Settings.canDrawOverlays(this)) {
+            Log.d("" , "You cannot draw!");
+        } else {
+            Log.d("" , "Well... you can draw! But do you?");
+        }
 
         startInForegroundWithNotification();
 
@@ -135,7 +163,8 @@ public class MonitorService extends Service {
         String currentPackage = usedPackages.isEmpty() ? null : usedPackages.get(usedPackages.lastKey());
         boolean detected = false;
 
-        if (currentPackage != null) {
+        if (currentPackage != null && monitoredPackageList != null) {
+
             for (String packageToCheck : monitoredPackageList) {
                 if (currentPackage.equals(packageToCheck)) {
                     Log.d("overlay" , packageToCheck);
@@ -145,18 +174,19 @@ public class MonitorService extends Service {
             }
 
             if (detected && !isLocked) {
+                updateScreenReasonText();
                 isLocked = true;
                 try {
                     ((WindowManager) MonitorService.this.getSystemService(WINDOW_SERVICE)).addView(overlay, layoutParams);
                 } catch (Exception e) {
-                    Log.d(this.getClass().getSimpleName() , "Złapano wyjątek podczas próby pokazania ekranu blokady.");
+                    Log.d(this.getClass().getSimpleName() , "Złapano wyjątek podczas próby pokazania ekranu blokady:\n" + e.getMessage());
                 }
             } else if (!detected && isLocked) {
                 isLocked = false;
                 try {
                     ((WindowManager) MonitorService.this.getSystemService(WINDOW_SERVICE)).removeView(overlay);
                 } catch (Exception e) {
-                    Log.d(this.getClass().getSimpleName() , "Złapano wyjątek podczas próby ukrycia ekranu blokady.");
+                    Log.d(this.getClass().getSimpleName() , "Złapano wyjątek podczas próby ukrycia ekranu blokady:\n" + e.getMessage());
                 }
 
             }

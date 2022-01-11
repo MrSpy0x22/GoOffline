@@ -7,35 +7,33 @@
     android:paddingHorizontal="25dp"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:background="#FFFFFFFF"
     android:orientation="vertical">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/overlay_caption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginVertical="10dp"
+        android:textSize="38sp"
+        android:gravity="bottom|center"
+        android:layout_weight="1"
+        android:text="Blokada aplikacji" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
-            android:textSize="38sp"
-            android:gravity="bottom|center"
-            android:layout_weight="1"
-            android:text="Blokada aplikacji" />
+    <TextView
+        android:id="@+id/overlay_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:gravity="top|center"
+        android:layout_weight="1"
+        android:text="Ta aplikacja została zablokowana zgodnie z polityką administratora urządzenia. Kliknij poniższa ikonę, aby uzyskać szczegóły.." />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="top|center"
-            android:layout_weight="1"
-            android:text="Ta aplikacja została zablokowana zgodnie z polityką administratora urządzenia. Kliknij poniższa ikonę, aby uzyskać szczegóły.." />
-
-        <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
-            android:layout_marginVertical="20dp"
-            android:src="@drawable/ic_overlay_click_icon"/>
-
-    </LinearLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginVertical="20dp"
+        android:text="Zobacz szczegóły"
+        app:tint="?attr/colorPrimary" />
 </LinearLayout>
