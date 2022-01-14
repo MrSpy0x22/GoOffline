@@ -33,17 +33,21 @@
         <entry key="..\:/Users/Marcin22x/AndroidStudioProjects/GoOffline/app/src/main/res/xml/preference_apps.xml" value="0.33" />
         <entry key="..\:/Users/marci/AndroidStudioProjects/GoOffline/app/src/main/res/drawable/home_notification_background.xml" value="0.14635416666666667" />
         <entry key="..\:/Users/marci/AndroidStudioProjects/GoOffline/app/src/main/res/drawable/ic_home_notification_icon.xml" value="0.14635416666666667" />
+        <entry key="..\:/Users/marci/AndroidStudioProjects/GoOffline/app/src/main/res/drawable/ripple_fragment_button_shortcut.xml" value="0.3828125" />
+        <entry key="..\:/Users/marci/AndroidStudioProjects/GoOffline/app/src/main/res/drawable/ripple_fragment_toggler.xml" value="0.3828125" />
         <entry key="..\:/Users/marci/AndroidStudioProjects/GoOffline/app/src/main/res/layout/activity_main.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/marci/AndroidStudioProjects/GoOffline/app/src/main/res/layout/dialog_admin_password.xml" value="0.1" />
         <entry key="..\:/Users/marci/AndroidStudioProjects/GoOffline/app/src/main/res/layout/fragment_apps.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/marci/AndroidStudioProjects/GoOffline/app/src/main/res/layout/fragment_game.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/marci/AndroidStudioProjects/GoOffline/app/src/main/res/layout/fragment_home.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/marci/AndroidStudioProjects/GoOffline/app/src/main/res/layout/fragment_security.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/marci/AndroidStudioProjects/GoOffline/app/src/main/res/layout/fragment_settings.xml" value="0.20572916666666666" />
         <entry key="..\:/Users/marci/AndroidStudioProjects/GoOffline/app/src/main/res/layout/fragment_sleeptime.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/marci/AndroidStudioProjects/GoOffline/app/src/main/res/layout/fragment_stats.xml" value="0.25025641025641027" />
         <entry key="..\:/Users/marci/AndroidStudioProjects/GoOffline/app/src/main/res/layout/fragment_whitelis.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/marci/AndroidStudioProjects/GoOffline/app/src/main/res/layout/fragment_worbase.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/marci/AndroidStudioProjects/GoOffline/app/src/main/res/layout/fragment_wordbase.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/marci/AndroidStudioProjects/GoOffline/app/src/main/res/layout/fragment_wordbase_form.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/marci/AndroidStudioProjects/GoOffline/app/src/main/res/layout/fragment_wordbase_form.xml" value="0.36102564102564105" />
         <entry key="..\:/Users/marci/AndroidStudioProjects/GoOffline/app/src/main/res/layout/list_journal_item.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/marci/AndroidStudioProjects/GoOffline/app/src/main/res/layout/list_permission_item.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/marci/AndroidStudioProjects/GoOffline/app/src/main/res/layout/list_setting_item.xml" value="0.1" />

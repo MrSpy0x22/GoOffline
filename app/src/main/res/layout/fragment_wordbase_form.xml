@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
@@ -16,43 +16,46 @@
             android:layout_height="wrap_content"
             android:text="Formularz słówka"
             android:textStyle="bold"
-            android:textSize="16sp"
+            android:theme="@style/Theme.GoOffline.Fragment.Caption"
             />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
             android:text="Każde słówko musi również posiadać kategorię, która jest podpowiedzią do zagadki. Podczas wprowadzania nazwy zostana pokazane pasujące podpowiedzi."
+            android:theme="@style/Theme.GoOffline.Fragment.TogglerDescription"
             />
 
-        <TextView
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Słówko"
-            android:labelFor="@id/wordbase_form_category_edit"
-            />
+            android:paddingVertical="@dimen/separatorSize"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="Słowo">
 
-        <EditText
-            android:id="@+id/wordbase_form_word_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/wordbase_form_word_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Kategoria"
-            android:labelFor="@id/wordbase_form_category_edit"
-            />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <AutoCompleteTextView
-            android:id="@+id/wordbase_form_category_edit"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:completionThreshold="1"
-            android:completionHint="Dodaj lub znajdź kategorię"
-            />
+            android:paddingVertical="@dimen/separatorSize"
+            android:hint="Kategoria"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+            <AutoCompleteTextView
+                android:id="@+id/wordbase_form_category_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:completionThreshold="1"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -63,6 +66,5 @@
         android:layout_margin="30dp"
         android:src="@drawable/ic_floating_action_complete"
         />
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

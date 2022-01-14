@@ -85,6 +85,10 @@ public class GameFragment extends Fragment implements GamePresenter.View {
         this.onViewReady();
     }
 
+    /**
+     * Blokuje możliwość interakcji z widokami.
+     * @param state Określa możliwość interakcji.
+     */
     private void applyDisabledEffect(boolean state) {
         rowOptionWords.setEnabled(state);
         attemptsSlider.setEnabled(state);
@@ -97,7 +101,7 @@ public class GameFragment extends Fragment implements GamePresenter.View {
         attemptsSlider.setValue(Float.parseFloat(presenter.getConfigValue(ConfigUtil.KnownKeys.KK_GAME_ATTEMPTS)));
         attemptsSliderText.setText(String.valueOf(Math.round(attemptsSlider.getValue())));
         bonusTimeSlider.setValue(Float.parseFloat(presenter.getConfigValue(ConfigUtil.KnownKeys.KK_GAME_BONUS_TIME)));
-        bonusTimeSliderText.setText(String.valueOf(Math.round(bonusTimeSlider.getValue())));
+        bonusTimeSliderText.setText(String.format(getString(R.string.bonus_time_format) , Math.round(bonusTimeSlider.getValue())));
 
         applyDisabledEffect(gameEnableSwitch.isChecked());
     }
@@ -133,9 +137,8 @@ public class GameFragment extends Fragment implements GamePresenter.View {
     @Override
     public void onBonusTimeSliderUpdated() {
         int value = Math.round(bonusTimeSlider.getValue());
-        String stringValue = String.valueOf(value);
 
-        bonusTimeSliderText.setText(stringValue);
-        presenter.setConfigValue(ConfigUtil.KnownKeys.KK_GAME_ATTEMPTS , stringValue);
+        bonusTimeSliderText.setText(String.format(getString(R.string.bonus_time_format) , value));
+        presenter.setConfigValue(ConfigUtil.KnownKeys.KK_GAME_ATTEMPTS , String.valueOf(value));
     }
 }

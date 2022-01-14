@@ -17,6 +17,10 @@
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#000000</color>
 
+    <color name="fragment_toggler_bg">#DDDDDD</color>
+    <color name="fragment_button_shortcut_bg">#ECE8E8</color>
+    <color name="fragment_shortcut_ripple_bg">#AAAAAA</color>
+
     <color name="recycler_delete_bg">#FF0000</color>
     <color name="recycler_edit_bg">#4CAF50</color>
     <color name="recycler_icon_tint">#FFFFFF</color>

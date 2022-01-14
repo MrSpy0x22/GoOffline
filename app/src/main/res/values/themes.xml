@@ -34,4 +34,54 @@
         <item name="android:textColorPrimary">@color/panelText</item>
         <item name="textAllCaps">true</item>
     </style>
+
+    <!-- FRAGMENT TOGGLER BUTTON -->
+    <style name="Theme.GoOffline.Fragment.Toggler" parent="">
+        <item name="android:paddingHorizontal">10dp</item>
+        <item name="android:paddingVertical">7dp</item>
+        <item name="android:background">@drawable/ripple_fragment_toggler</item>
+    </style>
+
+    <style name="Theme.GoOffline.Fragment.Toggler.Caption" parent="">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/textCaptionSize</item>
+        <item name="android:background">#00000000</item>
+    </style>
+
+    <style name="Theme.GoOffline.Fragment.Toggler.Switch" parent="Theme.MaterialComponents.Light">
+        <item name="colorControlActivated">@color/primaryColor</item>
+    </style>
+
+    <!-- FRAGMENT CAPTION -->
+    <style name="Theme.GoOffline.Fragment.Caption" parent="">
+        <item name="android:paddingHorizontal">@dimen/activityLayoutPadding</item>
+        <item name="android:paddingVertical">@dimen/separatorSize</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/textCaptionSize</item>
+        <item name="android:background">#00000000</item>
+    </style>
+
+    <!-- VIEW LABEL -->
+    <style name="Theme.GoOffline.Fragment.Label" parent="Theme.GoOffline.Fragment.Caption">
+        <item name="android:paddingVertical">@dimen/separatorSizeSmaller</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <!-- FRAGMENT TOGGLEDR DESCRIPTION -->
+    <style name="Theme.GoOffline.Fragment.TogglerDescription" parent="">
+        <item name="android:paddingVertical">15dp</item>
+        <item name="android:paddingHorizontal">@dimen/activityLayoutPadding</item>
+        <item name="android:textSize">@dimen/textContentSize</item>
+    </style>
+
+    <!-- FRAGMENT BUTTON SHORTCUT -->
+    <style name="Theme.GoOffline.Fragment.BtnShortcut" parent="">
+        <item name="android:padding">8dp</item>
+        <item name="android:background">@drawable/ripple_fragment_button_shortcut</item>
+    </style>
+
+    <style name="Theme.GoOffline.Fragment.BtnShortcut.Caption" parent="">
+        <item name="android:textSize">@dimen/textCaptionSize</item>
+        <item name="android:background">#00000000</item>
+    </style>
 </resources>

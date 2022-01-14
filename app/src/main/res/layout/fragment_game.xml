@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/activityPadding"
     android:orientation="vertical">
 
     <LinearLayout
@@ -11,19 +11,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="15dp"
-        android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
-        android:paddingVertical="15dp">
+        android:theme="@style/Theme.GoOffline.Fragment.Toggler">
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
             android:layout_weight="1"
-            android:textSize="18sp"
-            android:textColor="@color/secondaryColor"
-            android:textStyle="bold"
             android:text="Dodatkowy czas"
+            android:theme="@style/Theme.GoOffline.Fragment.Toggler.Caption"
             />
 
         <androidx.appcompat.widget.SwitchCompat
@@ -31,6 +28,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="false"
+            android:checked="true"
+            android:theme="@style/Theme.GoOffline.Fragment.Toggler.Switch"
             />
 
     </LinearLayout>
@@ -38,36 +37,17 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="15dp"
-        android:paddingVertical="5dp"
-        android:textSize="16sp"
+        android:theme="@style/Theme.GoOffline.Fragment.TogglerDescription"
         android:text="Rozwiązanie zagadki umożliwia przedłużenie czasu korzystania z urządzenia. Skonfiguruj bazę wiedzy oraz warunki."
         />
 
-
-    <LinearLayout
-        android:id="@+id/game_row_words"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="15dp"
-        android:background="?android:attr/selectableItemBackground"
-        android:clickable="true">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="5dp"
-            android:layout_weight="2"
-            android:textSize="18sp"
-            android:text="Baza wiedzy"
-            />
-    </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/activityLayoutPadding"
+        android:paddingBottom="@dimen/activityLayoutPadding"
         android:orientation="vertical"
-        android:padding="15dp">
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -83,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:paddingVertical="5dp"
                     android:layout_weight="2"
-                    android:textSize="18sp"
+                    android:theme="@style/Theme.GoOffline.Fragment.Label"
                     android:text="Liczba prób"
                     />
                 <TextView
@@ -94,7 +74,7 @@
                     android:layout_weight="2"
                     android:textSize="18sp"
                     android:textAlignment="viewEnd"
-                    android:text="0"
+                    android:textColor="?attr/colorSecondary"
                     />
 
             </LinearLayout>
@@ -124,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:paddingVertical="5dp"
                     android:layout_weight="2"
-                    android:textSize="18sp"
+                    android:theme="@style/Theme.GoOffline.Fragment.Label"
                     android:text="Czas za próbę"
                     />
                 <TextView
@@ -135,7 +115,7 @@
                     android:layout_weight="2"
                     android:textSize="18sp"
                     android:textAlignment="viewEnd"
-                    android:text="0"
+                    android:textColor="?attr/colorSecondary"
                     />
 
             </LinearLayout>
@@ -150,6 +130,29 @@
                 />
         </LinearLayout>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/game_row_words"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:theme="@style/Theme.GoOffline.Fragment.BtnShortcut">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingVertical="5dp"
+            android:text="Baza wiedzy"
+            android:theme="@style/Theme.GoOffline.Fragment.BtnShortcut.Caption" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_list_item_arrow"
+            />
     </LinearLayout>
 
 </LinearLayout>

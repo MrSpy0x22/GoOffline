@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="25dp"
+    android:padding="@dimen/activityPadding"
     android:orientation="vertical">
 
 
@@ -12,16 +12,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingVertical="5dp"
-        android:background="?attr/selectableItemBackground"
+        android:theme="@style/Theme.GoOffline.Fragment.Toggler"
         android:clickable="true">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:theme="@style/Theme.GoOffline.Fragment.Toggler.Caption"
             android:text="@string/sleeptime_switch_name"
             />
 
@@ -29,6 +27,7 @@
             android:id="@+id/sleeptime_row_enable_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:theme="@style/Theme.GoOffline.Fragment.Toggler.Switch"
             android:clickable="false"
             />
 
@@ -38,6 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
+        android:theme="@style/Theme.GoOffline.Fragment.TogglerDescription"
         android:text="@string/sleeptime_switch_desc"
         />
 
