@@ -86,9 +86,9 @@ public class GameFragment extends Fragment implements GamePresenter.View {
     }
 
     private void applyDisabledEffect(boolean disable) {
-        rowOptionWords.setEnabled(!disable);
-        attemptsSlider.setEnabled(!disable);
-        bonusTimeSlider.setEnabled(!disable);
+        rowOptionWords.setEnabled(disable);
+        attemptsSlider.setEnabled(disable);
+        bonusTimeSlider.setEnabled(disable);
     }
 
     @Override
@@ -99,7 +99,7 @@ public class GameFragment extends Fragment implements GamePresenter.View {
         bonusTimeSlider.setValue(Float.parseFloat(presenter.getConfigValue(ConfigUtil.KnownKeys.KK_GAME_BONUS_TIME)));
         bonusTimeSliderText.setText(String.valueOf(Math.round(bonusTimeSlider.getValue())));
 
-        applyDisabledEffect(gameEnableSwitch.isChecked());
+        applyDisabledEffect(!gameEnableSwitch.isChecked());
     }
 
     @Override

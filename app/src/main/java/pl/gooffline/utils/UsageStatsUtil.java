@@ -61,7 +61,7 @@ public class UsageStatsUtil {
 
             if (whitelists != null) {
                 isSelected = whitelists.stream()
-                        .filter(w -> w.isIgnored())
+                        .filter(Whitelist::isIgnored)
                         .anyMatch(w -> w.getPackageName().equals(app.activityInfo.packageName));
             }
 

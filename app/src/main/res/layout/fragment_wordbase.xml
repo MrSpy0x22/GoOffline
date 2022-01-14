@@ -7,12 +7,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="@dimen/activityPadding"
         android:orientation="vertical">
         <SearchView
             android:id="@+id/wordbase_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:queryHint="Wyszukaj..."
+            android:iconifiedByDefault="false"
             />
 
         <androidx.recyclerview.widget.RecyclerView

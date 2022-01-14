@@ -46,7 +46,8 @@ public class PermissionsUtil {
 
     public static void askForUsageStats(Context context) {
         Intent intent = new Intent(
-                Settings.ACTION_DATA_USAGE_SETTINGS,
+                //Settings.ACTION_DATA_USAGE_SETTINGS,
+                Settings.ACTION_USAGE_ACCESS_SETTINGS,
                 Uri.parse("package:" + context.getPackageName())
         );
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

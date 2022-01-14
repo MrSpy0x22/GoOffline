@@ -79,31 +79,52 @@ public class WordbaseFormFragment extends Fragment implements WordbaseFormPresen
     //region Funkcje interfejsu widoku.
     @Override
     public void onClickSave() {
-        String message = this.onValidate();
-        String categoryName = categoryEdit.getText().toString();
+        boolean isEditMode = argWord != null && argCategory == null;        // Sprawdzanie czy widok jest trybem edycji
+        String validateErrorMessage = this.onValidate();                    // Walidacja pól i pobranie komunikatu błędu
+        String wordName = wordEdit.getText().toString();                    // Pobranie nazwy słowa z formularzaa
+        String categoryName = categoryEdit.getText().toString();            // Pobranie nazwy kategorii z formularza
 
-        if (message.length() == 0) { // Udana walidacja
-            Category category;
+        if (validateErrorMessage.length() == 0) { // Udana walidacja
+            // Sprawdzanie czy pola formularza zostały zmienione (w trybie edycji)
+            boolean isWordModified = isEditMode && !wordName.equals(argWord);
+            boolean isCategoryModified = isEditMode && !categoryName.equals(argCategory);
+
             Wordbase word = null;
+            Category category;
 
-            // Jeżeeli kategoria nie istnieje to zostanie najpierw utworzona w celu pobrania unikalnego ID
+            // Pobieranie kategorii - jeżeli nie istnieje to zostanie najpierw utworzona
             if (presenter.isCategoryExists(categoryName)) {
                 category = presenter.getCategory(categoryName);
             } else {
                 category = presenter.saveCategoryAndGet(new Category(categoryName));
             }
 
-            // Szukanie słowa w bazie danych jeżeli jest to tryb edycji
-            if (argCategory != null && argWord != null) {
-                word = presenter.getWord(argWord);
+            // TODO: usuwanie nieaktywnej kategorii
+            if (isEditMode && !argCategory.equals(categoryName)) {
             }
 
-            // Jeżeli nie jest to tryb edycji lub wystąpoł problem przy ładowaniu słowa z bazy
-            if (word == null) {
+            // Szukanie słowa w bazie danych (tryb edycji) lub tworzenie nowego
+            if (isEditMode) {
+                word = presenter.getWord(argWord);
+            } else {
                 word = new Wordbase(wordEdit.getText().toString() , category.getCategoryId());
             }
 
-            presenter.saveWord(word);
+            // Aktualizacja kategorii słowa
+            if (isCategoryModified) {
+                word.setWordCategoryId(category.getCategoryId());
+            }
+
+            // Aktualizacja nazwy słowa
+            if (isWordModified) {
+                word.setWord(wordName);
+            }
+
+            // Zapisywanie słowa do bazy jeżeli nastąpiły jakieś zmiany
+            if (isCategoryModified || isWordModified) {
+                presenter.saveWord(word);
+            }
+
 
             // Powrót do poprzedniego fragmentu
             NavHostFragment fragment = (NavHostFragment) requireActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_main_nav);
@@ -117,7 +138,7 @@ public class WordbaseFormFragment extends Fragment implements WordbaseFormPresen
         } else {
             new AlertDialog.Builder(requireContext())
                     .setTitle("Walidacja")
-                    .setMessage(message)
+                    .setMessage(validateErrorMessage)
                     .setCancelable(true)
                     .setPositiveButton("OK" , null)
                     .create()

@@ -89,6 +89,14 @@ public class WordbaseFormPresenter {
     }
 
     /**
+     * Zapisuje kategorię do bazy danych.
+     * @param category Obiekt kategorii.
+     */
+    public void saveCategory(Category category) {
+        categoryDao.insert(category);
+    }
+
+    /**
      * Sprawdza czy podana kategoria istnieje w bazie danych.
      * @param categoryName Nazwa kategorii.
      * @return TRUE jeżeli kategoria istnieje lub false w innym przypadku.
