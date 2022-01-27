@@ -1,7 +1,10 @@
 package pl.gooffline.utils;
 
+import android.app.AlertDialog;
 import android.app.AppOpsManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.PowerManager;
@@ -18,6 +21,10 @@ public class PermissionsUtil {
         CAN_USE_STATS ,
     }
 
+    /**
+     * Zapytanie o rysowanie nad innymi oknami.
+     * @param context
+     */
     public static void askForCanDrawOverlay(Context context) {
         // if (Settings.canDrawOverlays(context))
         Intent intent = new Intent(
@@ -29,6 +36,10 @@ public class PermissionsUtil {
         context.startActivity(intent);
     }
 
+    /**
+     * Zapytanie o wyłączenie optymalizacji baterii.
+     * @param context
+     */
     public static void askForBatteryOptimization(Context context) {
         Map<InnerPermissionName , Boolean> permissions = getRequiredPermissionsStatus(context);
 
@@ -39,15 +50,33 @@ public class PermissionsUtil {
         context.startActivity(intent);
     }
 
+    /**
+     * Zapytanie o dostęp do danych.
+     * @param context
+     */
     public static void askForUsageStats(Context context) {
-        Intent intent = new Intent(
-                //Settings.ACTION_DATA_USAGE_SETTINGS,
-                Settings.ACTION_USAGE_ACCESS_SETTINGS,
-                Uri.parse("package:" + context.getPackageName())
-        );
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent intent;
+        try {
+            intent = new Intent(
+                    //Settings.ACTION_DATA_USAGE_SETTINGS,
+                    Settings.ACTION_USAGE_ACCESS_SETTINGS,
+                    Uri.parse("package:" + context.getPackageName())
+            );
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        context.startActivity(intent);
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException ex) {
+            /*
+             * Wygląda na to, że nie w każdym telefonie można wystartować
+             * Settings.ACTION_USAGE_ACCESS_SETTINGS. W przypadku błędu zostanie
+             * pokazany ekran z informacją oraz otwarte uprawnienia.
+             */
+            new AlertDialog.Builder(context)
+                    .setTitle("Dostęp do danych")
+                    .setMessage("W ustawieniach aplikacji wybierz specjalne uprawnienia, a następnie nieograniczony dostęp do danych.")
+                    .setPositiveButton("OK", (dialogInterface, i) -> context.startActivity(new Intent(Settings.ACTION_SETTINGS)))
+                    .create().show();
+        }
     }
 
     /**
