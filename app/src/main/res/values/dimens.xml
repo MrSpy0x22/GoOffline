@@ -2,11 +2,12 @@
 <resources>
     <dimen name="activityPadding">15dp</dimen>
     <dimen name="activityLayoutPadding">10dp</dimen>
+    <dimen name="activityLayoutPaddingSmaller">6dp</dimen>
     <dimen name="separatorSize">15dp</dimen>
     <dimen name="separatorSizeSmaller">7dp</dimen>
 
     <dimen name="panelRadius">10dp</dimen>
 
-    <dimen name="textCaptionSize">18dp</dimen>
-    <dimen name="textContentSize">16dp</dimen>
+    <dimen name="textCaptionSize">18sp</dimen>
+    <dimen name="textContentSize">16sp</dimen>
 </resources>

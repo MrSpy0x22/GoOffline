@@ -91,7 +91,7 @@ public class ApplicationFragment extends Fragment implements AppsPresenter.View 
                 presenter.getConfigValue(ConfigUtil.KnownKeys.KK_BLOCK_SETTINGS).equals("true")
         );
         timeSlider.setValue(
-                Float.parseFloat(presenter.getConfigValue(ConfigUtil.KnownKeys.KK_ALLOWED_TIME))
+                Float.parseFloat(presenter.getConfigValue(ConfigUtil.KnownKeys.KK_TIME_LIMIT_TOTAL))
         );
         updateTimeSliderText();
     }
@@ -125,8 +125,18 @@ public class ApplicationFragment extends Fragment implements AppsPresenter.View 
     @Override
     public void onTimeSliderUpdated() {
         int allowedTime = (int) timeSlider.getValue();
-        presenter.setConfigValue(ConfigUtil.KnownKeys.KK_ALLOWED_TIME , String.valueOf(allowedTime));
+        presenter.setConfigValue(ConfigUtil.KnownKeys.KK_TIME_LIMIT_TOTAL , String.valueOf(allowedTime));
         updateTimeSliderText();
+    }
+
+    @Override
+    public void onAppsInSleeptimeUpdated() {
+
+    }
+
+    @Override
+    public void onBlockSettingsUpdated() {
+
     }
 
     private void updateTimeSliderText() {

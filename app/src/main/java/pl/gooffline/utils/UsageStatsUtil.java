@@ -9,10 +9,24 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
+import com.yabu.livechart.model.DataPoint;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedMap;
+import java.util.TimeZone;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import pl.gooffline.database.entity.Whitelist;
 import pl.gooffline.lists.AppList;
@@ -46,7 +60,7 @@ public class UsageStatsUtil {
      * @return Listę typu AppList.AppData.
      * @see pl.gooffline.lists.AppList.AppData
      */
-    public static List<AppList.AppData> getAppDataList(Context context , List<Whitelist> whitelists) throws PackageManager.NameNotFoundException {
+    public static List<AppList.AppData> getAppDataList(Context context , List<Whitelist> whitelists) {
         List<AppList.AppData> dataList = new ArrayList<>();
         Intent intent = new Intent(Intent.ACTION_MAIN , null);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -73,5 +87,66 @@ public class UsageStatsUtil {
         }
 
         return dataList;
+    }
+
+    private static Map<String , UsageStats> getStatsAgregated(Context context , long start , long stop) {
+        UsageStatsManager statsManager = (UsageStatsManager) context.getSystemService(USAGE_STATS_SERVICE);
+
+        // Lista pakietów, którą zostanie przefiltrowana mapa statystyk
+        List<String> packages = getAppDataList(context , null).stream()
+                .map(AppList.AppData::getPackageName)
+                .collect(Collectors.toList());
+
+        return statsManager.queryAndAggregateUsageStats(start , stop).entrySet().stream()
+                .filter(k -> packages.contains(k.getKey()))
+                .collect(Collectors.toMap(Map.Entry::getKey , Map.Entry::getValue));
+    }
+
+    private static List<UsageStats> getStats(Context context , int intervalType , long start , long stop) {
+        UsageStatsManager statsManager = (UsageStatsManager) context.getSystemService(USAGE_STATS_SERVICE);
+
+        // Lista pakietów, którą zostanie przefiltrowana mapa statystyk
+        List<String> packages = getAppDataList(context , null).stream()
+                .map(AppList.AppData::getPackageName)
+                .collect(Collectors.toList());
+
+        return statsManager.queryUsageStats(intervalType , start , stop).stream()
+                .filter(u -> packages.contains(u.getPackageName()))
+                .collect(Collectors.toList());
+    }
+
+    public static Map<Integer , List<UsageStats>> getDailyStats(Context context) {
+        UsageStatsManager statsManager = (UsageStatsManager) context.getSystemService(USAGE_STATS_SERVICE);
+        LocalDateTime day = LocalDateTime.of(LocalDate.now() , LocalTime.MIDNIGHT);
+        Map<Integer , List<UsageStats>> resultMap = new HashMap<>();
+        List<String> monitoredPackages = UsageStatsUtil.getAppDataList(context , null).stream().map(ad -> ad.getPackageName()).collect(Collectors.toList());
+
+        for (int i = 1 ; i <= 23 ; i++ ) {
+            LocalDateTime stopTime = LocalTime.MIN.atDate(day.toLocalDate()).plusHours(i);
+            LocalDateTime startTime = stopTime.minusHours(1);
+            List<UsageStats> hourStats = statsManager.queryUsageStats(
+                    UsageStatsManager.INTERVAL_DAILY ,
+                    startTime.toInstant(ZoneOffset.UTC).toEpochMilli() ,
+                    stopTime.toInstant(ZoneOffset.UTC).toEpochMilli()
+            ).stream().filter(us -> monitoredPackages.contains(us.getPackageName())).collect(Collectors.toList());
+
+            resultMap.put(i , hourStats);
+        }
+
+        return resultMap;
+    }
+
+    public static List<DataPoint> convertStatsMapToDataPoints(Map<Integer , List<UsageStats>> map) {
+        List<DataPoint> dataPoints = new ArrayList<>();
+
+        for (Map.Entry<Integer , List<UsageStats>> item : map.entrySet()) {
+            long max = item.getValue().stream()
+                    .mapToLong(UsageStats::getTotalTimeInForeground)
+                    .sum();
+
+            dataPoints.add(new DataPoint((float) item.getKey() , (float) (max / 1000)));
+        }
+
+        return dataPoints;
     }
 }

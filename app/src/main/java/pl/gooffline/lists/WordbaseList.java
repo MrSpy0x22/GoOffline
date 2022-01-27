@@ -3,26 +3,30 @@ package pl.gooffline.lists;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 import pl.gooffline.R;
 import pl.gooffline.database.entity.Category;
 import pl.gooffline.database.entity.Wordbase;
 
-public class WordbaseList extends RecyclerView.Adapter<WordbaseList.ViewHolder> {
+public class WordbaseList extends RecyclerView.Adapter<WordbaseList.ViewHolder> implements Filterable {
     private final List<Object[]> wordsList;
+    private List<Object[]> wordsListFiltered;
     private final RecyclerViewItemClick<Object[]> itemClickListener;
 
     //region ViewHolder
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView word;
-        private TextView category;
+        private final TextView word;
+        private final TextView category;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -50,6 +54,7 @@ public class WordbaseList extends RecyclerView.Adapter<WordbaseList.ViewHolder> 
 
     public WordbaseList(List<Object[]> wordList, RecyclerViewItemClick<Object[]> itemClickListener) {
         this.wordsList = wordList;
+        this.wordsListFiltered = wordList;
         this.itemClickListener = itemClickListener;
     }
 
@@ -64,7 +69,7 @@ public class WordbaseList extends RecyclerView.Adapter<WordbaseList.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Object[] wordAndCategory = wordsList.get(position);
+        Object[] wordAndCategory = wordsListFiltered.get(position);
         holder.word.setText(((Wordbase) wordAndCategory[0]).getWord());
         holder.category.setText(((Category) wordAndCategory[1]).getCategoryName());
         holder.itemView.setOnClickListener(e -> itemClickListener.onItemClick(wordAndCategory));
@@ -72,6 +77,45 @@ public class WordbaseList extends RecyclerView.Adapter<WordbaseList.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return wordsList.size();
+        return wordsListFiltered.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults filterResults = new FilterResults();
+
+                if (wordsList == null || wordsList.size() == 0) {
+                    filterResults.values = wordsList;
+                    filterResults.count = 0;
+                } else {
+                    List<Object[]> results = new ArrayList<>();
+                    String searchedText = constraint.toString().toLowerCase();
+                    List<Wordbase> list = wordsList.stream().map(o -> (Wordbase) o[0]).collect(Collectors.toList());
+
+                    for (Object[] data : wordsList) {
+                        Wordbase w = (Wordbase) data[0];
+
+                        if (w.getWord().toLowerCase().contains(searchedText)) {
+                            results.add(data);
+                        }
+                    }
+
+                    filterResults.values = results;
+                    filterResults.count = results.size() - 1;
+                }
+
+                return filterResults;
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                wordsListFiltered = (List<Object[]>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 }

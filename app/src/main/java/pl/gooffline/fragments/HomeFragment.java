@@ -3,7 +3,6 @@ package pl.gooffline.fragments;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -22,7 +21,6 @@ import com.google.android.material.card.MaterialCardView;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 
 import pl.gooffline.R;
@@ -97,7 +95,8 @@ public class HomeFragment extends Fragment implements HomePresenter.View {
     public void onViewReady() {
         // Pobieranie potrzebnych danych z konfiguracji
         List<Config> config = presenter.pullConfigFrom(Arrays.asList(
-                ConfigUtil.KnownKeys.KK_ALLOWED_TIME.getKeyName() ,
+                ConfigUtil.KnownKeys.KK_TIME_LIMIT_TOTAL.getKeyName() ,
+                ConfigUtil.KnownKeys.KK_TIME_LIMIT_VALUE.getKeyName() ,
                 ConfigUtil.KnownKeys.KK_SLEEPTIME_ENABLE.getKeyName() ,
                 ConfigUtil.KnownKeys.KK_SLEEPTIME_START.getKeyName() ,
                 ConfigUtil.KnownKeys.KK_SLEEPTIME_STOP.getKeyName() ,
@@ -115,7 +114,7 @@ public class HomeFragment extends Fragment implements HomePresenter.View {
                 .orElse(knownKey.getDefaultValue());
 
         // Ustawianie stanu licznika wykorzystanego czasu
-        String configValue = getValue.apply(ConfigUtil.KnownKeys.KK_ALLOWED_TIME);
+        String configValue = getValue.apply(ConfigUtil.KnownKeys.KK_TIME_LIMIT_VALUE);
         int limit = configValue == null ? 0 : Integer.parseInt(configValue);
 
         progressLimitIndicator.setMax(limit); // Wartość maksymalna

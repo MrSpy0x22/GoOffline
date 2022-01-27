@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import java.time.LocalDate;
@@ -50,6 +52,12 @@ public class JournalFragment extends Fragment {
 
         textCalendarDate.setOnClickListener(view1 -> dateDialog.show());
 
+        ImageButton btnDialogSelect = view.findViewById(R.id.journal_btn_dialog);
+        btnDialogSelect.setOnClickListener(e -> createSelectDialog().show());
+
+        ImageButton btnDialogDelete = view.findViewById(R.id.journal_btn_delete);
+        btnDialogDelete.setOnClickListener(e -> createDeleteDialog().show());
+
         // Lista zdarzeń
         eventDataList = getTestEventList();
 
@@ -66,5 +74,24 @@ public class JournalFragment extends Fragment {
         result.add(new JournalList.EventData(LocalDate.now() , LocalTime.now() , "Blokada aplikacji GMail" , "N/A"));
 
         return result;
+    }
+
+    private AlertDialog createSelectDialog() {
+        return new AlertDialog.Builder(requireContext())
+                .setView(R.layout.dialog_journal_select)
+                .setTitle("Ustawienia")
+                .setMessage("Które dane mają być zapisywane do dziennika?")
+                .setPositiveButton("Usuń" , null)
+                .setNegativeButton("Zamknij" , null)
+                .create();
+    }
+
+    private AlertDialog createDeleteDialog() {
+        return new AlertDialog.Builder(requireContext())
+                .setView(R.layout.dialog_journal_delete)
+                .setTitle("Co usunąć?")
+                .setPositiveButton("Usuń" , null)
+                .setNegativeButton("Zamknij" , null)
+                .create();
     }
 }

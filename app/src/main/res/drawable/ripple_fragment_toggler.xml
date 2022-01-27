@@ -10,7 +10,7 @@
 
     <item android:id="@android:id/background">
         <shape android:shape="rectangle">
-            <solid android:color="@color/fragment_toggler_bg"/>
+            <solid android:color="@color/fragmentTogglerBg"/>
             <corners android:radius="@dimen/panelRadius" />
         </shape>
     </item>

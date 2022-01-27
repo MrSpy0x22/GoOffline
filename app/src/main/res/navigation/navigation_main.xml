@@ -27,6 +27,12 @@
         <action
             android:id="@+id/action_home_to_stats"
             app:destination="@id/statsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_playFragment"
+            app:destination="@id/playFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_policyFragment"
+            app:destination="@id/policyFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -66,7 +72,7 @@
     <fragment
         android:id="@+id/gameFragment"
         android:name="pl.gooffline.fragments.GameFragment"
-        android:label="GameFragment" >
+        android:label="@string/game_fragment_name">
         <action
             android:id="@+id/action_game_to_wordbase"
             app:destination="@id/wordbaseFragment" />
@@ -98,4 +104,12 @@
             android:name="category"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/playFragment"
+        android:name="pl.gooffline.fragments.PlayFragment"
+        android:label="PlayFragment" />
+    <fragment
+        android:id="@+id/policyFragment"
+        android:name="pl.gooffline.fragments.PolicyFragment"
+        android:label="PolicyFragment" />
 </navigation>

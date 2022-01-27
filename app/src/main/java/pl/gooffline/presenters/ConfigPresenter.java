@@ -20,7 +20,7 @@ public abstract class ConfigPresenter implements EntityDataFlow<Config> {
         this.configDao = AppDatabase.getInstance(context).configDAO();
 
         if (handledKnownKeys == null) {
-            throw new IllegalArgumentException("List of known keys is mandatory!");
+            throw new IllegalArgumentException("Lista kluczy jest obowiązkowa!");
         }
 
         this.configList = configDao.getFrom(handledKnownKeys);

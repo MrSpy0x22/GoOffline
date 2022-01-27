@@ -6,7 +6,6 @@
     android:padding="@dimen/activityPadding"
     android:orientation="vertical">
 
-
     <LinearLayout
         android:id="@+id/sleeptime_row_enable"
         android:layout_width="match_parent"

@@ -8,16 +8,17 @@ import androidx.room.RoomDatabase;
 
 import pl.gooffline.database.dao.CategoryDao;
 import pl.gooffline.database.dao.ConfigDao;
+import pl.gooffline.database.dao.LogDao;
 import pl.gooffline.database.dao.WhitelistDao;
 import pl.gooffline.database.dao.WordbaseDao;
 import pl.gooffline.database.entity.Category;
 import pl.gooffline.database.entity.Config;
+import pl.gooffline.database.entity.Log;
 import pl.gooffline.database.entity.Whitelist;
 import pl.gooffline.database.entity.Wordbase;
-import pl.gooffline.database.entity.WordsCategory;
 
 @Database(entities = {
-        Config.class , Whitelist.class , Category.class , Wordbase.class
+        Config.class , Whitelist.class , Category.class , Wordbase.class , Log.class
     } , version = 3)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String APP_DB_NAME = "app.db";
@@ -38,4 +39,5 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract WhitelistDao whitelistDAO();
     public abstract WordbaseDao wordbaseDAO();
     public abstract CategoryDao categoryDAO();
+    public abstract LogDao logDAO();
 }

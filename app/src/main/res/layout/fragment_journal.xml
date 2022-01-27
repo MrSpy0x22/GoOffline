@@ -3,15 +3,50 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/activityPadding"
     android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/sleeptime_row_enable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:theme="@style/Theme.GoOffline.Fragment.Toggler"
+        android:clickable="true">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:theme="@style/Theme.GoOffline.Fragment.Toggler.Caption"
+            android:text="Włącz logi"
+            />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/sleeptime_row_enable_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/Theme.GoOffline.Fragment.Toggler.Switch"
+            android:clickable="false"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.GoOffline.Fragment.TogglerDescription"
+        android:text="Zbieranie logów przez dłuższy czas może spowodować zwiększenie rozmiaru bazy danych. Warto co jakiś czas usuwać logi i/lub wybrać zdarzenia, które mają zostać zapisane."
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="5dp"
+        android:paddingVertical="@dimen/separatorSizeSmaller"
         android:orientation="horizontal">
 
         <ImageButton
+            android:id="@+id/journal_btn_back"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@drawable/ic_panel_nav_back"
@@ -32,6 +67,21 @@
             />
 
         <ImageButton
+            android:id="@+id/journal_btn_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_panel_select_dialog"
+            />
+
+        <ImageButton
+            android:id="@+id/journal_btn_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_panel_delete_perm"
+            />
+
+        <ImageButton
+            android:id="@+id/journal_btn_next"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@drawable/ic_panel_nav_forward"

@@ -2,11 +2,10 @@ package pl.gooffline.fragments;
 
 import android.graphics.Canvas;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,22 +14,17 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 import pl.gooffline.R;
@@ -84,8 +78,8 @@ public class WordbaseFragment extends Fragment implements WordbasePresenter.View
             @Override
             public void onChildDrawOver(@NonNull Canvas c, @NonNull RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                 new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                        .addSwipeLeftBackgroundColor(ContextCompat.getColor(requireContext() , R.color.recycler_delete_bg))
-                        .setSwipeLeftActionIconTint(ContextCompat.getColor(requireContext() , R.color.recycler_icon_tint))
+                        .addSwipeLeftBackgroundColor(ContextCompat.getColor(requireContext() , R.color.recyclerDeleteBg))
+                        .setSwipeLeftActionIconTint(ContextCompat.getColor(requireContext() , R.color.recyclerIconTint))
                         .addSwipeLeftActionIcon(R.drawable.ic_recycler_action_delete)
                         .create()
                         .decorate();
@@ -105,6 +99,20 @@ public class WordbaseFragment extends Fragment implements WordbasePresenter.View
 
         wordbaseListAdapter = new WordbaseList(wordList , this::onListItemEdit);
         listWordBase.setAdapter(wordbaseListAdapter);
+
+        SearchView searchField = view.findViewById(R.id.wordbase_search);
+        searchField.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                wordbaseListAdapter.getFilter().filter(s);
+                return true;
+            }
+        });
 
         this.onViewReady();
     }

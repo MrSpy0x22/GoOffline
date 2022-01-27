@@ -13,7 +13,6 @@
     <string name="just_loading">Ładowanie…</string>
     <string name="just_saved_changes">Zapisano zmiany.</string>
 
-
     <string name="card_header_time">Limit użycia</string>
     <string name="card_header_rules">Reguły aplikacji</string>
     <string name="card_header_game">Dodatkowy czas</string>
@@ -53,5 +52,19 @@
     <string name="sleeptime_switch_name">Włącz czas snu</string>
     <string name="sleeptime_switch_desc">Określ czas, podczas którego dozwolone będzie korzystanie z telefonu. Aktywność po tym czasie powoduje zablokowanie aplikacji niezależnie od limitu czasu, który został wykorzystany.</string>
     <string name="sleeptime_range_tooltip" formatted="false">%.0f:00</string>
+
+    <!-- FRAGMENT: dodatkowy czas -->
+    <string name="game_fragment_name">Dodatkowy czas</string>
+    <string name="game_fragment_toggler">Dodatkowy czas</string>
+    <string name="game_fragment_description">Dodatkowy czas daje użytkownikowi możliwość rozwiązania zagadki w celu zwiększenia swojego limitu czasowego, przez który może używać urządzenia.</string>
+    <string name="game_fragment_caption_attempts">Liczba prób</string>
+    <string name="game_fragment_caption_time">Czas za próbę</string>
+    <string name="game_fragment_button_wordbase">Baza wiedzi</string>
+
+    <!-- FRAGMENT: lista słów -->
+    <string name="wordbase_fragment_name">Baza słów</string>
+
+    <!-- FRAGMENT: formularz słowa -->
+    <string name="wordbase_form_fragment_name">Formularz słowa</string>
 
 </resources>

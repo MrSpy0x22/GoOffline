@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.provider.Settings;
+import android.telephony.ServiceState;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -21,37 +22,40 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import java.time.LocalDate;
+import java.time.Instant;
 import java.time.LocalTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.SortedMap;
 
 import pl.gooffline.R;
+import pl.gooffline.ServiceConfigManager;
 import pl.gooffline.utils.UsageStatsUtil;
 
 public class MonitorService extends Service {
-    private boolean isStarted = false;
-    private boolean isLocked = false;
+    /**
+     * Wartości stanu blokady ekranu.
+     */
+    private enum MonitorState {
+        MS_NOT_DETECTED , MS_DETECTED
+    }
+    /**
+     * Stan blokady ekranu
+     */
+    private MonitorState serviceMonitorState = MonitorState.MS_NOT_DETECTED;
+    /**
+     * Obiekty potrzebne dla ekranu blokady.
+     */
+    private WindowManager windowManager;
+    private WindowManager.LayoutParams layoutParams;
+    private View overlay;
+    private String detectedPackage = "";
 
     // Czas snu
     private static boolean sleepTimeEnabled;
     private static int sleepTimeStart;
     private static int sleepTimeStop;
 
-    // Monitorowane pakiety
-    private static List<String> monitoredPackageList;// = Collections.singletonList("com.google.android.apps.maps");
-
-    private WindowManager windowManager;
-    private WindowManager.LayoutParams layoutParams;
-    private View overlay;
     private Handler handler;
-
-    public static void updateWatchedPackages(List<String> packages) {
-        if (packages != null) {
-            monitoredPackageList = packages;
-        }
-    }
 
     public static void updateSleepTime(boolean enabled , int start , int stop) {
         sleepTimeEnabled = enabled;
@@ -88,7 +92,7 @@ public class MonitorService extends Service {
         Runnable r = new Runnable() {
             @Override
             public void run() {
-                checkCurrentActivityAndBlockIfNotAllowed();
+                runMonitor();
                 handler.postDelayed(this , 500);
             }
         };
@@ -121,12 +125,6 @@ public class MonitorService extends Service {
 //            overlay = null;
 //        });
 
-        if (!Settings.canDrawOverlays(this)) {
-            Log.d("" , "You cannot draw!");
-        } else {
-            Log.d("" , "Well... you can draw! But do you?");
-        }
-
         startInForegroundWithNotification();
 
         return START_STICKY;
@@ -158,40 +156,66 @@ public class MonitorService extends Service {
         startForeground(500 , notify);
     }
 
-    private void checkCurrentActivityAndBlockIfNotAllowed() {
+    private void runMonitor() {
         SortedMap<Long , String> usedPackages = UsageStatsUtil.getAllUsedActivities(this);
         String currentPackage = usedPackages.isEmpty() ? null : usedPackages.get(usedPackages.lastKey());
-        boolean detected = false;
+        String detected = "";
+        List<String> monitoredPackageList = ServiceConfigManager.getInstance().getAllowedPackages();
 
         if (currentPackage != null && monitoredPackageList != null) {
 
             for (String packageToCheck : monitoredPackageList) {
                 if (currentPackage.equals(packageToCheck)) {
-                    Log.d("overlay" , packageToCheck);
-                    detected = true;
+                    if (!detectedPackage.equals(currentPackage)) {
+                        Log.d(this.getClass().toString() , "runMonitor() -> " + currentPackage);
+                        BroadcastLogger.broadcastEvent(this , BroadcastLogger.LogType.LT_LOCK ,
+                                "Blokada '" + detected  + "'" , Instant.now()
+                        );
+                    }
+                    detectedPackage = detected = packageToCheck;
                     break;
                 }
             }
 
-            if (detected && !isLocked) {
-                updateScreenReasonText();
-                isLocked = true;
-                try {
-                    ((WindowManager) MonitorService.this.getSystemService(WINDOW_SERVICE)).addView(overlay, layoutParams);
-                } catch (Exception e) {
-                    Log.d(this.getClass().getSimpleName() , "Złapano wyjątek podczas próby pokazania ekranu blokady:\n" + e.getMessage());
-                }
-            } else if (!detected && isLocked) {
-                isLocked = false;
-                try {
-                    ((WindowManager) MonitorService.this.getSystemService(WINDOW_SERVICE)).removeView(overlay);
-                } catch (Exception e) {
-                    Log.d(this.getClass().getSimpleName() , "Złapano wyjątek podczas próby ukrycia ekranu blokady:\n" + e.getMessage());
-                }
-
+            // Pokazywanie lub ukrywanie ekranu
+            if (!detected.isEmpty()) {
+                showOverlay();
+            } else {
+                hideOverlay();
             }
         }
+    }
 
+    /**
+     * Pokazuje ekran blokady i ustawia odpowiednią flagę.
+     */
+    public void showOverlay() {
+        if (serviceMonitorState == MonitorState.MS_DETECTED) {
+            return;
+        }
+
+        try {
+            ((WindowManager) MonitorService.this.getSystemService(WINDOW_SERVICE)).addView(overlay, layoutParams);
+            serviceMonitorState = MonitorState.MS_DETECTED;
+        } catch (Exception e) {
+            Log.d(this.getClass().getSimpleName() , "Złapano wyjątek podczas próby pokazania ekranu blokady:\n" + e.getMessage());
+        }
+    }
+
+    /**
+     * Ukrywa ekran blokady (jeżeli jest widoczny) i ustawia odpowiednią flagę stanu.
+     */
+    private void hideOverlay() {
+        if (serviceMonitorState == MonitorState.MS_NOT_DETECTED) {
+            return;
+        }
+
+        try {
+            ((WindowManager) MonitorService.this.getSystemService(WINDOW_SERVICE)).removeView(overlay);
+            serviceMonitorState = MonitorState.MS_NOT_DETECTED;
+        } catch (Exception e) {
+            Log.d(this.getClass().getSimpleName() , "Złapano wyjątek podczas próby ukrycia ekranu blokady:\n" + e.getMessage());
+        }
     }
 
     @Nullable
@@ -203,6 +227,8 @@ public class MonitorService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        Log.d(getClass().toString() , "onDestroy()");
 
         try {
             windowManager.removeView(overlay);

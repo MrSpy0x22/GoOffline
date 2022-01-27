@@ -2,6 +2,7 @@ package pl.gooffline.utils;
 
 import android.content.Context;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,22 +18,20 @@ public class ConfigUtil {
      * Zdefiniowane nazwy kluczy dla ustawień.
      */
     public enum KnownKeys {
-        // Ogólne
         KK_ACTIVE("service_enabled") ,
-
-        // Aplikacje
+        KK_TIME_LIMIT_TOTAL("time_limit_total") ,
+        KK_TIME_LIMIT_VALUE("time_limit_value") ,
+        KK_TIME_LIMIT_TIMESTAMP("time_limit_timestamp") ,
         KK_WHITELIST_WHILE_SLEEPING("allow_whitelist_while_sleeping") ,
         KK_BLOCK_SETTINGS("app_block_settings") ,
         KK_SLEEPTIME_ENABLE("sleeptime_enabled") ,
         KK_SLEEPTIME_START("sleeptime_start") ,
         KK_SLEEPTIME_STOP("sleeptime_stop") ,
-        KK_BLOCK_SHOPS("app_block_shops") ,
         KK_GAME_ENABLE("game_enable") ,
         KK_GAME_ATTEMPTS("game_attempts") ,
         KK_GAME_BONUS_TIME("game_bonus_time") ,
         KK_SEC_ADMIN_PASSWD("sec_admin_passwd") ,
-        KK_SEC_ADMIN_CONTACT("sec_admin_contact") ,
-        KK_ALLOWED_TIME("allowed_time");
+        KK_SEC_ADMIN_CONTACT("sec_admin_contact");
 
         private final String keyName;
 
@@ -51,7 +50,13 @@ public class ConfigUtil {
         public static KnownKeys getKnownKey(String keyName) {
             KnownKeys result = null;
 
-            if (keyName.equals(KK_WHITELIST_WHILE_SLEEPING.getKeyName())) {
+            if (keyName.equals(KK_TIME_LIMIT_TOTAL.getKeyName())) {
+                result = KnownKeys.KK_TIME_LIMIT_TOTAL;
+            } else if (keyName.equals(KK_TIME_LIMIT_VALUE.getKeyName())) {
+                result = KnownKeys.KK_TIME_LIMIT_VALUE;
+            } else if (keyName.equals(KK_TIME_LIMIT_TIMESTAMP.getKeyName())) {
+                result = KnownKeys.KK_TIME_LIMIT_TIMESTAMP;
+            } else if (keyName.equals(KK_WHITELIST_WHILE_SLEEPING.getKeyName())) {
                 result = KnownKeys.KK_WHITELIST_WHILE_SLEEPING;
             } else if (keyName.equals(KK_BLOCK_SETTINGS.getKeyName())) {
                 result = KnownKeys.KK_BLOCK_SETTINGS;
@@ -61,8 +66,6 @@ public class ConfigUtil {
                 result = KnownKeys.KK_SLEEPTIME_START;
             } else if (keyName.equals(KK_SLEEPTIME_STOP.getKeyName())) {
                 result = KnownKeys.KK_SLEEPTIME_STOP;
-            } else if (keyName.equals(KK_BLOCK_SHOPS.getKeyName())) {
-                result = KnownKeys.KK_BLOCK_SHOPS;
             } else if (keyName.equals(KK_GAME_ENABLE.getKeyName())) {
                 result = KnownKeys.KK_GAME_ENABLE;
             } else if (keyName.equals(KK_GAME_ATTEMPTS.getKeyName())) {
@@ -73,8 +76,6 @@ public class ConfigUtil {
                 result = KnownKeys.KK_SEC_ADMIN_PASSWD;
             } else if (keyName.equals(KK_SEC_ADMIN_CONTACT.getKeyName())) {
                 result = KnownKeys.KK_SEC_ADMIN_CONTACT;
-            } else if (keyName.equals(KK_ALLOWED_TIME.getKeyName())) {
-                result = KnownKeys.KK_ALLOWED_TIME;
             }
 
             return result;
@@ -83,7 +84,15 @@ public class ConfigUtil {
         public String getDefaultValue() {
             String defaultVal = "";
 
-            if (keyName.equals(KK_WHITELIST_WHILE_SLEEPING.getKeyName())) {
+            if (keyName.equals(KK_ACTIVE.getKeyName())) {
+                defaultVal = "true";
+            } else if (keyName.equals(KK_TIME_LIMIT_TOTAL.getKeyName())) {
+                defaultVal = "50";
+            } else if (keyName.equals(KK_TIME_LIMIT_VALUE.getKeyName())) {
+                defaultVal = "50";
+            } else if (keyName.equals(KK_TIME_LIMIT_TIMESTAMP.getKeyName())) {
+                defaultVal = String.valueOf(LocalDate.now().toEpochDay());
+            } else if (keyName.equals(KK_WHITELIST_WHILE_SLEEPING.getKeyName())) {
                 defaultVal = "true";
             } else if (keyName.equals(KK_BLOCK_SETTINGS.getKeyName())) {
                 defaultVal = "false";
@@ -93,16 +102,12 @@ public class ConfigUtil {
                 defaultVal = "7";
             } else if (keyName.equals(KK_SLEEPTIME_STOP.getKeyName())) {
                 defaultVal = "21";
-            } else if (keyName.equals(KK_BLOCK_SHOPS.getKeyName())) {
-                defaultVal = "true";
             } else if (keyName.equals(KK_GAME_ENABLE.getKeyName())) {
                 defaultVal = "false";
             } else if (keyName.equals(KK_GAME_ATTEMPTS.getKeyName())) {
                 defaultVal = "2";
             } else if (keyName.equals(KK_GAME_BONUS_TIME.getKeyName())) {
                 defaultVal = "5";
-            } else if (keyName.equals(KK_ALLOWED_TIME.getKeyName())) {
-                defaultVal = "12";
             }
 
             return defaultVal;

@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="pl.gooffline">
 
-    <uses-permission
-        android:name="android.permission.PACKAGE_USAGE_STATS"/>
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
 <!--    <uses-permission android:name="android.permission.OVE" />-->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -18,13 +18,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GoOffline">
-        <activity
-            android:name=".fragments.HomeFragment"
-            android:exported="false" />
-
         <service
             android:name=".services.MonitorService"
             android:enabled="true" />
+
+        <receiver android:name="pl.gooffline.Receiver" android:enabled="true" android:exported="false">
+            <intent-filter>
+                <action android:name="pl.gooffline.service.BroadcastLogger" />
+            </intent-filter>
+        </receiver>
 
         <activity
             android:name=".MainActivity"

@@ -2,9 +2,7 @@ package pl.gooffline.presenters;
 
 import android.content.Context;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import pl.gooffline.database.AppDatabase;
 import pl.gooffline.database.dao.ConfigDao;

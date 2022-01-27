@@ -16,8 +16,6 @@
         <item name="colorSecondary">@color/secondaryColor</item>
         <item name="colorSecondaryVariant">@color/secondaryLightColor</item>
         <item name="colorOnSecondary">@color/secondaryTextColor</item>
-
-        <!-- Customize your theme here. -->
     </style>
 
     <style name="CardTextHeader">

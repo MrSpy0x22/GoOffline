@@ -1,7 +1,6 @@
 package pl.gooffline.presenters;
 
 import android.content.Context;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,6 @@ import pl.gooffline.database.dao.CategoryDao;
 import pl.gooffline.database.dao.WordbaseDao;
 import pl.gooffline.database.entity.Category;
 import pl.gooffline.database.entity.Wordbase;
-import pl.gooffline.lists.RecyclerViewItemClick;
 
 public class WordbasePresenter {
     //region Interfejs widoku

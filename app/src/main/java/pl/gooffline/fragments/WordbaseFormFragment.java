@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -15,7 +14,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -86,7 +84,7 @@ public class WordbaseFormFragment extends Fragment implements WordbaseFormPresen
 
         if (validateErrorMessage.length() == 0) { // Udana walidacja
             // Sprawdzanie czy pola formularza zostały zmienione (w trybie edycji)
-            boolean isWordModified = isEditMode && !wordName.equals(argWord);
+            boolean isWordModified = !wordName.equals(argWord);
             boolean isCategoryModified = isEditMode && !categoryName.equals(argCategory);
 
             Wordbase word = null;

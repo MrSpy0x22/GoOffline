@@ -2,6 +2,7 @@ package pl.gooffline.lists;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -11,13 +12,17 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import pl.gooffline.R;
+import pl.gooffline.database.entity.Category;
+import pl.gooffline.database.entity.Wordbase;
 
-public class AppList extends BaseAdapter implements Filterable {
-
+public class AppList extends RecyclerView.Adapter<AppList.ViewHolder> implements Filterable {
     //region Klasa modelu
     public static class AppData {
         Drawable icon;
@@ -50,56 +55,66 @@ public class AppList extends BaseAdapter implements Filterable {
     }
     //endregion
 
-    private final Context context;
+    //region ViewHolder
+    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private final ImageView appIcon;
+        private final TextView appName;
+        private final TextView appPackage;
+        private final CheckBox appWhitelistedCheck;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            appIcon = itemView.findViewById(R.id.app_list_icon);
+            appName = itemView.findViewById(R.id.app_list_header);
+            appPackage = itemView.findViewById(R.id.app_list_subheader);
+            appWhitelistedCheck = itemView.findViewById(R.id.app_list_checkbox);
+        }
+
+        @Override
+        public void onClick(View view) {
+            boolean status = appWhitelistedCheck.isChecked();
+            appWhitelistedCheck.setChecked(!status);
+        }
+    }
+    //endregion
+
     private final List<AppData> appData;
     private List<AppData> appDataFiltered;
 
-    public AppList(Context context , List<AppData> data) {
-        this.context = context;
-        this.appData = data == null ? new ArrayList<>() : data;
-        this.appDataFiltered = data == null ? new ArrayList<>() : data;
+    public AppList(List<AppData> appData) {
+        this.appData = appData == null ? new ArrayList<>() : appData;
+        this.appDataFiltered = appData == null ? new ArrayList<>() : appData;
     }
 
-    //region Metody adaptera
+    @NonNull
     @Override
-    public int getCount() {
+    public AppList.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        View view = layoutInflater.inflate(R.layout.list_app_item , parent , false);
+
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull AppList.ViewHolder holder, int position) {
+        AppData listItem = appDataFiltered.get(position);
+
+        holder.appIcon.setImageDrawable(listItem.icon);
+        holder.appName.setText(listItem.getName());
+        holder.appPackage.setText(listItem.getPackageName());
+        holder.appWhitelistedCheck.setChecked(listItem.isSelected());
+    }
+
+    @Override
+    public int getItemCount() {
         return appDataFiltered.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return appDataFiltered.get(position);
     }
 
     @Override
     public long getItemId(int position) {
         return position;
     }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View view = convertView;
-        if (convertView == null) {
-            view = View.inflate(context , R.layout.app_list_item , null);
-        }
-
-        ImageView icon = view.findViewById(R.id.app_list_icon);
-        TextView caption = view.findViewById(R.id.app_list_header);
-        TextView text = view.findViewById(R.id.app_list_subheader);
-        CheckBox checkBox = view.findViewById(R.id.app_list_checkbox);
-
-        AppData data = appDataFiltered.get(position);
-        icon.setImageDrawable(data.icon);
-        caption.setText(data.name);
-        text.setText(data.packageName);
-        checkBox.setChecked(data.selected);
-
-        final Context c = view.getContext();
-        checkBox.setOnClickListener(e -> data.selected = !data.selected);
-
-        return view;
-    }
-    //endregion
 
     //region Filtrowanie listy
     @Override

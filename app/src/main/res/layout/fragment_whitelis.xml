@@ -16,20 +16,17 @@
         app:layout_constraintRight_toRightOf="parent"
         >
 
-        <EditText
+        <SearchView
             android:id="@+id/app_search_edit"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="10dp"
-            android:hint="@string/whitelist_search_placeholder"
-            android:drawableStart="@drawable/ic_search"
-            android:focusable="false"
+            android:queryHint="Wyszukaj..."
+            android:iconifiedByDefault="false"
             />
 
     </LinearLayout>
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/app_list"
         android:layout_width="0dp"
         android:layout_height="0dp"

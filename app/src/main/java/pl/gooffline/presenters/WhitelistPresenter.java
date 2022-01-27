@@ -18,9 +18,8 @@ public class WhitelistPresenter implements EntityDataFlow<Whitelist> {
      * Interfejs dla widoku.
      */
     public interface View {
-        void onChangeWorkingStatusFlag(boolean statusFlag);
         void onClickButtonUpdate();
-        void onDataUpdated(List<Whitelist> whitelists);
+        void onDataUpdated();
     }
 
     private final Context context;

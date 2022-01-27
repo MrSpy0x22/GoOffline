@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:layout_weight="1"
-            android:text="Dodatkowy czas"
+            android:text="@string/game_fragment_toggler"
             android:theme="@style/Theme.GoOffline.Fragment.Toggler.Caption"
             />
 
@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/Theme.GoOffline.Fragment.TogglerDescription"
-        android:text="Rozwiązanie zagadki umożliwia przedłużenie czasu korzystania z urządzenia. Skonfiguruj bazę wiedzy oraz warunki."
+        android:text="@string/game_fragment_description"
         />
 
     <LinearLayout
@@ -64,7 +64,7 @@
                     android:paddingVertical="5dp"
                     android:layout_weight="2"
                     android:theme="@style/Theme.GoOffline.Fragment.Label"
-                    android:text="Liczba prób"
+                    android:text="@string/game_fragment_caption_attempts"
                     />
                 <TextView
                     android:id="@+id/game_attempts_slider_val"
@@ -105,7 +105,7 @@
                     android:paddingVertical="5dp"
                     android:layout_weight="2"
                     android:theme="@style/Theme.GoOffline.Fragment.Label"
-                    android:text="Czas za próbę"
+                    android:text="@string/game_fragment_caption_time"
                     />
                 <TextView
                     android:id="@+id/game_bonus_time_slider_val"
@@ -145,7 +145,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingVertical="5dp"
-            android:text="Baza wiedzy"
+            android:text="@string/game_fragment_button_wordbase"
             android:theme="@style/Theme.GoOffline.Fragment.BtnShortcut.Caption" />
 
         <ImageView
