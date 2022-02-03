@@ -5,9 +5,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ListView
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activityPadding"
+        android:textSize="16sp"
+        android:text="@string/policy_label_text"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/policy_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:clickable="false"
+        />
 
 </LinearLayout>

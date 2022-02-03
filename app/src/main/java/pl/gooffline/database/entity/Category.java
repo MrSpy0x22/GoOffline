@@ -14,7 +14,7 @@ public class Category {
 
     //region Konstruktor/y
     public Category(String categoryName) {
-        this.categoryName = categoryName;
+        this.categoryName = categoryName.toLowerCase();
     }
     //endregion
 
@@ -32,7 +32,7 @@ public class Category {
     }
 
     public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+        this.categoryName = categoryName.toLowerCase();
     }
     //endregion
 }

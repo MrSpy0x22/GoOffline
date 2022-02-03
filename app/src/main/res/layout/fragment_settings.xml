@@ -3,12 +3,41 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activityPadding">
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/service_enable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activityPadding"
+        android:orientation="horizontal"
+        android:clickable="true"
+        android:theme="@style/Theme.GoOffline.Fragment.Toggler">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="@string/settings_enable_service"
+            android:theme="@style/Theme.GoOffline.Fragment.Toggler.Caption"
+            />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/service_enable_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:checked="true"
+            android:theme="@style/Theme.GoOffline.Fragment.Toggler.Switch"
+            />
+    </LinearLayout>
 
     <ListView
         android:id="@+id/setting_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/activityPadding"
         android:clickable="true"
         />
 

@@ -1,7 +1,7 @@
 package pl.gooffline.presenters;
 
 import android.content.Context;
-import android.content.pm.PackageManager;
+import android.widget.CheckBox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +20,7 @@ public class WhitelistPresenter implements EntityDataFlow<Whitelist> {
     public interface View {
         void onClickButtonUpdate();
         void onDataUpdated();
+        void onClickListItem(AppList.AppData appData , CheckBox checkBox);
     }
 
     private final Context context;
@@ -41,6 +42,7 @@ public class WhitelistPresenter implements EntityDataFlow<Whitelist> {
     @Override
     public void pushData() {
         if (this.whitelistApps != null) {
+            whitelistDao.deleteAll();
             whitelistDao.insertAll(this.whitelistApps);
         }
     }
@@ -63,7 +65,7 @@ public class WhitelistPresenter implements EntityDataFlow<Whitelist> {
         return result;
     }
 
-    public List<AppList.AppData> getAsAppData() throws PackageManager.NameNotFoundException {
+    public List<AppList.AppData> getAsAppData() {
         return UsageStatsUtil.getAppDataList(context , whitelistDao.getAll());
     }
 }

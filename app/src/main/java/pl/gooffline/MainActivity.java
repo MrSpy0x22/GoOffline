@@ -1,5 +1,7 @@
 package pl.gooffline;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -20,22 +22,19 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 import java.time.Instant;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import io.reactivex.rxjava3.subjects.Subject;
-import pl.gooffline.database.AppDatabase;
-import pl.gooffline.database.dao.ConfigDao;
-import pl.gooffline.database.dao.WhitelistDao;
-import pl.gooffline.database.entity.Config;
-import pl.gooffline.database.entity.Whitelist;
 import pl.gooffline.presenters.SecurityPresenter;
+import pl.gooffline.services.BroadcastActivity;
 import pl.gooffline.services.BroadcastLogger;
 import pl.gooffline.services.MonitorService;
 import pl.gooffline.utils.ConfigUtil;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String NOTIFICATION_CHANNEL_SERVICE = "gooffline_channel_service";
+    public static final String NOTIFICATION_CHANNEL_INFO = "gooffline_channel_info";
+
     private SecurityPresenter secPresenter;
     private NavController navController;
     private static Boolean workingStatusIndicator;
@@ -57,17 +56,6 @@ public class MainActivity extends AppCompatActivity {
         // Tworzenie obiektu prezentera
         secPresenter = new SecurityPresenter(this);
 
-        // Konfiguracji - lista wyjątków
-        ServiceConfigManager.getInstance().setAllowedPackages(
-                pullWhitelistFromDatabase()
-        );
-
-        // Konfiguracja - ustawieniami
-        ServiceConfigManager.getInstance().updateServiceConfig(this,
-                pullConfigFromDatabase()
-        );
-
-
         //region Szukanie widoków
         Toolbar mainToolbar = findViewById(R.id.toolbar_main);
         workingProgresView = findViewById(R.id.working_progress_view);
@@ -88,6 +76,25 @@ public class MainActivity extends AppCompatActivity {
         // Tworzenie obiektu do odbioru broadcast-ów
         receiver = new Receiver();
 
+        // Broadcast
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BroadcastLogger.class.toString());
+        intentFilter.addAction(BroadcastActivity.class.toString());
+        registerReceiver(receiver, intentFilter);
+
+        // Tworzenie kanałów powiadomień
+        NotificationManager notifyMan = getSystemService(NotificationManager.class);
+        notifyMan.createNotificationChannel(new NotificationChannel(
+                NOTIFICATION_CHANNEL_SERVICE ,
+                getString(R.string.services_channel_name) ,
+                NotificationManager.IMPORTANCE_HIGH
+        ));
+        notifyMan.createNotificationChannel(new NotificationChannel(
+                NOTIFICATION_CHANNEL_INFO ,
+                getString(R.string.services_channel_name) ,
+                NotificationManager.IMPORTANCE_HIGH
+        ));
+
         // Uruchamianie serwisu
         startForegroundService(new Intent(getBaseContext(), MonitorService.class));
     }
@@ -95,37 +102,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        registerReceiver(receiver, new IntentFilter(BroadcastLogger.class.toString()));
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         //AppDatabase.getInstance(this).close();
-    }
-
-    /**
-     * Pobiera listę wyjątków z bazy danych.
-     *
-     * @return Listę z nazwami pakietów.
-     */
-    private List<String> pullWhitelistFromDatabase() {
-        WhitelistDao whitelistDao = AppDatabase.getInstance(this).whitelistDAO();
-        return whitelistDao.getAll().stream()
-                .filter(w -> !w.ignored)
-                .map(Whitelist::getPackageName).collect(Collectors.toList());
-    }
-
-    /**
-     * Pobiera całą konfigurację z bazy danych.
-     *
-     * @return Listę z obiektami konfiguracji.
-     * @see Config
-     */
-    private List<Config> pullConfigFromDatabase() {
-        ConfigDao configDao = AppDatabase.getInstance(this).configDAO();
-        return configDao.getAll();
+        unregisterReceiver(receiver);
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {

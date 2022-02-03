@@ -32,4 +32,8 @@ public class Log {
     public long getLog_date() {
         return log_date;
     }
+
+    public void setLog_id(long log_id) {
+        this.log_id = log_id;
+    }
 }

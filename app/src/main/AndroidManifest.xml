@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
         android:allowBackup="true"
@@ -22,12 +23,6 @@
             android:name=".services.MonitorService"
             android:enabled="true" />
 
-        <receiver android:name="pl.gooffline.Receiver" android:enabled="true" android:exported="false">
-            <intent-filter>
-                <action android:name="pl.gooffline.service.BroadcastLogger" />
-            </intent-filter>
-        </receiver>
-
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -37,6 +32,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver android:name=".Receiver"/>
     </application>
 
 </manifest>

@@ -1,19 +1,14 @@
 package pl.gooffline;
 
-import android.content.Context;
-
-import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import pl.gooffline.database.AppDatabase;
-import pl.gooffline.database.dao.ConfigDao;
 import pl.gooffline.database.entity.Config;
-import pl.gooffline.presenters.SleeptimePresenter;
-import pl.gooffline.presenters.WhitelistPresenter;
 import pl.gooffline.utils.ConfigUtil;
 
 public final class ServiceConfigManager {
@@ -36,7 +31,7 @@ public final class ServiceConfigManager {
      */
     private int dailyTimeTotal;
     private int dailyTimeLimit;
-    private LocalDate dailyLimitDate;
+    private LocalDateTime dailyLimitDate;
     /**
      * Ustawienia
      */
@@ -54,7 +49,24 @@ public final class ServiceConfigManager {
     private boolean gameEnabled;
     private int gameBonusTime;
     private int gameAttempts;
+    /**
+     * Log
+     */
+    private boolean logEnabled;
+    private boolean logEventAuths;
+    private boolean logEventBlocks;
+    private boolean logEventLimits;
+    /**
+     * Zagadka
+     */
+    private int playAttempts;
+    private int playWordId;
+    private LocalDateTime playDate;
     //endregion
+
+    private String thisPackageName;
+    private String launcherPackageName;
+    private boolean isSettingScreenProtected;
 
     //region Singleton
     /**
@@ -93,7 +105,7 @@ public final class ServiceConfigManager {
         return dailyTimeLimit;
     }
 
-    public LocalDate getDailyLimitDate() {
+    public LocalDateTime getDailyLimitDate() {
         return dailyLimitDate;
     }
 
@@ -129,6 +141,46 @@ public final class ServiceConfigManager {
         return gameAttempts;
     }
 
+    public boolean isLogEnabled() {
+        return logEnabled;
+    }
+
+    public boolean isLogEventAuths() {
+        return logEventAuths;
+    }
+
+    public boolean isLogEventBlocks() {
+        return logEventBlocks;
+    }
+
+    public boolean isLogEventLimits() {
+        return logEventLimits;
+    }
+
+    public String getThisPackageName() {
+        return thisPackageName;
+    }
+
+    public String getLauncherPackageName() {
+        return launcherPackageName;
+    }
+
+    public boolean isSettingScreenProtected() {
+        return isSettingScreenProtected;
+    }
+
+    public int getPlayAttempts() {
+        return playAttempts;
+    }
+
+    public int getPlayWordId() {
+        return playWordId;
+    }
+
+    public LocalDateTime getPlayDate() {
+        return playDate;
+    }
+
     //endregion
 
     //region Setter-y
@@ -149,7 +201,7 @@ public final class ServiceConfigManager {
         this.dailyTimeLimit = dailyTimeLimit;
     }
 
-    public void setDailyLimitDate(LocalDate dailyLimitDate) {
+    public void setDailyLimitDate(LocalDateTime dailyLimitDate) {
         this.dailyLimitDate = dailyLimitDate;
     }
 
@@ -185,13 +237,52 @@ public final class ServiceConfigManager {
         this.gameAttempts = gameAttempts;
     }
 
+    public void setLogEnabled(boolean logEnabled) {
+        this.logEnabled = logEnabled;
+    }
+
+    public void setLogEventAuths(boolean logEventAuths) {
+        this.logEventAuths = logEventAuths;
+    }
+
+    public void setLogEventBlocks(boolean logEventBlocks) {
+        this.logEventBlocks = logEventBlocks;
+    }
+
+    public void setLogEventLimits(boolean logEventLimits) {
+        this.logEventLimits = logEventLimits;
+    }
+
+    public void setThisPackageName(String packageName) {
+        this.thisPackageName = packageName;
+    }
+
+    public void setLauncherPackageName(String packageName) {
+        this.launcherPackageName = packageName;
+    }
+
+    public void setSettingScreenProtected(boolean settingScreenProtected) {
+        isSettingScreenProtected = settingScreenProtected;
+    }
+
+    public void setPlayAttempts(int playAttempts) {
+        this.playAttempts = playAttempts;
+    }
+
+    public void setPlayWordId(int playWordId) {
+        this.playWordId = playWordId;
+    }
+
+    public void setPlayDate(LocalDateTime playDate) {
+        this.playDate = playDate;
+    }
 
     //endregion
 
     /**
      * Przetwarza listę danych konfiguracji i przetwarza je na dane z odpowiednimi typami.
      */
-    public void updateServiceConfig(Context context , List<Config> configList) {
+    public void updateServiceConfig(List<Config> configList) {
 
         for (Config c : configList) {
             // Stan serwisu
@@ -215,7 +306,9 @@ public final class ServiceConfigManager {
             // Limit czasu użycia (data pomiaru)
             else if (c.getConfigKey().equals(ConfigUtil.KnownKeys.KK_TIME_LIMIT_TIMESTAMP.getKeyName())) {
                 ServiceConfigManager.getInstance().setDailyLimitDate(
-                        LocalDate.ofEpochDay(Long.parseLong(c.getConfigValue()))
+                        LocalDateTime.ofInstant(
+                                Instant.ofEpochSecond(Long.parseLong(c.getConfigValue())) ,
+                                ZoneId.systemDefault())
                 );
             }
             // Lista wyjątków aktywna w trybie snu
@@ -232,7 +325,7 @@ public final class ServiceConfigManager {
             }
             // Czas snu
             else if (c.getConfigKey().equals(ConfigUtil.KnownKeys.KK_SLEEPTIME_ENABLE.getKeyName())) {
-                ServiceConfigManager.getInstance().setServiceEnabled(
+                ServiceConfigManager.getInstance().setSleepTimeEnabled(
                         c.getConfigValue().equals("1")
                 );
             }
@@ -264,6 +357,50 @@ public final class ServiceConfigManager {
             else if (c.getConfigKey().equals(ConfigUtil.KnownKeys.KK_GAME_ATTEMPTS.getKeyName())) {
                 ServiceConfigManager.getInstance().setGameBonusTime(
                         Integer.parseInt(c.getConfigValue())
+                );
+            }
+            // Log
+            else if (c.getConfigKey().equals(ConfigUtil.KnownKeys.KK_LOG_ENABLED.getKeyName())) {
+                ServiceConfigManager.getInstance().setLogEnabled(
+                        c.getConfigValue().equals("1")
+                );
+            }
+            // Log - logowania
+            else if (c.getConfigKey().equals(ConfigUtil.KnownKeys.KK_LOG_AUTHS.getKeyName())) {
+                ServiceConfigManager.getInstance().setLogEventAuths(
+                        c.getConfigValue().equals("1")
+                );
+            }
+            // Log - blokady
+            else if (c.getConfigKey().equals(ConfigUtil.KnownKeys.KK_LOG_BLOCKING.getKeyName())) {
+                ServiceConfigManager.getInstance().setLogEventAuths(
+                        c.getConfigValue().equals("1")
+                );
+            }
+            // Log - limity
+            else if (c.getConfigKey().equals(ConfigUtil.KnownKeys.KK_LOG_LIMITS.getKeyName())) {
+                ServiceConfigManager.getInstance().setLogEventAuths(
+                        c.getConfigValue().equals("1")
+                );
+            }
+            // Zagadka - próby
+            else if (c.getConfigKey().equals(ConfigUtil.KnownKeys.KK_PLAY_WORD_ATTEMPTS.getKeyName())) {
+                ServiceConfigManager.getInstance().setPlayAttempts(
+                        Integer.parseInt(c.getConfigValue())
+                );
+            }
+            // Zagadka - id słówka
+            else if (c.getConfigKey().equals(ConfigUtil.KnownKeys.KK_PLAY_WORD_ID.getKeyName())) {
+                ServiceConfigManager.getInstance().setPlayWordId(
+                        Integer.parseInt(c.getConfigValue())
+                );
+            }
+            // Zagadka - data
+            else if (c.getConfigKey().equals(ConfigUtil.KnownKeys.KK_PLAY_DAY.getKeyName())) {
+                ServiceConfigManager.getInstance().setPlayDate(
+                        LocalDateTime.ofInstant(
+                                Instant.ofEpochSecond(Long.parseLong(c.getConfigValue())) ,
+                                ZoneId.systemDefault())
                 );
             }
         }
@@ -300,7 +437,7 @@ public final class ServiceConfigManager {
         //region Limit czasu (dzień)
         result.add(new Config(
                 ConfigUtil.KnownKeys.KK_TIME_LIMIT_TIMESTAMP.getKeyName(),
-                String.valueOf(dailyLimitDate.toEpochDay())
+                String.valueOf(dailyLimitDate.toEpochSecond(ZoneOffset.UTC))
         ));
         //endregion
 
@@ -360,6 +497,69 @@ public final class ServiceConfigManager {
         ));
         //endregion
 
+        //region Log
+        result.add(new Config(
+                ConfigUtil.KnownKeys.KK_LOG_ENABLED.getKeyName(),
+                isLogEnabled() ? "1" : "0"
+        ));
+        //endregion
+
+        //region Log - logowania
+        result.add(new Config(
+                ConfigUtil.KnownKeys.KK_LOG_AUTHS.getKeyName(),
+                isLogEnabled() ? "1" : "0"
+        ));
+        //endregion
+
+        //region Log - blokady
+        result.add(new Config(
+                ConfigUtil.KnownKeys.KK_LOG_BLOCKING.getKeyName(),
+                isLogEventBlocks() ? "1" : "0"
+        ));
+        //endregion
+
+        //region Log - limity
+        result.add(new Config(
+                ConfigUtil.KnownKeys.KK_LOG_LIMITS.getKeyName(),
+                isLogEventLimits() ? "1" : "0"
+        ));
+        //endregion
+
+        //region Zagadka - próby
+        result.add(new Config(
+                ConfigUtil.KnownKeys.KK_PLAY_WORD_ATTEMPTS.getKeyName(),
+                String.valueOf(playAttempts)
+        ));
+        //endregion
+
+        //region Zagadka - id słówka
+        result.add(new Config(
+                ConfigUtil.KnownKeys.KK_PLAY_WORD_ID.getKeyName(),
+                String.valueOf(playWordId)
+        ));
+        //endregion
+
+        //region Zagadka - data
+        result.add(new Config(
+                ConfigUtil.KnownKeys.KK_PLAY_WORD_ATTEMPTS.getKeyName(),
+                String.valueOf(playDate.toEpochSecond(ZoneOffset.UTC))
+        ));
+        //endregion
+
         return result;
+    }
+
+    public void updateTimeLimit(int amount) {
+        LocalDateTime now = LocalDateTime.now();
+
+        // Aktualizacja w tym samym dniu
+        if (ChronoUnit.DAYS.between(this.dailyLimitDate, now) == 0) {
+            this.dailyTimeLimit += amount;
+        }
+        // Nowy dzień
+        else {
+            this.dailyLimitDate = now;
+            this.dailyTimeLimit = amount;
+        }
     }
 }

@@ -9,12 +9,15 @@ import org.json.JSONObject;
 
 import java.time.Instant;
 
-public class BroadcastLogger implements BroadcastSerialization<BroadcastLogger> {
+import pl.gooffline.Receiver;
 
+public class BroadcastLogger implements BroadcastSerialization<BroadcastLogger> {
+    //region Typ zdarzenia logu
     public enum LogType {
+        LT_NULL(0) ,
         LT_AUTH(1) ,
-        LT_LIMIT(2) ,
-        LT_LOCK(3);
+        LT_LOCK(2) ,
+        LT_LIMIT(3) ;
 
         int type;
 
@@ -25,9 +28,20 @@ public class BroadcastLogger implements BroadcastSerialization<BroadcastLogger> 
         public int getType() {
             return type;
         }
-    }
 
-    public static final String BROADCAST_ACTION = "broadcast_action";
+        public static LogType getByNumber(int num) {
+            if (num == 1) {
+                return LT_AUTH;
+            } else if (num == 2) {
+                return LT_LOCK;
+            } else if (num == 3) {
+                return LT_LIMIT;
+            } else {
+                return LT_NULL;
+            }
+        }
+    }
+    //endregion
 
     int type;
     String message;
@@ -77,7 +91,8 @@ public class BroadcastLogger implements BroadcastSerialization<BroadcastLogger> 
         BroadcastLogger bl = new BroadcastLogger(type.getType() , message , time);
         String jsonData = bl.toJSON();
 
-        Intent intent = new Intent(bl.getClass().toString());
+        Intent intent = new Intent(context , Receiver.class);
+        intent.putExtra("broadcastName" , bl.getClass().toString());
         intent.putExtra("jsonData" , jsonData);
         context.sendBroadcast(intent);
     }

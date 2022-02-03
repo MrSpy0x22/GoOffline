@@ -13,7 +13,7 @@ public class Wordbase {
     long wordCategoryId;
 
     public Wordbase(String word, long wordCategoryId) {
-        this.word = word;
+        this.word = word.toLowerCase();
         this.wordCategoryId = wordCategoryId;
     }
 
@@ -31,7 +31,7 @@ public class Wordbase {
     }
 
     public void setWord(String word) {
-        this.word = word;
+        this.word = word.toLowerCase();
     }
 
     public long getWordCategoryId() {

@@ -6,25 +6,30 @@
     android:orientation="vertical">
 
     <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabs_day"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Dzień"/>
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabs_week"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Tydzień"/>
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabs_month"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Miesiąć"/>
+            android:text="Miesiąc"/>
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabs_year"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Rok"/>
@@ -32,21 +37,19 @@
 
     </com.google.android.material.tabs.TabLayout>
 
-    <com.yabu.livechart.view.LiveChart
-        android:id="@+id/live_chart"
+    <TextView
+        android:id="@+id/usages_label"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:labelTextColor="?attr/colorAccent"
-        app:pathColor="?attr/colorAccent"
-        app:pathStrokeWidth="2dp"
-        app:baselineStrokeWidth="4dp"
-        app:baselineDashGap="8dp"
-        app:labelTextHeight="14sp"
-        app:baselineColor="?attr/colorPrimaryDark"
-        app:overlayCircleColor="?attr/colorPrimaryDark"
-        app:overlayLineColor="?attr/colorPrimary"
-        app:overlayCircleDiameter="8dp"
-        app:fillColor="?attr/colorPrimary"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activityPadding"
+        style="@style/TextAppearance.AppCompat.Large"
+        android:text="Całkowity czas: 00:00:00"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/usages_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         />
 
 </LinearLayout>

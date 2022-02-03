@@ -5,9 +5,22 @@
     <string name="time_format" formatted="false" translatable="false">%d:%02d:%02d</string>
     <string name="allowed_time_format_h" formatted="false" translatable="false">%d godz, %02d min</string>
     <string name="allowed_time_format_m" formatted="false" translatable="false">%02d min</string>
-    <string name="app_slider_time_value" formatted="false" translatable="false">%d:%d0:00</string>
+    <string name="app_slider_time_value" formatted="false" translatable="false">%d:%02d:00</string>
+    <string name="home_total_limit" formatted="false" translatable="false">%d:%02d:00</string>
     <string name="home_sleeptime_range" formatted="false" translatable="false">%d:00 - %d:00</string>
     <string name="bonus_time_format" formatted="false" translatable="false">%d min</string>
+
+    <string name="settings_fragment_name">Ustawienia</string>
+    <string name="settings_enable_service">Włącz serwis</string>
+    <string name="settings_list_whtelist">Ustawienia wyjątków</string>
+    <string name="settings_list_sleeptime">Czas snu</string>
+    <string name="settings_list_game">Łamigłówki</string>
+    <string name="settings_list_journal">Dziennik akcji</string>
+    <string name="settings_list_permissions">Menadżer uprawnień</string>
+    <string name="settings_list_security">Ustawwiania PINu</string>
+    <string name="settings_notification_title">Serwis</string>
+    <string name="settings_notification_content_on">Serwis został włączony.</string>
+    <string name="settings_notification_content_off">Serwis został wyłączony. Od teraz żadne dane nie są zbierane.</string>
 
     <string name="just_search1">Szukaj</string>
     <string name="just_loading">Ładowanie…</string>
@@ -19,16 +32,15 @@
     <string name="card_header_sleep">Czas snu</string>
     <string name="card_header_stats">Historia użycia</string>
 
-    <string name="card_descr_time">Limit czasu określa jak długo można używać aplikacji na tym urządzeniu. Po tym czasie zostają wprowadzone ograniczenia administratora urządzenia.</string>
+    <string name="card_descr_time">Wyczerpanie limitu czasu spowoduje włączenie systemu blokowania aplikacji.</string>
     <string name="card_descr_rules">Reguły zostają zastosowane do aplikacji, które nie znajdują się na liście wyjątków.</string>
-    <string name="card_descr_game">Dodatkowy czasz zwiększa limit czasu korzystania z urządzenia. Należy najpier rozwiązać zadanie.</string>
-    <string name="card_descr_sleep">Zdefiniowany czas, podczas któego zostaje zastosowana polityka blokowania aplikacji na urządzeniu niezależnie od wyczerpanego limitu.</string>
-    <string name="card_descr_stats">Historia korzystana z tego urządzenia przedstawiona w przeszłości.</string>
+    <string name="card_descr_game">Rozwiąż zagadkę, aby zdobyć dodatkowy czas. Liczba prób jest ograniczona.</string>
+    <string name="card_descr_sleep">Czas snu włącza system blokady aplikacji niezależnie od wykorzystanego limitu.</string>
+    <string name="card_descr_stats">Analiza zebranych danych o czasie spędzonym przy aplikacjach..</string>
 
     <string name="card_button_rules">Sprawdź</string>
     <string name="card_button_game">Graj</string>
     <string name="card_button_stats">przeglądaj</string>
-
 
     <string name="services_channel_id" translatable="false">gooffline_channel_service</string>
     <string name="services_channel_name">Usługi</string>
@@ -62,9 +74,20 @@
     <string name="game_fragment_button_wordbase">Baza wiedzi</string>
 
     <!-- FRAGMENT: lista słów -->
-    <string name="wordbase_fragment_name">Baza słów</string>
+    <string name="wordbase_fragment_name">Baza słówek</string>
 
     <!-- FRAGMENT: formularz słowa -->
     <string name="wordbase_form_fragment_name">Formularz słowa</string>
+
+    <!-- FRAGMENT: statystyki -->
+    <string name="stats_fragment_name">Analiza danych</string>
+
+    <!-- FRAGMENT: logi -->
+    <string name="journal_fragment_name">Dziennik akcji</string>
+
+    <!-- FRAGMENT: polityka -->
+    <string name="policy_fragment_name">Lista wyjątków</string>
+    <string name="policy_dialog_no_exceptions">Administrator urządzenia nie włączył żadnych wyjątków.</string>
+    <string name="policy_label_text">Po włączeniu systemu blokady można korzystać z poniższych programów.</string>
 
 </resources>

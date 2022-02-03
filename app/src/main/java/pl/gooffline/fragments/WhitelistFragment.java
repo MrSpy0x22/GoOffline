@@ -1,18 +1,13 @@
 package pl.gooffline.fragments;
 
-import android.content.pm.PackageManager;
+import android.app.AlertDialog;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.CheckBox;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -25,17 +20,15 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-import pl.gooffline.MainActivity;
 import pl.gooffline.R;
 import pl.gooffline.ServiceConfigManager;
 import pl.gooffline.database.entity.Whitelist;
 import pl.gooffline.lists.AppList;
 import pl.gooffline.presenters.WhitelistPresenter;
-import pl.gooffline.services.MonitorService;
 
 public class WhitelistFragment extends Fragment implements WhitelistPresenter.View {
     private List<AppList.AppData> installedApps;
@@ -56,10 +49,11 @@ public class WhitelistFragment extends Fragment implements WhitelistPresenter.Vi
         // Tworzenie obiektu prezentera
         presenter = new WhitelistPresenter(requireContext());
 
-        // Pobieranie referencji do widoków
+        //region Szukanie widoków
         appListView = view.findViewById(R.id.app_list);
         SearchView searchEditText = view.findViewById(R.id.app_search_edit);
         Button buttonUpdate = view.findViewById(R.id.button_update);
+        //endregion
 
         // Funkcja wyszukiwania
         searchEditText.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -78,28 +72,34 @@ public class WhitelistFragment extends Fragment implements WhitelistPresenter.Vi
         // Zapisywanie danych
         buttonUpdate.setOnClickListener(e -> onClickButtonUpdate());
 
-        try {
-            appListAdapter = new AppList(presenter.getAsAppData());
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-
         DividerItemDecoration horizontalLine = new DividerItemDecoration(requireContext() , DividerItemDecoration.VERTICAL);
         appListView.setLayoutManager(new LinearLayoutManager(requireContext()));
         appListView.addItemDecoration(horizontalLine);
-        appListView.setAdapter(appListAdapter);
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        try {
+            installedApps = presenter.getAsAppData();
+            appListAdapter = new AppList(installedApps , this::onClickListItem);
+            appListView.setAdapter(appListAdapter);
+        } catch (Exception e) {
+            new AlertDialog.Builder(requireContext())
+                    .setTitle("Wystąpił błąd")
+                    .setMessage("Nie udało się pobrać zainstalowanych aplikacji.")
+                    .setCancelable(true)
+                    .create().show();
+        }
     }
 
     @Override
     public void onClickButtonUpdate() {
+        AtomicInteger key = new AtomicInteger(0);
         // Tworzenie kolekcji danych Whitelist
         List<Whitelist> updatedList = installedApps.stream()
-                .map(a -> new Whitelist(a.getPackageName() , a.isSelected()))
+                .filter(AppList.AppData::isSelected)
+                .map(a -> new Whitelist(key.getAndIncrement() , a.getPackageName() , a.isSelected()))
                 .collect(Collectors.toList());
 
         // Zapis kolekcji do bazy danych
@@ -130,5 +130,11 @@ public class WhitelistFragment extends Fragment implements WhitelistPresenter.Vi
         } else {
             Log.d(getClass().toString() , "fragment = null");
         }
+    }
+
+    @Override
+    public void onClickListItem(AppList.AppData appData , CheckBox checkBox) {
+        appData.setSelected(!appData.isSelected());
+        checkBox.setChecked(appData.isSelected());
     }
 }

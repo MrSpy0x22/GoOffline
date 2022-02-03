@@ -3,11 +3,7 @@ package pl.gooffline.presenters;
 import android.content.Context;
 
 import java.util.Arrays;
-import java.util.List;
 
-import pl.gooffline.database.AppDatabase;
-import pl.gooffline.database.dao.WhitelistDao;
-import pl.gooffline.database.entity.Whitelist;
 import pl.gooffline.utils.ConfigUtil;
 
 public class AppsPresenter extends ConfigPresenter {
@@ -18,8 +14,6 @@ public class AppsPresenter extends ConfigPresenter {
         void onViewReady();
         void onRowOptionSelected(int layoutRowId);
         void onTimeSliderUpdated();
-        void onAppsInSleeptimeUpdated();
-        void onBlockSettingsUpdated();
     }
 
     public AppsPresenter(Context context) {

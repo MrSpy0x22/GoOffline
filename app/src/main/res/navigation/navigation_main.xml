@@ -28,16 +28,16 @@
             android:id="@+id/action_home_to_stats"
             app:destination="@id/statsFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_playFragment"
+            android:id="@+id/action_home_to_play"
             app:destination="@id/playFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_policyFragment"
+            android:id="@+id/action_home_to_policy"
             app:destination="@id/policyFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="pl.gooffline.fragments.SettingsFragment"
-        android:label="SettingsFragment" >
+        android:label="@string/settings_fragment_name">
         <action
             android:id="@+id/action_settings_to_application"
             app:destination="@id/applicationFragment" />
@@ -60,7 +60,7 @@
     <fragment
         android:id="@+id/statsFragment"
         android:name="pl.gooffline.fragments.StatsFragment"
-        android:label="StatsFragment" />
+        android:label="@string/stats_fragment_name" />
     <fragment
         android:id="@+id/sleeptimeFragment"
         android:name="pl.gooffline.fragments.SleeptimeFragment"
@@ -84,11 +84,11 @@
     <fragment
         android:id="@+id/journalFragment"
         android:name="pl.gooffline.fragments.JournalFragment"
-        android:label="JournalFragment" />
+        android:label="@string/journal_fragment_name" />
     <fragment
         android:id="@+id/wordbaseFragment"
         android:name="pl.gooffline.fragments.WordbaseFragment"
-        android:label="WordbaseFragment" >
+        android:label="@string/wordbase_fragment_name">
         <action
             android:id="@+id/action_wordbase_to_form"
             app:destination="@id/wordbaseFormFragment" />
@@ -96,7 +96,7 @@
     <fragment
         android:id="@+id/wordbaseFormFragment"
         android:name="pl.gooffline.fragments.WordbaseFormFragment"
-        android:label="WordbaseFormFragment">
+        android:label="@string/wordbase_form_fragment_name">
         <argument
             android:name="word"
             app:argType="string" />
@@ -111,5 +111,5 @@
     <fragment
         android:id="@+id/policyFragment"
         android:name="pl.gooffline.fragments.PolicyFragment"
-        android:label="PolicyFragment" />
+        android:label="@string/policy_fragment_name" />
 </navigation>

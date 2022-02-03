@@ -9,25 +9,22 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
-import com.yabu.livechart.model.DataPoint;
-
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.YearMonth;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.SortedMap;
-import java.util.TimeZone;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+import io.reactivex.rxjava3.annotations.NonNull;
+import pl.gooffline.database.AppDatabase;
+import pl.gooffline.database.dao.UsagesDao;
+import pl.gooffline.database.entity.Usages;
 import pl.gooffline.database.entity.Whitelist;
 import pl.gooffline.lists.AppList;
 
@@ -89,64 +86,60 @@ public class UsageStatsUtil {
         return dataList;
     }
 
-    private static Map<String , UsageStats> getStatsAgregated(Context context , long start , long stop) {
-        UsageStatsManager statsManager = (UsageStatsManager) context.getSystemService(USAGE_STATS_SERVICE);
+    public static List<Usages> getDailyUsagesDataPoints(Context context) {
+        UsagesDao usagesDao = AppDatabase.getInstance(context).usageDAO();
+        LocalDateTime dateStart = LocalDateTime.now();
 
-        // Lista pakietów, którą zostanie przefiltrowana mapa statystyk
-        List<String> packages = getAppDataList(context , null).stream()
-                .map(AppList.AppData::getPackageName)
-                .collect(Collectors.toList());
-
-        return statsManager.queryAndAggregateUsageStats(start , stop).entrySet().stream()
-                .filter(k -> packages.contains(k.getKey()))
-                .collect(Collectors.toMap(Map.Entry::getKey , Map.Entry::getValue));
+        return usagesDao.getAllByDay((int) dateStart.toLocalDate().atStartOfDay().toEpochSecond(ZoneOffset.UTC));
     }
 
-    private static List<UsageStats> getStats(Context context , int intervalType , long start , long stop) {
-        UsageStatsManager statsManager = (UsageStatsManager) context.getSystemService(USAGE_STATS_SERVICE);
+    public static List<Usages> getWeeklyUsagesDataPoints(Context context) {
+        UsagesDao usagesDao = AppDatabase.getInstance(context).usageDAO();
 
-        // Lista pakietów, którą zostanie przefiltrowana mapa statystyk
-        List<String> packages = getAppDataList(context , null).stream()
-                .map(AppList.AppData::getPackageName)
-                .collect(Collectors.toList());
+        Calendar calendar = Calendar.getInstance();
+        LocalDateTime dateStart;
 
-        return statsManager.queryUsageStats(intervalType , start , stop).stream()
-                .filter(u -> packages.contains(u.getPackageName()))
-                .collect(Collectors.toList());
-    }
-
-    public static Map<Integer , List<UsageStats>> getDailyStats(Context context) {
-        UsageStatsManager statsManager = (UsageStatsManager) context.getSystemService(USAGE_STATS_SERVICE);
-        LocalDateTime day = LocalDateTime.of(LocalDate.now() , LocalTime.MIDNIGHT);
-        Map<Integer , List<UsageStats>> resultMap = new HashMap<>();
-        List<String> monitoredPackages = UsageStatsUtil.getAppDataList(context , null).stream().map(ad -> ad.getPackageName()).collect(Collectors.toList());
-
-        for (int i = 1 ; i <= 23 ; i++ ) {
-            LocalDateTime stopTime = LocalTime.MIN.atDate(day.toLocalDate()).plusHours(i);
-            LocalDateTime startTime = stopTime.minusHours(1);
-            List<UsageStats> hourStats = statsManager.queryUsageStats(
-                    UsageStatsManager.INTERVAL_DAILY ,
-                    startTime.toInstant(ZoneOffset.UTC).toEpochMilli() ,
-                    stopTime.toInstant(ZoneOffset.UTC).toEpochMilli()
-            ).stream().filter(us -> monitoredPackages.contains(us.getPackageName())).collect(Collectors.toList());
-
-            resultMap.put(i , hourStats);
+        while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
+            calendar.add(Calendar.DATE , -1);
         }
 
-        return resultMap;
+        dateStart = LocalDateTime.ofInstant(calendar.toInstant(), ZoneId.systemDefault());
+        List<Usages> data = usagesDao.getAllBetween((int) dateStart.toLocalDate().atStartOfDay().toEpochSecond(ZoneOffset.UTC) ,
+                (int) dateStart.toLocalDate().plusDays(6).atStartOfDay().toEpochSecond(ZoneOffset.UTC));
+
+        return getMergedUsagesList(data);
     }
 
-    public static List<DataPoint> convertStatsMapToDataPoints(Map<Integer , List<UsageStats>> map) {
-        List<DataPoint> dataPoints = new ArrayList<>();
+    public static List<Usages> getMonthlyUsagesDataPoints(Context context) {
+        UsagesDao usagesDao = AppDatabase.getInstance(context).usageDAO();
 
-        for (Map.Entry<Integer , List<UsageStats>> item : map.entrySet()) {
-            long max = item.getValue().stream()
-                    .mapToLong(UsageStats::getTotalTimeInForeground)
-                    .sum();
+        LocalDateTime now = LocalDateTime.now();
+        YearMonth ym = YearMonth.of(now.getYear(), now.getMonth());
+        int start = (int) ym.atDay(1).atStartOfDay().toEpochSecond(ZoneOffset.UTC);
+        int end = (int) ym.atEndOfMonth().atStartOfDay().toEpochSecond(ZoneOffset.UTC);
 
-            dataPoints.add(new DataPoint((float) item.getKey() , (float) (max / 1000)));
-        }
+        return getMergedUsagesList(usagesDao.getAllBetween(start , end));
+    }
 
-        return dataPoints;
+    public static List<Usages> getYearUsagesDataPoints(Context context) {
+        UsagesDao usagesDao = AppDatabase.getInstance(context).usageDAO();
+
+        LocalDateTime now = LocalDateTime.now();
+        int start = (int) LocalDate.of(now.getYear() , 1 , 1).atStartOfDay().toEpochSecond(ZoneOffset.UTC);
+        int end = (int) LocalDate.of(now.getYear() , 12 , 31).atStartOfDay().toEpochSecond(ZoneOffset.UTC);
+
+        return getMergedUsagesList(usagesDao.getAllBetween(start , end));
+    }
+
+    public static List<Usages> getMergedUsagesList(@NonNull List<Usages> data) {
+        return data.stream()
+                .collect(Collectors.groupingBy(Usages::getPackageName))
+                .values()
+                .stream()
+                .map(u -> u
+                        .stream()
+                        .reduce((u1, u2) -> new Usages(u1.getPackageName(), u1.getDayTimestamp(), u1.getTotalSeconds() + u2.getTotalSeconds()))
+                        .get())
+                .collect(Collectors.toList());
     }
 }

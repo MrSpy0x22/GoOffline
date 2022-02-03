@@ -74,9 +74,9 @@
                 android:id="@+id/apps_time_slider"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:valueFrom="1"
-                android:valueTo="72"
-                android:stepSize="1"
+                android:valueFrom="10"
+                android:valueTo="720"
+                android:stepSize="10"
                 />
 
         </LinearLayout>

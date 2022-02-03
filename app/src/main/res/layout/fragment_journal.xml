@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/sleeptime_row_enable"
+        android:id="@+id/journal_row_enable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/Theme.GoOffline.Fragment.TogglerDescription"
-        android:text="Zbieranie logów przez dłuższy czas może spowodować zwiększenie rozmiaru bazy danych. Warto co jakiś czas usuwać logi i/lub wybrać zdarzenia, które mają zostać zapisane."
+        android:text="Zaleca się czyszczenie starych logów w celu oszczędzania pamięci na urządzeniu."
         />
 
     <LinearLayout

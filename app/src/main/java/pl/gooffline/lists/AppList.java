@@ -1,11 +1,9 @@
 package pl.gooffline.lists;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -19,10 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.gooffline.R;
-import pl.gooffline.database.entity.Category;
-import pl.gooffline.database.entity.Wordbase;
 
 public class AppList extends RecyclerView.Adapter<AppList.ViewHolder> implements Filterable {
+    public interface OnAppClick {
+        void onClick(AppData appData , CheckBox checkBox);
+    }
+
     //region Klasa modelu
     public static class AppData {
         Drawable icon;
@@ -52,11 +52,19 @@ public class AppList extends RecyclerView.Adapter<AppList.ViewHolder> implements
         public boolean isSelected() {
             return selected;
         }
+
+        public void setSelected(boolean selected) {
+            this.selected = selected;
+        }
     }
     //endregion
 
+    private final List<AppData> appData;
+    private List<AppData> appDataFiltered;
+    private OnAppClick clickEvent;
+
     //region ViewHolder
-    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    static class ViewHolder extends RecyclerView.ViewHolder { // implements View.OnClickListener {
         private final ImageView appIcon;
         private final TextView appName;
         private final TextView appPackage;
@@ -69,22 +77,21 @@ public class AppList extends RecyclerView.Adapter<AppList.ViewHolder> implements
             appName = itemView.findViewById(R.id.app_list_header);
             appPackage = itemView.findViewById(R.id.app_list_subheader);
             appWhitelistedCheck = itemView.findViewById(R.id.app_list_checkbox);
+            //itemView.setOnClickListener(this);
         }
 
-        @Override
-        public void onClick(View view) {
-            boolean status = appWhitelistedCheck.isChecked();
-            appWhitelistedCheck.setChecked(!status);
-        }
+//        @Override
+//        public void onClick(View view) {
+//            boolean status = appWhitelistedCheck.isChecked();
+//            appWhitelistedCheck.setChecked(!status);
+//        }
     }
     //endregion
 
-    private final List<AppData> appData;
-    private List<AppData> appDataFiltered;
-
-    public AppList(List<AppData> appData) {
+    public AppList(List<AppData> appData , OnAppClick clickEvent) {
         this.appData = appData == null ? new ArrayList<>() : appData;
         this.appDataFiltered = appData == null ? new ArrayList<>() : appData;
+        this.clickEvent = clickEvent;
     }
 
     @NonNull
@@ -104,6 +111,13 @@ public class AppList extends RecyclerView.Adapter<AppList.ViewHolder> implements
         holder.appName.setText(listItem.getName());
         holder.appPackage.setText(listItem.getPackageName());
         holder.appWhitelistedCheck.setChecked(listItem.isSelected());
+
+        // Założenie: brak eventu = lista wykorzystywana jest gdzieś do wyświetlania aplikacji
+        if (clickEvent == null) {
+            holder.appWhitelistedCheck.setVisibility(View.GONE);
+        } else {
+            holder.itemView.setOnClickListener(e -> clickEvent.onClick(listItem, holder.appWhitelistedCheck));
+        }
     }
 
     @Override

@@ -1,5 +1,7 @@
 package pl.gooffline.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,9 +19,18 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.slider.Slider;
 
+import java.util.List;
+import java.util.Map;
+
 import pl.gooffline.R;
+import pl.gooffline.ServiceConfigManager;
+import pl.gooffline.database.AppDatabase;
+import pl.gooffline.database.dao.WordbaseDao;
+import pl.gooffline.database.entity.Category;
+import pl.gooffline.database.entity.Wordbase;
 import pl.gooffline.presenters.GamePresenter;
 import pl.gooffline.utils.ConfigUtil;
+import pl.gooffline.utils.DataUtil;
 
 public class GameFragment extends Fragment implements GamePresenter.View {
     private GamePresenter presenter;
@@ -89,14 +100,14 @@ public class GameFragment extends Fragment implements GamePresenter.View {
      * @param state Określa możliwość interakcji.
      */
     private void applyDisabledEffect(boolean state) {
-        rowOptionWords.setEnabled(state);
+        //rowOptionWords.setEnabled(state);
         attemptsSlider.setEnabled(state);
         bonusTimeSlider.setEnabled(state);
     }
 
     @Override
     public void onViewReady() {
-        gameEnableSwitch.setChecked(presenter.getConfigValue(ConfigUtil.KnownKeys.KK_GAME_ENABLE).equals("true"));
+        gameEnableSwitch.setChecked(presenter.getConfigValue(ConfigUtil.KnownKeys.KK_GAME_ENABLE).equals("1"));
         attemptsSlider.setValue(Float.parseFloat(presenter.getConfigValue(ConfigUtil.KnownKeys.KK_GAME_ATTEMPTS)));
         attemptsSliderText.setText(String.valueOf(Math.round(attemptsSlider.getValue())));
         bonusTimeSlider.setValue(Float.parseFloat(presenter.getConfigValue(ConfigUtil.KnownKeys.KK_GAME_BONUS_TIME)));
@@ -107,7 +118,27 @@ public class GameFragment extends Fragment implements GamePresenter.View {
 
     @Override
     public void onGameEnabled(boolean newState) {
-        presenter.setConfigValue(ConfigUtil.KnownKeys.KK_GAME_ENABLE , newState ? "true" : "false");
+        if (newState) {
+            WordbaseDao wordbaseDao = AppDatabase.getInstance(requireContext()).wordbaseDAO();
+            List<Wordbase> words = wordbaseDao.getAll();
+
+            if (words == null || words.size() <= 10) {
+                new AlertDialog.Builder(requireContext())
+                        .setTitle("Nie można włączyć")
+                        .setMessage("Zaleca się dodanie minimum 10 słówek do bazy wiedzy przed włączeniem tej funkcji.")
+                        .setCancelable(false)
+                        .setNeutralButton("Dodaj przykładowe", (d , i) -> presenter.addPreparedData(requireContext()))
+                        .setNegativeButton("Zamknij", null)
+                        .create()
+                        .show();
+
+                return;
+            }
+        }
+
+        presenter.setConfigValue(ConfigUtil.KnownKeys.KK_GAME_ENABLE , newState ? "1" : "0");
+        ServiceConfigManager.getInstance().setGameEnabled(newState);
+
         gameEnableSwitch.setChecked(newState);
         applyDisabledEffect(newState);
     }
@@ -129,6 +160,8 @@ public class GameFragment extends Fragment implements GamePresenter.View {
         int value = Math.round(attemptsSlider.getValue());
         String stringValue = String.valueOf(value);
 
+        ServiceConfigManager.getInstance().setGameAttempts(value);
+
         attemptsSliderText.setText(stringValue);
         presenter.setConfigValue(ConfigUtil.KnownKeys.KK_GAME_ATTEMPTS , stringValue);
     }
@@ -136,6 +169,8 @@ public class GameFragment extends Fragment implements GamePresenter.View {
     @Override
     public void onBonusTimeSliderUpdated() {
         int value = Math.round(bonusTimeSlider.getValue());
+
+        ServiceConfigManager.getInstance().setGameBonusTime(value);
 
         bonusTimeSliderText.setText(String.format(getString(R.string.bonus_time_format) , value));
         presenter.setConfigValue(ConfigUtil.KnownKeys.KK_GAME_ATTEMPTS , String.valueOf(value));

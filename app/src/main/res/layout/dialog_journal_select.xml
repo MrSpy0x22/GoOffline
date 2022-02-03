@@ -7,16 +7,19 @@
     android:orientation="vertical">
 
     <CheckBox
+        android:id="@+id/dialog_logactions_auth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Logowanie do alikacji"
         />
     <CheckBox
+        android:id="@+id/dialog_logactions_blocks"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Blokowanie aplikacji"
         />
     <CheckBox
+        android:id="@+id/dialog_logactions_limits"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Limit / Tryb snu"

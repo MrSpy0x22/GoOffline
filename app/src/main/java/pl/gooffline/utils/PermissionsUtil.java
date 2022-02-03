@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.AppOpsManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.PowerManager;
@@ -73,7 +72,7 @@ public class PermissionsUtil {
              */
             new AlertDialog.Builder(context)
                     .setTitle("Dostęp do danych")
-                    .setMessage("W ustawieniach aplikacji wybierz specjalne uprawnienia, a następnie nieograniczony dostęp do danych.")
+                    .setMessage("W ustawieniach aplikacji wybierz specjalne uprawnienia, a następnie dostęp do użytkowania.")
                     .setPositiveButton("OK", (dialogInterface, i) -> context.startActivity(new Intent(Settings.ACTION_SETTINGS)))
                     .create().show();
         }

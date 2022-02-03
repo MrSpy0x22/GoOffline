@@ -16,8 +16,8 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import java.util.List;
 
 import pl.gooffline.R;
+import pl.gooffline.ServiceConfigManager;
 import pl.gooffline.presenters.SleeptimePresenter;
-import pl.gooffline.services.MonitorService;
 import pl.gooffline.utils.ConfigUtil;
 
 /**
@@ -79,22 +79,14 @@ public class SleeptimeFragment extends Fragment implements SleeptimePresenter.Vi
         this.onViewReady();
     }
 
-    private void updateMonitor() {
-        List<Float> values = rangeSlider.getValues();
-
-        MonitorService.updateSleepTime(true ,
-                (int) values.get(0).longValue() ,
-                (int) values.get(1).longValue());
-    }
-
     @Override
     public void onSleeptimeStateChanged(boolean state) {
         boolean newState = !state;
         sleeptimeEnableSwitch.setChecked(newState);
-        presenter.setConfigValue(ConfigUtil.KnownKeys.KK_SLEEPTIME_ENABLE , newState ? "true" : "false");
-        rangeSlider.setEnabled(newState);
+        presenter.setConfigValue(ConfigUtil.KnownKeys.KK_SLEEPTIME_ENABLE , newState ? "1" : "0");
+        ServiceConfigManager.getInstance().setSleepTimeEnabled(newState);
 
-        updateMonitor();
+        rangeSlider.setEnabled(newState);
     }
 
     @Override
@@ -102,12 +94,13 @@ public class SleeptimeFragment extends Fragment implements SleeptimePresenter.Vi
         presenter.setConfigValue(ConfigUtil.KnownKeys.KK_SLEEPTIME_START , String.valueOf(start));
         presenter.setConfigValue(ConfigUtil.KnownKeys.KK_SLEEPTIME_STOP , String.valueOf(stop));
 
-        updateMonitor();
+        ServiceConfigManager.getInstance().setSleepTimeStart(start);
+        ServiceConfigManager.getInstance().setSleepTimeEnd(stop);
     }
 
     @Override
     public void onViewReady() {
-        boolean state = presenter.getConfigValue(ConfigUtil.KnownKeys.KK_SLEEPTIME_ENABLE).equals("true");
+        boolean state = presenter.getConfigValue(ConfigUtil.KnownKeys.KK_SLEEPTIME_ENABLE).equals("1");
         Float start = Float.parseFloat(presenter.getConfigValue(ConfigUtil.KnownKeys.KK_SLEEPTIME_START));
         Float stop = Float.parseFloat(presenter.getConfigValue(ConfigUtil.KnownKeys.KK_SLEEPTIME_STOP));
         sleeptimeEnableSwitch.setChecked(state);
