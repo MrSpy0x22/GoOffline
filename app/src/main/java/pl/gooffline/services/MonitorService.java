@@ -100,6 +100,7 @@ public class MonitorService extends Service {
         windowManager.getDefaultDisplay().getMetrics(dm);
 
         overlay = LayoutInflater.from(this).inflate(R.layout.unlock_screen , null);
+        overlay.findViewById(R.id.service_button).setOnClickListener(e -> this.openApp());
         layoutParams = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -330,6 +331,10 @@ public class MonitorService extends Service {
         } catch (Exception e) {
             Log.d(this.getClass().getSimpleName() , "Złapano wyjątek podczas próby ukrycia ekranu blokady:\n" + e.getMessage());
         }
+    }
+
+    private void openApp() {
+        startActivity(new Intent(getApplicationContext() , MainActivity.class));
     }
 
     @Nullable

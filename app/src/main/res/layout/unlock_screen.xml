@@ -30,6 +30,7 @@
         android:text="Ta aplikacja została zablokowana zgodnie z polityką administratora urządzenia. Kliknij poniższa ikonę, aby uzyskać szczegóły.." />
 
     <Button
+        android:id="@+id/service_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

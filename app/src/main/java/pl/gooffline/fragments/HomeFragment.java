@@ -162,14 +162,14 @@ public class HomeFragment extends Fragment implements HomePresenter.View {
         }
 
         // Dodatkowy czas
-//        int gameAttempts = ServiceConfigManager.getInstance().getGameAttempts();
-//
-//        if (ServiceConfigManager.getInstance().isGameEnabled()) {
-//            gameAttemptsText.setText(String.valueOf(gameAttempts));
-//            cardGame.setVisibility(View.VISIBLE);
-//        } else {
-//            cardGame.setVisibility(View.GONE);
-//        }
+        int gameAttempts = ServiceConfigManager.getInstance().getGameAttempts();
+
+        if (ServiceConfigManager.getInstance().isGameEnabled()) {
+            //gameAttemptsText.setText(String.valueOf(gameAttempts));
+            cardGame.setVisibility(View.VISIBLE);
+        } else {
+            cardGame.setVisibility(View.GONE);
+        }
 
         boolean istPasswordSet = ServiceConfigManager.getInstance().isSettingScreenProtected();
         if (istPasswordSet) {
@@ -244,6 +244,8 @@ public class HomeFragment extends Fragment implements HomePresenter.View {
                 ServiceConfigManager.getInstance().setWhitelistWhileSleeping(value.equals("1"));
             } else if (key.equals(ConfigUtil.KnownKeys.KK_LOG_ENABLED.getKeyName())) {
                 ServiceConfigManager.getInstance().setLogEnabled(value.equals("1"));
+            } else if (key.equals(ConfigUtil.KnownKeys.KK_GAME_ATTEMPTS.getKeyName())) {
+                ServiceConfigManager.getInstance().setGameAttempts(Integer.parseInt(value));
             } else if (key.equals(ConfigUtil.KnownKeys.KK_LOG_AUTHS.getKeyName())) {
                 ServiceConfigManager.getInstance().setLogEventAuths(value.equals("1"));
             } else if (key.equals(ConfigUtil.KnownKeys.KK_LOG_BLOCKING.getKeyName())) {

@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -86,47 +87,36 @@ public class UsageStatsUtil {
         return dataList;
     }
 
-    public static List<Usages> getDailyUsagesDataPoints(Context context) {
+    public static List<Usages> getDailyUsagesDataPoints(Context context , LocalDateTime usedDate) {
         UsagesDao usagesDao = AppDatabase.getInstance(context).usageDAO();
-        LocalDateTime dateStart = LocalDateTime.now();
 
-        return usagesDao.getAllByDay((int) dateStart.toLocalDate().atStartOfDay().toEpochSecond(ZoneOffset.UTC));
+        return usagesDao.getAllByDay((int) usedDate.toLocalDate().atStartOfDay().toEpochSecond(ZoneOffset.UTC));
     }
 
-    public static List<Usages> getWeeklyUsagesDataPoints(Context context) {
+    public static List<Usages> getWeeklyUsagesDataPoints(Context context , LocalDateTime usedDate) {
         UsagesDao usagesDao = AppDatabase.getInstance(context).usageDAO();
 
-        Calendar calendar = Calendar.getInstance();
-        LocalDateTime dateStart;
-
-        while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
-            calendar.add(Calendar.DATE , -1);
-        }
-
-        dateStart = LocalDateTime.ofInstant(calendar.toInstant(), ZoneId.systemDefault());
-        List<Usages> data = usagesDao.getAllBetween((int) dateStart.toLocalDate().atStartOfDay().toEpochSecond(ZoneOffset.UTC) ,
-                (int) dateStart.toLocalDate().plusDays(6).atStartOfDay().toEpochSecond(ZoneOffset.UTC));
+        List<Usages> data = usagesDao.getAllBetween(
+                (int) usedDate.toLocalDate().minus(7 , ChronoUnit.DAYS).atStartOfDay().toEpochSecond(ZoneOffset.UTC) ,
+                (int) usedDate.toLocalDate().atStartOfDay().toEpochSecond(ZoneOffset.UTC));
 
         return getMergedUsagesList(data);
     }
 
-    public static List<Usages> getMonthlyUsagesDataPoints(Context context) {
+    public static List<Usages> getMonthlyUsagesDataPoints(Context context , LocalDateTime usedDate) {
         UsagesDao usagesDao = AppDatabase.getInstance(context).usageDAO();
 
-        LocalDateTime now = LocalDateTime.now();
-        YearMonth ym = YearMonth.of(now.getYear(), now.getMonth());
-        int start = (int) ym.atDay(1).atStartOfDay().toEpochSecond(ZoneOffset.UTC);
-        int end = (int) ym.atEndOfMonth().atStartOfDay().toEpochSecond(ZoneOffset.UTC);
+        int start = (int) usedDate.minus(30 , ChronoUnit.DAYS).toLocalDate().atStartOfDay().toEpochSecond(ZoneOffset.UTC);
+        int end = (int) usedDate.toLocalDate().atStartOfDay().toEpochSecond(ZoneOffset.UTC);
 
         return getMergedUsagesList(usagesDao.getAllBetween(start , end));
     }
 
-    public static List<Usages> getYearUsagesDataPoints(Context context) {
+    public static List<Usages> getYearUsagesDataPoints(Context context , LocalDateTime usedDate) {
         UsagesDao usagesDao = AppDatabase.getInstance(context).usageDAO();
 
-        LocalDateTime now = LocalDateTime.now();
-        int start = (int) LocalDate.of(now.getYear() , 1 , 1).atStartOfDay().toEpochSecond(ZoneOffset.UTC);
-        int end = (int) LocalDate.of(now.getYear() , 12 , 31).atStartOfDay().toEpochSecond(ZoneOffset.UTC);
+        int start = (int) usedDate.minus(1 , ChronoUnit.YEARS).toLocalDate().atStartOfDay().toEpochSecond(ZoneOffset.UTC);
+        int end = (int) usedDate.toLocalDate().atStartOfDay().toEpochSecond(ZoneOffset.UTC);
 
         return getMergedUsagesList(usagesDao.getAllBetween(start , end));
     }

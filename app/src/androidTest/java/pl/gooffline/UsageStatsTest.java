@@ -12,6 +12,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,28 +35,32 @@ public class UsageStatsTest {
     @Ignore("Tylko do jawnych testów")
     @Test
     public void getDailyData() {
-        List<Usages> usaged = UsageStatsUtil.getDailyUsagesDataPoints(context);
+        LocalDateTime now = LocalDateTime.now();
+        List<Usages> usaged = UsageStatsUtil.getDailyUsagesDataPoints(context , now);
         Assert.assertNotNull(usaged);
     }
 
     @Ignore("Tylko do jawnych testów")
     @Test
     public void getMonthlyData() {
-        List<Usages> usaged = UsageStatsUtil.getMonthlyUsagesDataPoints(context);
+        LocalDateTime now = LocalDateTime.now();
+        List<Usages> usaged = UsageStatsUtil.getMonthlyUsagesDataPoints(context , now);
         Assert.assertNotNull(usaged);
     }
 
     @Ignore("Tylko do jawnych testów")
     @Test
     public void getWeeklyData() {
-        List<Usages> usaged = UsageStatsUtil.getWeeklyUsagesDataPoints(context);
+        LocalDateTime now = LocalDateTime.now();
+        List<Usages> usaged = UsageStatsUtil.getWeeklyUsagesDataPoints(context , now);
         Assert.assertNotNull(usaged);
     }
 
     @Ignore("Tylko do jawnych testów")
     @Test
     public void getYearlyData() {
-        List<Usages> usaged = UsageStatsUtil.getYearUsagesDataPoints(context);
+        LocalDateTime now = LocalDateTime.now();
+        List<Usages> usaged = UsageStatsUtil.getYearUsagesDataPoints(context , now);
         Assert.assertNotNull(usaged);
     }
 

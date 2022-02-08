@@ -20,6 +20,13 @@ public class Receiver extends android.content.BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        // --- Autostart ---------------------------------------------------------------------------
+        if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
+            context.startActivity(new Intent(context , MainActivity.class));
+            return;
+        }
+        // -----------------------------------------------------------------------------------------
+
         String broadcastName = intent.getStringExtra("broadcastName");
         String jsonData = intent.getStringExtra("jsonData");
 

@@ -85,6 +85,9 @@
     <!-- FRAGMENT: logi -->
     <string name="journal_fragment_name">Dziennik akcji</string>
 
+    <!-- FRAGMENT: play -->
+    <string name="play_fragment_name">Zagadka</string>
+
     <!-- FRAGMENT: polityka -->
     <string name="policy_fragment_name">Lista wyjątków</string>
     <string name="policy_dialog_no_exceptions">Administrator urządzenia nie włączył żadnych wyjątków.</string>

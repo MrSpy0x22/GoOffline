@@ -107,7 +107,7 @@
     <fragment
         android:id="@+id/playFragment"
         android:name="pl.gooffline.fragments.PlayFragment"
-        android:label="PlayFragment" />
+        android:label="@string/play_fragment_name" />
     <fragment
         android:id="@+id/policyFragment"
         android:name="pl.gooffline.fragments.PolicyFragment"

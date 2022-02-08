@@ -14,19 +14,19 @@
             android:id="@+id/tabs_day"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Dzień"/>
+            android:text="Dzisiaj"/>
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tabs_week"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Tydzień"/>
+            android:text="7 dni"/>
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tabs_month"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Miesiąc"/>
+            android:text="30 dni"/>
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tabs_year"
@@ -37,14 +37,104 @@
 
     </com.google.android.material.tabs.TabLayout>
 
-    <TextView
-        android:id="@+id/usages_label"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?attr/colorBackgroundFloating"
         android:padding="@dimen/activityPadding"
-        style="@style/TextAppearance.AppCompat.Large"
-        android:text="Całkowity czas: 00:00:00"
-        />
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_stats_stoper"
+                />
+
+            <TextView
+                android:id="@+id/usages_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/activityPadding"
+                style="@style/TextAppearance.AppCompat.Large"
+                android:text="00:00:00"
+                />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/stats_calendar_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:clickable="true"
+            android:background="?android:attr/selectableItemBackground">
+
+            <TextView
+                android:id="@+id/usages_calendar_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:paddingEnd="@dimen/activityPadding"
+                style="@style/TextAppearance.AppCompat.Large"
+                android:textColor="?attr/colorPrimary"
+                android:text="00.00.0000"
+                />
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_stats_calendar"
+                app:tint="?attr/colorPrimary" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/stats_notification_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:background="#2196F3"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:clickable="true">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_stats_icon"
+            />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="10dp"
+            android:background="#55000000"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Przeciętne użycie tego urządzenia zbliżone jest do zdefiniowanego limitu."
+                android:textSize="15sp"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/usages_list"
